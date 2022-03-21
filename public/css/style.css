@@ -1,0 +1,19 @@
+body{
+    padding: 30px 0;
+}
+
+ul{
+    list-style: none;
+}
+
+li{
+    margin: 10px 0;
+}
+
+.container{
+    margin: 10px 0;
+}
+
+.btn{
+    margin: 0 10px;
+}
