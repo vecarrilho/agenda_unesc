@@ -16,6 +16,8 @@ Route::resource('agenda', AgendaController::class);
 
 
 Route::get('/', [AgendaController::class, 'index']);
+Route::get('/insert_cadastro/{id_sala}', [AgendaController::class, 'insert_cadastro']);
+Route::get('/search', [AgendaController::class, 'search']);
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
+    return view('welcome');
 })->name('dashboard');

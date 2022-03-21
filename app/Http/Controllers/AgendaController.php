@@ -83,4 +83,36 @@ class AgendaController extends Controller
     {
         //
     }
+
+    public function search(){
+        $data = request('data');
+        $hora = request('hora');
+
+        if ($data) {
+            if($hora){
+                $salas = Sala::where([
+                    ['data', $data],
+                    ['hora', date('H:i:s', strtotime($hora))]
+                ])->get();
+            }else{
+                $salas = Sala::where([
+                    ['data', ($data)]
+                ])->get();
+            }
+        }elseif($hora){
+            $salas = Sala::where([
+                ['hora', date('H:i:s', strtotime($hora))]
+            ])->get();
+        }else{
+            $salas = Sala::all();
+        }
+        
+        return view('agenda.show',['salas' => $salas]);
+    }
+
+    public function insert_cadastro($id_sala){
+
+        $salas = Sala::all();
+        return view('agenda.show', ['salas' => $salas]);
+    }
 }

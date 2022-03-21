@@ -10,10 +10,22 @@
 </head>
 <body>
     <div class="container">
-        <ul class="lista-botoes">
-            <li><a href="{{ route('agenda.create') }}" class="btn btn-primary">Cadastrar Agendamento</a></li>
-            <li><a href="{{ route('agenda.show', ['agenda' => 1]) }}" class="btn btn-primary">Listar Agendamentos</a></li>
-        </ul>
+        @auth
+            <ul class="lista-botoes">
+                <li><a href="{{ route('agenda.create') }}" class="btn btn-primary">Cadastrar Agendamento</a></li>
+                <li><a href="{{ route('agenda.show', ['agenda' => 1]) }}" class="btn btn-primary">Listar Agendamentos</a></li>
+                <form action="/logout" method="POST">
+                    @csrf
+                    <li><button class="btn btn-primary" type="submit" onclick="event.preventDefault(); this.closest('form').submit();"><span>Sair</span></button></li>
+                </form>
+            </ul>
+            @endauth
+        @guest
+            <ul>
+                <li><a href="/login" class="btn btn-primary">Login</a></li>
+                <li><a href="/register" class="btn btn-primary">Criar Usuário</a></li>
+            </ul>
+        @endguest
     </div>
 </body>
 </html>

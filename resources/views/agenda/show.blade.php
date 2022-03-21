@@ -9,29 +9,54 @@
     <title>Lista Agendamento</title>
 </head>
 <body>
+ 
     <div class="container">
-            <table class="table">
-                <thead>
+
+            <ul class="ul-show">
+                <li><a href="/" class="btn btn-primary btn-cabecalho">Voltar</a></li>
+                <form action="/logout" method="POST">
+                    @csrf
+                    <li><button class="btn btn-primary btn-cabecalho" type="submit" onclick="event.preventDefault(); this.closest('form').submit();"><span>Sair</span></button></li>
+                </form>
+            </ul>
+
+        <form action="/search" method="GET"> 
+            <div class="form-group">
+                <label>Data</label>
+                <input class="form-control" type="date" name="data">
+            </div>
+            <div class="form-group">
+                <label>Hora</label>
+                <input class="form-control" type="time" name="hora">
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="submit" value="Pesquisar">
+            </div>
+            
+
+        </form>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Bloco</th>
+                    <th>Data - Hora</th>
+                    <th>Máquinas Disponíveis</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($salas as $sala)
                     <tr>
-                        <th>#</th>
-                        <th>Bloco</th>
-                        <th>Data - Hora</th>
-                        <th>Máquinas Disponíveis</th>
-                        <th>Ação</th>
+                        <td>{{ $sala->id }}</td>
+                        <td>{{ $sala->bloco }}</td>
+                        <td>{{ date('d/m/Y', strtotime($sala->data)) . ' - ' . date('H:i', strtotime($sala->hora)) }}</td>
+                        <td>{{ $sala->qtd_maquinas }}</td>
+                        <td><a href="/insert_cadastro/{{$sala->id}}" class="btn-primary btn">Entrar</a></td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach($salas as $sala)
-                        <tr>
-                            <td>{{ $sala->id }}</td>
-                            <td>{{ $sala->bloco }}</td>
-                            <td>{{ date('d/m/Y', strtotime($sala->data)) . ' - ' . date('H:i', strtotime($sala->hora)) }}</td>
-                            <td>{{ $sala->id }}</td>
-                            <td><a href="{{ route('agenda.edit', ['agenda' => 1]) }}" class="btn btn-warning">Editar</a><a href="{{ route('agenda.destroy', ['agenda' => 1]) }}" class="btn btn-danger">Deletar</a></td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                @endforeach
+            </tbody>
+        </table>
     </div>
 </body>
 </html>
