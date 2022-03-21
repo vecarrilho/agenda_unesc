@@ -16,3 +16,6 @@ Route::resource('agenda', AgendaController::class);
 
 
 Route::get('/', [AgendaController::class, 'index']);
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
