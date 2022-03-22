@@ -65,7 +65,7 @@
                         <td>{{ $sala->id }}</td>
                         <td>{{ $sala->bloco }}</td>
                         <td>{{ date('d/m/Y', strtotime($sala->data)) . ' - ' . date('H:i', strtotime($sala->hora)) }}</td>
-                        <td>{{ $sala->qtd_maquinas }}</td>
+                        <td>{{ $sala->qtd_maquinas - $cadastros[$sala->id] }}</td>
                         <td><a href="/insert_cadastro/{{$sala->id}}/{{Auth::user()->id}}" class="btn-primary btn">Entrar</a></td>
                     </tr>
                 @endforeach
