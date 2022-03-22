@@ -48,7 +48,12 @@ class AgendaController extends Controller
     public function show($id)
     {
         $salas = Sala::all();
-        return view('agenda.show', ['salas' => $salas]);
+
+        foreach($salas as $sala){
+            $cadastros[$sala->id] = Cadastro::where('id_sala',$sala->id)->count();
+        }
+        
+        return view('agenda.show', ['salas' => $salas, 'cadastros' => $cadastros]);
     }
 
     /**
@@ -107,8 +112,12 @@ class AgendaController extends Controller
         }else{
             $salas = Sala::all();
         }
+        foreach($salas as $sala){
+            $cadastros[$sala->id] = Cadastro::where('id_sala',$sala->id)->count();
+        }
+
         
-        return view('agenda.show',['salas' => $salas]);
+        return view('agenda.show',['salas' => $salas, 'cadastros' => $cadastros]);
     }
 
     public function insert_cadastro($id_sala, $id_aluno){
@@ -131,7 +140,11 @@ class AgendaController extends Controller
         // $salas->save();
 
         $salas = Sala::all();
+        
+        foreach($salas as $sala){
+            $cadastros[$sala->id] = Cadastro::where('id_sala',$sala->id)->count();
+        }
 
-        return view('agenda.show', ['salas' => $salas]);
+        return redirect('agenda');
     }
 }
