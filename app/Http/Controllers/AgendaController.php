@@ -139,9 +139,9 @@ class AgendaController extends Controller
     
             $cadastro->save();
 
-            return redirect('agenda')->with('msg', 'Prova agendada com sucesso!');
+            return redirect('agenda')->with('msg-success', 'Prova agendada com sucesso!');
         }else{
-            return redirect('agenda')->with('msg', 'Máquinas insuficientes para esta data!');
+            return redirect('agenda')->with('msg-error', 'Máquinas insuficientes para esta data!');
         }
     }
 }

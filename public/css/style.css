@@ -52,10 +52,19 @@ nav.navbar{
     padding: 0;
 }
 
-.msg{
+.msg-success{
     background-color: #d4edda;
     color: #155724;
     border: 1px solid #c3e6cb;
+    width: 100%;
+    margin-bottom: 0;
+    text-align: center;
+    padding: 10px;
+}
+.msg-error{
+    background-color: #e68892;
+    color: #c22020;
+    border: 1px solid #e68892;
     width: 100%;
     margin-bottom: 0;
     text-align: center;
