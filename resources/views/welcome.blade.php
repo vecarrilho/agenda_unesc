@@ -9,10 +9,36 @@
     <title>Agenda</title>
 </head>
 <body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a class="navbar-brand" href="#">
+                    <img src="/img/logo.png" alt="">
+                </a>
+            </div>
+            <div class="dropdown-header">
+                <ul class="nav justify-content-end">
+                    <div class="dropdown nav-item">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ Auth::user()->name }}
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <form action="/logout" method="POST">
+                                @csrf
+                                <li><button class="btn btn-primary dropdown-item" type="submit" onclick="event.preventDefault(); this.closest('form').submit();"><span>Sair</span></button></li>
+                            </form>
+                        </ul>
+                    </div>
+                </ul>
+            </div>
+        </nav>
+    </header>
     <div class="container-fluid">
         <div class="row">
-            @if(session('msg'))
-                <p class="msg">{{session('msg')}}</p>
+            @if(session('msg-success'))
+                <p class="msg-success">{{session('msg-success')}}</p>
+            @elseif(session('msg-error'))
+                <p class="msg-error">{{session('msg-error')}}</p>
             @endif
             @yield('content')
         </div>
@@ -20,12 +46,8 @@
     <div class="container">
         @auth
             <ul class="lista-botoes">
-                <li><a href="{{ route('agenda.create') }}" class="btn btn-primary">Cadastrar Agendamento</a></li>
+                {{-- <li><a href="{{ route('agenda.create') }}" class="btn btn-primary">Cadastrar Agendamento</a></li> --}}
                 <li><a href="{{ route('agenda.show', ['agenda' => 1]) }}" class="btn btn-primary">Listar Agendamentos</a></li>
-                <form action="/logout" method="POST">
-                    @csrf
-                    <li><button class="btn btn-primary" type="submit" onclick="event.preventDefault(); this.closest('form').submit();"><span>Sair</span></button></li>
-                </form>
             </ul>
             @endauth
         @guest
