@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Sala;
+use App\Models\Cadastro;
 
 class AgendaController extends Controller
 {
@@ -110,9 +111,27 @@ class AgendaController extends Controller
         return view('agenda.show',['salas' => $salas]);
     }
 
-    public function insert_cadastro($id_sala){
+    public function insert_cadastro($id_sala, $id_aluno){
+
+        $cadastro = new Cadastro;
+
+        $cadastro->id_usuario = $id_aluno;
+        $cadastro->id_sala = $id_sala;
+
+        $cadastro->save();
+
+        $salas = Sala::findOrFail($id_sala);
+
+        // if($salas->qtd_maquinas>0){
+        //     $salas->qtd_maquinas--;
+        // }else{
+        //     $salas->qtd_maquinas = 0;
+        // }
+
+        // $salas->save();
 
         $salas = Sala::all();
+
         return view('agenda.show', ['salas' => $salas]);
     }
 }
