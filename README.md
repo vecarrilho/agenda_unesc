@@ -1,2 +1,2 @@
 <p>git remote origin</p>
-<p>commit na brach "staging"</p>
+<p>commit na branch "staging"</p>
