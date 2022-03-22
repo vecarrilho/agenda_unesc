@@ -1,5 +1,7 @@
-body{
-    padding: 30px 0;
+
+header{
+    background-color: #2c3039;
+    padding: 0;
 }
 
 ul{
@@ -15,7 +17,22 @@ ul.ul-show{
     text-align: right;
 }
 
+.dropdown-header{
+    padding: 0;
+    margin-right: 20px;
+}
+
+.dropdown-menu{
+    padding-right: 50px;
+}
+
 .container{
+    padding: 10px 0;
+    margin-left: 60px;
+    margin-right: 0;
+}
+
+nav.navbar{
     padding: 0;
 }
 
@@ -34,4 +51,9 @@ ul.ul-show{
 
 .form-control {
     font-size: 20px;
+}
+
+.btn-voltar{
+    margin-left: 0;
+    margin-bottom: 20px;
 }
