@@ -39,7 +39,7 @@
         <form action="/search" method="GET"> 
             <div class="form-group">
                 <label>Data</label>
-                <input class="form-control" type="date" name="data">
+                <input class="form-control" type="date" name="data" min="{{date('Y-m-d')}}">
             </div>
             <div class="form-group">
                 <label>Hora</label>
