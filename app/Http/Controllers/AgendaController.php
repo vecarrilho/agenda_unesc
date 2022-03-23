@@ -48,10 +48,12 @@ class AgendaController extends Controller
      */
     public function show($id)
     {
-        $dataAtual = date('Y-m-d');
+        // $dataAtual = date('Y-m-d');
         $salas = Sala::where([
-            ['data', '>=', $dataAtual]
+            ['data', '>=', date('Y-m-d')]
         ])->get();
+
+        $cadastros = '';
 
         foreach($salas as $sala){
             $cadastros[$sala->id] = Cadastro::where('id_sala',$sala->id)->count();
@@ -91,7 +93,9 @@ class AgendaController extends Controller
      */
     public function destroy($id)
     {
-        DB::table('cadastros')->where('id_usuario', $id)->delete();
+        DB::table('cadastros')
+                ->where('id', $id)
+                ->delete();
         return redirect('agenda');
     }
 
@@ -117,6 +121,9 @@ class AgendaController extends Controller
         }else{
             $salas = Sala::all();
         }
+
+        $cadastros = '';
+
         foreach($salas as $sala){
             $cadastros[$sala->id] = Cadastro::where('id_sala',$sala->id)->count();
         }
@@ -126,8 +133,6 @@ class AgendaController extends Controller
     }
 
     public function insert_cadastro($id_sala, $id_aluno){
-
-        // $cadastro = Cadastro::all();
 
         $salas = Sala::findOrFail($id_sala);
 
@@ -151,7 +156,7 @@ class AgendaController extends Controller
         
         $cadastros = DB::table('cadastros')
                     ->join('salas', 'salas.id', '=', 'cadastros.id_sala')
-                    ->select('salas.id', 'salas.bloco', 'salas.hora', 'salas.data')->get();
-        return view('agenda.myList', ['cadastros' => $cadastros]);
+                    ->select('salas.id', 'salas.bloco', 'salas.hora', 'salas.data', 'cadastros.id AS id_cadastro')->get();
+        return view('agenda.myList', ['cadastros' => $cadastros,]);
     }
 }

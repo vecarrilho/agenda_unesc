@@ -63,7 +63,7 @@
                         <td>{{ $cadastro->id }}</td>
                         <td>{{ $cadastro->bloco }}</td>
                         <td>{{ date('d/m/Y', strtotime($cadastro->data)) . ' - ' . date('H:i', strtotime($cadastro->hora)) }}</td>
-                        <form action="{{ route('agenda.destroy', ['agenda' => Auth::user()->id]) }}" method="POST">
+                        <form action="{{ route('agenda.destroy', ['agenda' => $cadastro->id_cadastro]) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <td><button type="submit" class="btn btn-danger"><span>Sair</span></button></td>
