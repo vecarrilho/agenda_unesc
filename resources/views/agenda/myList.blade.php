@@ -46,19 +46,33 @@
         </div>
     </div>
     <div class="container">
-        @auth
-            <ul class="lista-botoes">
-                {{-- <li><a href="{{ route('agenda.create') }}" class="btn btn-primary">Cadastrar Agendamento</a></li> --}}
-                <li><a href="{{ route('agenda.show', ['agenda' => 1]) }}" class="btn btn-primary">Agendamentos Disponíveis</a></li>
-                <li><a href="/show_my_list/{{ Auth::user()->id }}" class="btn btn-primary">Meus Agendamentos</a></li>
-            </ul>
-            @endauth
-        @guest
-            <ul>
-                <li><a href="/login" class="btn btn-primary">Login</a></li>
-                <li><a href="/register" class="btn btn-primary">Criar Usuário</a></li>
-            </ul>
-        @endguest
+        <a href="/" class="btn btn-secondary btn-voltar" >Voltar</a>
+        <h2>Sua lista de provas</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Bloco</th>
+                    <th>Data - Hora</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($cadastros as $cadastro)
+                    <tr>
+                        <td>{{ $cadastro->id }}</td>
+                        <td>{{ $cadastro->bloco }}</td>
+                        <td>{{ date('d/m/Y', strtotime($cadastro->data)) . ' - ' . date('H:i', strtotime($cadastro->hora)) }}</td>
+                        <form action="{{ route('agenda.destroy', ['agenda' => Auth::user()->id]) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <td><button type="submit" class="btn btn-danger"><span>Sair</span></button></td>
+                        </form>
+                        <td></td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
 </body>
 </html>

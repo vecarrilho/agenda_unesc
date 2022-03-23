@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Sala;
 use App\Models\Cadastro;
+use Illuminate\Support\Facades\DB;
 
 class AgendaController extends Controller
 {
@@ -90,7 +91,8 @@ class AgendaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::table('cadastros')->where('id_usuario', $id)->delete();
+        return redirect('agenda');
     }
 
     public function search(){
@@ -125,7 +127,7 @@ class AgendaController extends Controller
 
     public function insert_cadastro($id_sala, $id_aluno){
 
-        $cadastro = Cadastro::all();
+        // $cadastro = Cadastro::all();
 
         $salas = Sala::findOrFail($id_sala);
 
@@ -143,5 +145,13 @@ class AgendaController extends Controller
         }else{
             return redirect('agenda')->with('msg-error', 'Máquinas insuficientes para esta data!');
         }
+    }
+    
+    public function show_my_list($id_aluno){
+        
+        $cadastros = DB::table('cadastros')
+                    ->join('salas', 'salas.id', '=', 'cadastros.id_sala')
+                    ->select('salas.id', 'salas.bloco', 'salas.hora', 'salas.data')->get();
+        return view('agenda.myList', ['cadastros' => $cadastros]);
     }
 }
