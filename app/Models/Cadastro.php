@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cadastro extends Model
 {
+    protected $fillable = ['id_usuario', 'id_sala'];
+
     public function scopeCountMaquinas($query, $id_sala){
         return $query->where('id_sala', $id_sala)->count();
     }
@@ -24,6 +26,7 @@ class Cadastro extends Model
 
     public function scopeMinhaLista($query, $id_aluno){
         return $query->join('salas', 'salas.id', '=', 'cadastros.id_sala')
+            ->where('cadastros.id_usuario', $id_aluno)
         ->select('salas.id', 'salas.bloco', 'salas.hora', 'salas.data', 'cadastros.id AS id_cadastro');
     }
 

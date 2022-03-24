@@ -36,7 +36,24 @@ class AgendaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        $cadastros = Cadastro::VerificaAgenda($data['id_usuario'], $data['id_sala'])->get();
+        
+        if(empty($cadastros[0])){
+            $salas = Sala::find($data['id_sala']);
+
+            $maquinas_reservadas = Cadastro::CountMaquinas($salas->id);
+
+            if($salas->qtd_maquinas != $maquinas_reservadas){
+                Cadastro::create($data);
+                return redirect('agenda')->with('msg-success', 'Prova agendada com sucesso!');
+            }else{
+                return redirect('agenda')->with('msg-error', 'Máquinas insuficientes para esta data!');
+            }
+        }else{
+            return redirect('agenda')->with('msg-error', 'Você já esta cadastrado nesta sala!');
+        }
     }
 
     /**
@@ -91,7 +108,7 @@ class AgendaController extends Controller
     public function destroy($id)
     {
         Cadastro::deleteCadastro($id)->delete();
-        return redirect('agenda');
+        return redirect('agenda')->with('msg-success', 'Prova removida com sucesso!');
     }
 
     public function search(){
@@ -122,35 +139,8 @@ class AgendaController extends Controller
         foreach($salas as $sala){
             $cadastros[$sala->id] = Cadastro::countMaquinas($sala->id);
         }
-
         
         return view('agenda.show',['salas' => $salas, 'cadastros' => $cadastros]);
-    }
-
-    public function insert_cadastro($id_sala, $id_aluno){
-
-        $cadastros = Cadastro::VerificaAgenda($id_aluno, $id_sala)->get();
-
-        if(empty($cadastros[0])){
-            $salas = Sala::findOrFail($id_sala);
-
-            $maquinas_reservadas = Cadastro::CountMaquinas($salas->id);
-
-            if($salas->qtd_maquinas != $maquinas_reservadas){
-                $cadastro = new Cadastro;
-
-                $cadastro->id_usuario = $id_aluno;
-                $cadastro->id_sala = $id_sala;
-        
-                $cadastro->save();
-
-                return redirect('agenda')->with('msg-success', 'Prova agendada com sucesso!');
-            }else{
-                return redirect('agenda')->with('msg-error', 'Máquinas insuficientes para esta data!');
-            }
-        }else{
-            return redirect('agenda')->with('msg-error', 'Você já esta cadastrado nesta sala!');
-        }
     }
     
     public function show_my_list($id_aluno){

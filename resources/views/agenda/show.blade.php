@@ -66,7 +66,16 @@
                         <td>{{ $sala->bloco }}</td>
                         <td>{{ date('d/m/Y', strtotime($sala->data)) . ' - ' . date('H:i', strtotime($sala->hora)) }}</td>
                         <td>{{ $sala->qtd_maquinas - $cadastros[$sala->id] }}</td>
-                        <td><a href="/insert_cadastro/{{$sala->id}}/{{Auth::user()->id}}" class="btn-primary btn">Entrar</a></td>
+                        <td>
+                            <form action="{{route('agenda.store')}}" method="POST">
+                                @csrf
+                                <input type="hidden" name="id_sala" value="{{$sala->id}}">
+                                <input type="hidden" name="id_usuario" value="{{Auth::user()->id}}">
+                                <button class="btn btn-primary" type="submit">Entrar</button>
+                            </form>
+                            {{-- <a href="{{  }}" class="btn btn-primary">Entrar</a> --}}
+                        </td>
+                        {{-- <td><a href="/insert_cadastro/{{$sala->id}}/{{Auth::user()->id}}" class="btn-primary btn">Entrar</a></td> --}}
                     </tr>
                 @endforeach
             </tbody>
