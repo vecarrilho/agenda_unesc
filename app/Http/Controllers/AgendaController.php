@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Sala;
 use App\Models\Cadastro;
-use Illuminate\Support\Facades\DB;
 
 class AgendaController extends Controller
 {
@@ -49,14 +48,12 @@ class AgendaController extends Controller
     public function show($id)
     {
         // $dataAtual = date('Y-m-d');
-        $salas = Sala::where([
-            ['data', '>=', date('Y-m-d')]
-        ])->get();
+        $salas = Sala::exibicao()->get();
 
         $cadastros = '';
 
         foreach($salas as $sala){
-            $cadastros[$sala->id] = Cadastro::where('id_sala',$sala->id)->count();
+            $cadastros[$sala->id] = Cadastro::CountMaquinas($sala->id);
         }
         
         return view('agenda.show', ['salas' => $salas, 'cadastros' => $cadastros]);
@@ -93,9 +90,7 @@ class AgendaController extends Controller
      */
     public function destroy($id)
     {
-        DB::table('cadastros')
-                ->where('id', $id)
-                ->delete();
+        Cadastro::deleteCadastro($id)->delete();
         return redirect('agenda');
     }
 
@@ -125,7 +120,7 @@ class AgendaController extends Controller
         $cadastros = '';
 
         foreach($salas as $sala){
-            $cadastros[$sala->id] = Cadastro::where('id_sala',$sala->id)->count();
+            $cadastros[$sala->id] = Cadastro::countMaquinas($sala->id);
         }
 
         
@@ -134,29 +129,34 @@ class AgendaController extends Controller
 
     public function insert_cadastro($id_sala, $id_aluno){
 
-        $salas = Sala::findOrFail($id_sala);
+        $cadastros = Cadastro::VerificaAgenda($id_aluno, $id_sala)->get();
 
-        $maquinas_reservadas = Cadastro::where('id_sala',$salas->id)->count();
+        if(empty($cadastros[0])){
+            $salas = Sala::findOrFail($id_sala);
 
-        if($salas->qtd_maquinas != $maquinas_reservadas){
-            $cadastro = new Cadastro;
+            $maquinas_reservadas = Cadastro::CountMaquinas($salas->id);
 
-            $cadastro->id_usuario = $id_aluno;
-            $cadastro->id_sala = $id_sala;
-    
-            $cadastro->save();
+            if($salas->qtd_maquinas != $maquinas_reservadas){
+                $cadastro = new Cadastro;
 
-            return redirect('agenda')->with('msg-success', 'Prova agendada com sucesso!');
+                $cadastro->id_usuario = $id_aluno;
+                $cadastro->id_sala = $id_sala;
+        
+                $cadastro->save();
+
+                return redirect('agenda')->with('msg-success', 'Prova agendada com sucesso!');
+            }else{
+                return redirect('agenda')->with('msg-error', 'Máquinas insuficientes para esta data!');
+            }
         }else{
-            return redirect('agenda')->with('msg-error', 'Máquinas insuficientes para esta data!');
+            return redirect('agenda')->with('msg-error', 'Você já esta cadastrado nesta sala!');
         }
     }
     
     public function show_my_list($id_aluno){
         
-        $cadastros = DB::table('cadastros')
-                    ->join('salas', 'salas.id', '=', 'cadastros.id_sala')
-                    ->select('salas.id', 'salas.bloco', 'salas.hora', 'salas.data', 'cadastros.id AS id_cadastro')->get();
+        $cadastros = Cadastro::minhaLista($id_aluno)->get();
         return view('agenda.myList', ['cadastros' => $cadastros,]);
+
     }
 }
