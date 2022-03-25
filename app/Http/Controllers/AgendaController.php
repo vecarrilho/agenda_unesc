@@ -25,7 +25,7 @@ class AgendaController extends Controller
      */
     public function create()
     {
-        return view('agenda.create');
+        
     }
 
     /**
@@ -34,19 +34,28 @@ class AgendaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+     //função p/ inserir dados na tabela cadastros
     public function store(Request $request)
     {
+        //traz todos dados do form
         $data = $request->all();
 
-        $cadastros = Cadastro::VerificaAgenda($data['id_usuario'], $data['id_sala'])->get();
+        //verifica se o aluno ja esta cadastrado nesta sala
+        $cadastros = Cadastro::VerificaAgenda($data['id_usuario'], $data['id_sala'])->first();
         
-        if(empty($cadastros[0])){
+        if(empty($cadastros->id)){
+            //acha os dados da sala
             $salas = Sala::find($data['id_sala']);
 
+            
             $maquinas_reservadas = Cadastro::CountMaquinas($salas->id);
 
+            //verifica se o numero de vagas disponiveis é diferente do total de vagas ocupadas
             if($salas->qtd_maquinas != $maquinas_reservadas){
+                //adiciona dos dados na tabela cadastro
                 Cadastro::create($data);
+
                 return redirect('agenda')->with('msg-success', 'Prova agendada com sucesso!');
             }else{
                 return redirect('agenda')->with('msg-error', 'Máquinas insuficientes para esta data!');
@@ -64,11 +73,12 @@ class AgendaController extends Controller
      */
     public function show($id)
     {
-        // $dataAtual = date('Y-m-d');
+        //traz as salas disponiveis conforme clausulas de storeExibicao() do model
         $salas = Sala::exibicao()->get();
 
         $cadastros = '';
 
+        //popula o array $cadastros['id_sala'] para verificar quantos computadores estão ocupados em cada sala
         foreach($salas as $sala){
             $cadastros[$sala->id] = Cadastro::CountMaquinas($sala->id);
         }
@@ -107,7 +117,9 @@ class AgendaController extends Controller
      */
     public function destroy($id)
     {
+        //deleta o cadastro do usuario naquela sala
         Cadastro::deleteCadastro($id)->delete();
+
         return redirect('agenda')->with('msg-success', 'Prova removida com sucesso!');
     }
 
@@ -115,27 +127,22 @@ class AgendaController extends Controller
         $data = request('data');
         $hora = request('hora');
 
+        //faz as requisiçoes conforme as variaveis estao vazias ou não
         if ($data) {
             if($hora){
-                $salas = Sala::where([
-                    ['data', $data],
-                    ['hora', date('H:i:s', strtotime($hora))]
-                ])->get();
+                $salas = Sala::data($data)->hora($hora)->get();
             }else{
-                $salas = Sala::where([
-                    ['data', ($data)]
-                ])->get();
+                $salas = Sala::data($data)->get();
             }
         }elseif($hora){
-            $salas = Sala::where([
-                ['hora', date('H:i:s', strtotime($hora))]
-            ])->get();
+            $salas = Sala::hora($hora)->get();
         }else{
             $salas = Sala::all();
         }
-
+        
         $cadastros = '';
 
+        //popula o array $cadastros['id_sala'] para verificar quantos computadores estão ocupados em cada sala
         foreach($salas as $sala){
             $cadastros[$sala->id] = Cadastro::countMaquinas($sala->id);
         }
@@ -145,7 +152,9 @@ class AgendaController extends Controller
     
     public function show_my_list($id_aluno){
         
+        //retorna todos as salas que o usuario esta cadastrado
         $cadastros = Cadastro::minhaLista($id_aluno)->get();
+        
         return view('agenda.myList', ['cadastros' => $cadastros,]);
 
     }
