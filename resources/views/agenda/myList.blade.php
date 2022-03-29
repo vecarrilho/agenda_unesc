@@ -70,7 +70,7 @@
                             <td><button type="submit" class="btn btn-danger"><span>Sair</span></button></td>
                         </form>
                         <td></td>
-                    </tr>
+                    </tr> 
                 @endforeach
             </tbody>
         </table>
