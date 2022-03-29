@@ -13,6 +13,8 @@ class AgendaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
+    //redireciona para pagina inicial
     public function index()
     {
         return view('welcome');
@@ -48,7 +50,7 @@ class AgendaController extends Controller
             //acha os dados da sala
             $salas = Sala::find($data['id_sala']);
 
-            
+            //verifica numero de máquinas já ocupadas
             $maquinas_reservadas = Cadastro::CountMaquinas($salas->id);
 
             //verifica se o numero de vagas disponiveis é diferente do total de vagas ocupadas
@@ -71,9 +73,11 @@ class AgendaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+     //função para mostrar as salas
     public function show($id)
     {
-        //traz as salas disponiveis conforme clausulas de storeExibicao() do model
+        //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
         $salas = Sala::exibicao()->get();
 
         $cadastros = '';
@@ -124,6 +128,7 @@ class AgendaController extends Controller
     }
 
     public function search(){
+        //capturar valores dos filtros
         $data = request('data');
         $hora = request('hora');
 
@@ -137,7 +142,7 @@ class AgendaController extends Controller
         }elseif($hora){
             $salas = Sala::hora($hora)->get();
         }else{
-            $salas = Sala::all();
+            $salas = Sala::exibicao()->get();
         }
         
         $cadastros = '';
@@ -154,7 +159,7 @@ class AgendaController extends Controller
         
         //retorna todos as salas que o usuario esta cadastrado
         $cadastros = Cadastro::minhaLista($id_aluno)->get();
-        
+
         return view('agenda.myList', ['cadastros' => $cadastros,]);
 
     }
