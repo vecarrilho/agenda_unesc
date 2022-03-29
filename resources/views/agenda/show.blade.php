@@ -55,6 +55,7 @@
                     <th>#</th>
                     <th>Bloco</th>
                     <th>Data - Hora</th>
+                    <th>Total de maquinas</th>
                     <th>Máquinas Disponíveis</th>
                     <th>Ação</th>
                 </tr>
@@ -65,7 +66,8 @@
                         <td>{{ $sala->id }}</td>
                         <td>{{ $sala->bloco }}</td>
                         <td>{{ date('d/m/Y', strtotime($sala->data)) . ' - ' . date('H:i', strtotime($sala->hora)) }}</td>
-                        <td>{{ $sala->qtd_maquinas - $cadastros[$sala->id] }}</td>
+                        <td>{{ $sala->qtd_maquinas }}</td>
+                        <td>{{ $sala->qtd_maquinas - $cadastros[$sala->id] }} </td>
                         <td>
                             <form action="{{route('agenda.store')}}" method="POST">
                                 @csrf
