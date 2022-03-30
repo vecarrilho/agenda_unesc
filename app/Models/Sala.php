@@ -18,6 +18,6 @@ class Sala extends Model
     public function scopeHora($query, $hora){
         return $query->where('hora', date('H:i:s', strtotime($hora)));
     }
-
+ 
     use HasFactory;
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Sala;
 use App\Models\Cadastro;
+use Illuminate\Support\Facades\Auth;
 
 class AgendaController extends Controller
 {
@@ -13,7 +14,7 @@ class AgendaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    
+
     //redireciona para pagina inicial
     public function index()
     {
@@ -37,16 +38,18 @@ class AgendaController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     //função p/ inserir dados na tabela cadastros
+    //função p/ inserir dados na tabela cadastros
     public function store(Request $request)
     {
         //traz todos dados do form
         $data = $request->all();
+        $data['id_usuario'] = Auth::user()->id;
 
         //verifica se o aluno ja esta cadastrado nesta sala
         $cadastros = Cadastro::VerificaAgenda($data['id_usuario'], $data['id_sala'])->first();
         
-        if(empty($cadastros->id)){
+        //verifica se o retorno é vazio
+        if(empty($cadastros)){
             //acha os dados da sala
             $salas = Sala::find($data['id_sala']);
 
@@ -55,7 +58,7 @@ class AgendaController extends Controller
 
             //verifica se o numero de vagas disponiveis é diferente do total de vagas ocupadas
             if($salas->qtd_maquinas != $maquinas_reservadas){
-                //adiciona dos dados na tabela cadastro
+                //adiciona os dados na tabela cadastro
                 Cadastro::create($data);
 
                 return redirect('agenda')->with('msg-success', 'Prova agendada com sucesso!');
@@ -128,7 +131,7 @@ class AgendaController extends Controller
     }
 
     public function search(){
-        //capturar valores dos filtros
+        //captura valores dos filtros
         $data = request('data');
         $hora = request('hora');
 

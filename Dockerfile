@@ -1,33 +1,39 @@
-FROM ubuntu:trusty
- 
-# Install base packages
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get -yq install \
-        curl \
-        apache2 \
-        libapache2-mod-php8.1.4 \
-        php8.1.4-mysql \
-        php8.1.4-mcrypt \
-        php8.1.4-gd \
-        php8.1.4-curl \
-        php-pear \
-        php-apc && \
-    rm -rf /var/lib/apt/lists/* && \
-    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN /usr/sbin/php5enmod mcrypt
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf && \
-    sed -i "s/variables_order.*/variables_order = \"EGPCS\"/g" /etc/php8.1.4/apache2/php.ini
- 
-ENV ALLOW_OVERRIDE **False**
- 
-# Add image configuration and scripts
-ADD run.sh /run.sh
-RUN chmod 755 /*.sh
- 
-# Configure /app folder with sample app
-RUN mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
-ADD src/ /app
- 
-EXPOSE 80
-WORKDIR /app
-CMD ["/run.sh"]
+FROM php:8.1.1-fpm
+
+# Arguments
+ARG user=fabrizio
+ARG uid=1000
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip
+
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install PHP extensions
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd sockets
+
+# Get latest Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Create system user to run Composer and Artisan Commands
+RUN useradd -G www-data,root -u $uid -d /home/$user $user
+RUN mkdir -p /home/$user/.composer && \
+    chown -R $user:$user /home/$user
+
+# Install redis
+RUN pecl install -o -f redis \
+    &&  rm -rf /tmp/pear \
+    &&  docker-php-ext-enable redis
+
+# Set working directory
+WORKDIR /var/www
+
+USER $user
