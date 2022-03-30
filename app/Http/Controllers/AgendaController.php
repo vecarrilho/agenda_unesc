@@ -46,7 +46,7 @@ class AgendaController extends Controller
         $data['id_usuario'] = Auth::user()->id;
 
         //verifica se o aluno ja esta cadastrado nesta sala
-        $cadastros = Cadastro::VerificaAgenda($data['id_usuario'], $data['id_sala'])->first();
+        $cadastros = Cadastro::verificaAgenda($data['id_usuario'], $data['id_sala'])->first();
         
         //verifica se o retorno é vazio
         if(empty($cadastros)){
@@ -54,7 +54,7 @@ class AgendaController extends Controller
             $salas = Sala::find($data['id_sala']);
 
             //verifica numero de máquinas já ocupadas
-            $maquinas_reservadas = Cadastro::CountMaquinas($salas->id);
+            $maquinas_reservadas = Cadastro::countMaquinas($salas->id);
 
             //verifica se o numero de vagas disponiveis é diferente do total de vagas ocupadas
             if($salas->qtd_maquinas != $maquinas_reservadas){
@@ -87,7 +87,7 @@ class AgendaController extends Controller
 
         //popula o array $cadastros['id_sala'] para verificar quantos computadores estão ocupados em cada sala
         foreach($salas as $sala){
-            $cadastros[$sala->id] = Cadastro::CountMaquinas($sala->id);
+            $cadastros[$sala->id] = Cadastro::countMaquinas($sala->id);
         }
         
         return view('agenda.show', ['salas' => $salas, 'cadastros' => $cadastros]);
@@ -158,12 +158,10 @@ class AgendaController extends Controller
         return view('agenda.show',['salas' => $salas, 'cadastros' => $cadastros]);
     }
     
-    public function show_my_list($id_aluno){
-        
+    public function showMyList($id_aluno){
         //retorna todos as salas que o usuario esta cadastrado
         $cadastros = Cadastro::minhaLista($id_aluno)->get();
 
         return view('agenda.myList', ['cadastros' => $cadastros,]);
-
     }
 }
