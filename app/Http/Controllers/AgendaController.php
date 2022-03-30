@@ -159,11 +159,9 @@ class AgendaController extends Controller
     }
     
     public function showMyList($id_aluno){
-        
         //retorna todos as salas que o usuario esta cadastrado
         $cadastros = Cadastro::minhaLista($id_aluno)->get();
 
         return view('agenda.myList', ['cadastros' => $cadastros,]);
-
     }
 }
