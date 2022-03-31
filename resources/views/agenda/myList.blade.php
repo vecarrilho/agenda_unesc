@@ -54,7 +54,9 @@
                 <tr>
                     <th>#</th>
                     <th>Bloco</th>
-                    <th>Data - Hora</th>
+                    <th>Sala</th>
+                    <th>Data</th>
+                    <th>Hora</th>
                     <th>Ação</th>
                 </tr>
             </thead>
@@ -63,7 +65,9 @@
                     <tr>
                         <td>{{ $cadastro->id }}</td>
                         <td>{{ $cadastro->bloco }}</td>
-                        <td>{{ date('d/m/Y', strtotime($cadastro->data)) . ' - ' . date('H:i', strtotime($cadastro->hora)) }}</td>
+                        <td>{{ $cadastro->nsala }}</td>
+                        <td>{{ date('d/m/Y', strtotime($cadastro->data)) }}</td>
+                        <td>{{ date('H:i', strtotime($cadastro->hora)) }}</td>
                         <form action="{{ route('agenda.destroy', ['agenda' => $cadastro->id_cadastro]) }}" method="POST">
                             @csrf
                             @method('DELETE')

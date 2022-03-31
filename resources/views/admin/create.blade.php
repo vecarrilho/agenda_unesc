@@ -36,55 +36,40 @@
     </header>
     <div class="container">
         <a href="/" class="btn btn-secondary btn-voltar" >Voltar</a>
-        <form action="/search" method="GET"> 
+
+        @if ($errors->any())
+            <ul class="errors">
+                @foreach ($errors as $error)
+                    <li class="error">{{ $error }}</li>
+                @endforeach
+            </ul>
+
+        @endif
+
+        <form action="{{ route('admin.store') }}" method="GET"> 
             <div class="form-group">
-                <label>Data</label>
-                <input class="form-control" type="date" name="data" min="{{date('Y-m-d')}}">
+                <label>Bloco</label>
+                <input class="form-control" type="text" name="bloco" placeholder="Bloco">
+            </div>
+            <div class="form-group">
+                <label>Sala</label>
+                <input class="form-control" type="text" name="nsala" placeholder="Sala">
+            </div>
+            <div class="form-group">
+                <label>Quantidade de Maquinas</label>
+                <input class="form-control" type="number" name="qtd_maquinas" placeholder="Quantidade de maquinas">
             </div>
             <div class="form-group">
                 <label>Hora</label>
                 <input class="form-control" type="time" name="hora">
             </div>
             <div class="form-group">
-                <input class="form-control" type="submit" value="Pesquisar">
+                <label>Data</label>
+                <input class="form-control" type="date" name="data" min="{{date('Y-m-d')}}">
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="submit" value="Salvar">
             </div>
         </form>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Bloco</th>
-                    <th>Sala</th>
-                    <th>Data</th>
-                    <th>Hora</th>
-                    <th>Total de maquinas</th>
-                    <th>Máquinas Disponíveis</th>
-                    <th>Ação</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($salas as $sala)
-                    <tr>
-                        <td>{{ $sala->id }}</td>
-                        <td>{{ $sala->bloco }}</td>
-                        <td>{{ $sala->nsala }}</td>
-                        <td>{{ date('d/m/Y', strtotime($sala->data)) }}</td>
-                        <td>{{ date('H:i', strtotime($sala->hora)) }}</td>
-                        <td>{{ $sala->qtd_maquinas }}</td>
-                        <td>{{ $sala->qtd_maquinas - $cadastros[$sala->id] }} </td>
-                        <td>
-                            <form action="{{route('agenda.store')}}" method="POST">
-                                @csrf
-                                <input type="hidden" name="id_sala" value="{{$sala->id}}">
-                                <button class="btn btn-primary" type="submit">Entrar</button>
-                            </form> 
-                            {{-- <a href="{{  }}" class="btn btn-primary">Entrar</a> --}}
-                        </td>
-                        {{-- <td><a href="/insert_cadastro/{{$sala->id}}/{{Auth::user()->id}}" class="btn-primary btn">Entrar</a></td> --}}
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
 </body>
 </html>

@@ -36,23 +36,37 @@
             @endauth
         </nav>
     </header>
-    <div class="container-fluid">
-        <div class="row">
-            @if(session('msg-success'))
-                <p class="msg-success">{{session('msg-success')}}</p>
-            @elseif(session('msg-error'))
-                <p class="msg-error">{{session('msg-error')}}</p>
-            @endif
-            @yield('content')
+
+    @can('user')
+
+        <div class="container-fluid">
+            <div class="row">
+                @if(session('msg-success'))
+                    <p class="msg-success">{{session('msg-success')}}</p>
+                @elseif(session('msg-error'))
+                    <p class="msg-error">{{session('msg-error')}}</p>
+                @endif
+                @yield('content')
+            </div>
         </div>
-    </div>
-    <div class="container">
+        <div class="container">
+            @auth
+                <ul class="lista-botoes">
+                    <li><a href="{{ route('agenda.show', true) }}" class="btn btn-primary">Agendamentos Disponíveis</a></li>
+                    <li><a href="{{ route('agenda.myList', Auth::user()->id) }}" class="btn btn-primary">Meus Agendamentos</a></li>
+                </ul>
+            @endauth
+        
+    @elsecan('admin')
+
         @auth
             <ul class="lista-botoes">
                 <li><a href="{{ route('agenda.show', true) }}" class="btn btn-primary">Agendamentos Disponíveis</a></li>
-                <li><a href="{{ route('agenda.myList', Auth::user()->id) }}" class="btn btn-primary">Meus Agendamentos</a></li>
+                <li><a href="{{ route('admin.create') }}" class="btn btn-primary">Cadastrar Sala</a></li>
             </ul>
-            @endauth
+        @endauth
+
+    @endcan
         @guest
             <ul>
                 <li><a href="/login" class="btn btn-primary">Login</a></li>

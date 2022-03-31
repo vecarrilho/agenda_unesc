@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreUpdateSalaFormRequest;
+use App\Models\Sala;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Validator;
 
 class AdminController extends Controller
 {
@@ -13,7 +18,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        //
+        return view('welcome');
     }
 
     /**
@@ -23,7 +28,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.create');
     }
 
     /**
@@ -34,7 +39,17 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $sala = new Sala;
+        $sala->bloco = $request->bloco;
+        $sala->nsala = $request->nsala;
+        $sala->qtd_maquinas = $request->qtd_maquinas;
+        $sala->hora = $request->hora;
+        $sala->data = $request->data;
+        $sala->save();
+    
+
+        return redirect()->route('admin.create')->with('msg-success', 'Sala cadastrada com sucesso!');
+
     }
 
     /**
@@ -81,4 +96,5 @@ class AdminController extends Controller
     {
         //
     }
+
 }
