@@ -36,9 +36,7 @@
             @endauth
         </nav>
     </header>
-
     @can('user')
-
         <div class="container-fluid">
             <div class="row">
                 @if(session('msg-success'))
@@ -56,16 +54,13 @@
                     <li><a href="{{ route('agenda.myList', Auth::user()->id) }}" class="btn btn-primary">Meus Agendamentos</a></li>
                 </ul>
             @endauth
-        
     @elsecan('admin')
-
         @auth
             <ul class="lista-botoes">
                 <li><a href="{{ route('agenda.show', true) }}" class="btn btn-primary">Agendamentos Disponíveis</a></li>
                 <li><a href="{{ route('admin.create') }}" class="btn btn-primary">Cadastrar Sala</a></li>
             </ul>
         @endauth
-
     @endcan
         @guest
             <ul>
