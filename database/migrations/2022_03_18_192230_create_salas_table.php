@@ -21,20 +21,6 @@ class CreateSalasTable extends Migration
             $table->date('data');
         });
 
-        DB::table('salas')->insert(
-            array(
-                'bloco' => 'XXIA',
-                'hora' => '19:00:00',
-                'data' => '2022-04-30'
-            )
-        );
-        DB::table('salas')->insert(
-            array(
-                'bloco' => 'XXIB',
-                'hora' => '12:00:00',
-                'data' => '2022-04-20'
-            )
-        );
     }
 
     /**
