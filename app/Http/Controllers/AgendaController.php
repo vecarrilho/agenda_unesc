@@ -87,6 +87,11 @@ class AgendaController extends Controller
         //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
         $salas = Sala::exibicao()->get();
 
+        for ($i=0; $i < count($salas); $i++) { 
+            $salas[$i]->date_formated = $salas[$i]->data;
+            $salas[$i]->hour_formated = $salas[$i]->hora;
+        }
+
         $cadastros = '';
 
         //popula o array $cadastros['id_sala'] para verificar quantos computadores estão ocupados em cada sala

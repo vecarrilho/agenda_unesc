@@ -57,7 +57,7 @@
                     <th>Sala</th>
                     <th>Data</th>
                     <th>Hora</th>
-                    <th>Total de computadores</th>
+                    <th>Vagas Disponíveis</th>
                     {{-- <th>Máquinas Disponíveis</th> --}}
                     <th>Ação</th>
                 </tr>
@@ -68,9 +68,9 @@
                         <td>{{ $sala->id }}</td>
                         <td>{{ $sala->bloco }}</td>
                         <td>{{ $sala->nsala }}</td>
-                        <td>{{ $sala->data }}</td>
-                        <td>{{ $sala->hora }}</td>
-                        <td>{{ $cadastros[$sala->id] . '/' . $sala->qtd_maquinas }} </td>
+                        <td>{{ $sala->date_formated }}</td>
+                        <td>{{ $sala->hour_formated }}</td>
+                        <td>{{ $cadastros[$sala->id] . ' de ' . $sala->qtd_maquinas }} </td>
                         <td>
                             <form action="{{route('agenda.store')}}" method="POST">
                                 @csrf
