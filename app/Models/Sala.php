@@ -23,6 +23,15 @@ class Sala extends Model
         return $query->where('bloco');
     }
 
+    public function setDateFormatedAttribute($value)
+    {
+        $this->attributes['date_formated'] = date('d/m/Y', strtotime($value));
+    }
+
+    public function setHourFormatedAttribute($value)
+    {
+        $this->attributes['hour_formated'] = date('H:i', strtotime($value));
+    }
  
     use HasFactory;
 }
