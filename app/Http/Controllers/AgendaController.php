@@ -18,7 +18,11 @@ class AgendaController extends Controller
     //redireciona para pagina inicial
     public function index()
     {
-        return view('welcome');
+        if (Auth::user() == null) {
+            return view('auth.login');
+        }else{
+            return view('welcome');
+        }
     }
 
     /**
