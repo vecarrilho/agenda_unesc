@@ -68,8 +68,8 @@
                         <td>{{ $sala->id }}</td>
                         <td>{{ $sala->bloco }}</td>
                         <td>{{ $sala->nsala }}</td>
-                        <td>{{ date('d/m/Y', strtotime($sala->data)) }}</td>
-                        <td>{{ date('H:i', strtotime($sala->hora)) }}</td>
+                        <td>{{ $sala->data }}</td>
+                        <td>{{ $sala->hora }}</td>
                         <td>{{ $sala->qtd_maquinas }}</td>
                         <td>{{ $sala->qtd_maquinas - $cadastros[$sala->id] }} </td>
                         <td>

@@ -87,6 +87,8 @@ class AgendaController extends Controller
 
         //popula o array $cadastros['id_sala'] para verificar quantos computadores estão ocupados em cada sala
         foreach($salas as $sala){
+            $sala->data = date('d/m/Y', strtotime($sala->data));
+            $sala->hora = date('H:i', strtotime($sala->hora));
             $cadastros[$sala->id] = Cadastro::countMaquinas($sala->id);
         }
         
@@ -152,6 +154,8 @@ class AgendaController extends Controller
 
         //popula o array $cadastros['id_sala'] para verificar quantos computadores estão ocupados em cada sala
         foreach($salas as $sala){
+            $sala->data = date('d/m/Y', strtotime($sala->data));
+            $sala->hora = date('H:i', strtotime($sala->hora));
             $cadastros[$sala->id] = Cadastro::countMaquinas($sala->id);
         }
         
