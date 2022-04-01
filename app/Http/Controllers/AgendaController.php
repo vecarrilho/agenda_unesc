@@ -141,7 +141,8 @@ class AgendaController extends Controller
         return redirect('showMyList/'.Auth::user()->id)->with('msg-success', 'Prova removida com sucesso!');
     }
 
-    public function search(){
+    public function search()
+    {
         //captura valores dos filtros
         $data = request('data');
         $hora = request('hora');
@@ -171,7 +172,8 @@ class AgendaController extends Controller
         return view('agenda.show',['salas' => $salas, 'cadastros' => $cadastros]);
     }
     
-    public function showMyList($id_aluno){
+    public function showMyList($id_aluno)
+    {
         //retorna todos as salas que o usuario esta cadastrado
         $cadastros = Cadastro::minhaLista($id_aluno)->get();
 
