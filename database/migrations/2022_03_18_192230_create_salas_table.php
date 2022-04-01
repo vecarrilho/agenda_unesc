@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateSalasTable extends Migration
@@ -19,6 +20,21 @@ class CreateSalasTable extends Migration
             $table->time('hora');
             $table->date('data');
         });
+
+        DB::table('salas')->insert(
+            array(
+                'bloco' => 'XXIA',
+                'hora' => '19:00:00',
+                'data' => '2022-04-30'
+            )
+        );
+        DB::table('salas')->insert(
+            array(
+                'bloco' => 'XXIB',
+                'hora' => '12:00:00',
+                'data' => '2022-04-20'
+            )
+        );
     }
 
     /**
