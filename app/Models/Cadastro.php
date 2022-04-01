@@ -30,5 +30,15 @@ class Cadastro extends Model
                      ->select('salas.id', 'salas.bloco', 'salas.hora', 'salas.data', 'cadastros.id AS id_cadastro', 'salas.nsala');
     }
 
+    public function setDateFormatedAttribute($value)
+    {
+        $this->attributes['date_formated'] = date('d/m/Y', strtotime($value));
+    }
+
+    public function setHourFormatedAttribute($value)
+    {
+        $this->attributes['hour_formated'] = date('H:i', strtotime($value));
+    }
+
     use HasFactory;
 }
