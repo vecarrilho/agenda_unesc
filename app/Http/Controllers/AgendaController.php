@@ -170,6 +170,10 @@ class AgendaController extends Controller
         //retorna todos as salas que o usuario esta cadastrado
         $cadastros = Cadastro::minhaLista($id_aluno)->get();
 
+        for ($i=0; $i < count($cadastros); $i++) { 
+            $cadastros[$i]->date_formated = $cadastros[$i]->data;
+            $cadastros[$i]->hour_formated = $cadastros[$i]->hora;
+        }
         return view('agenda.myList', ['cadastros' => $cadastros,]);
     }
 }
