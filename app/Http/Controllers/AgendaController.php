@@ -138,7 +138,7 @@ class AgendaController extends Controller
         //deleta o cadastro do usuario naquela sala
         Cadastro::deleteCadastro($id)->delete();
 
-        return redirect('agenda')->with('msg-success', 'Prova removida com sucesso!');
+        return redirect('showMyList/'.Auth::user()->id)->with('msg-success', 'Prova removida com sucesso!');
     }
 
     public function search(){
