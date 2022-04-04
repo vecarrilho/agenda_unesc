@@ -61,6 +61,7 @@
                     <th>Polo</th>
                     <th>Data</th>
                     <th>Hora</th>
+
                     {{-- <th>Máquinas Disponíveis</th> --}}
 
                     <th>Ação</th>
@@ -70,14 +71,14 @@
                 @foreach($salas as $sala)
                     <tr>
                         <td>{{ $sala->id }}</td>
-                        <td>{{ $sala->bloco }}</td>
+                        <td>{{ $sala->polo }}</td>
                         <td>{{ $sala->date_formated }}</td>
-                        <td><button type="button" class="btn btn-light position-relative">{{ $sala->hour_formated }}<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning">
+                        <td><button type="button" class="btn btn-light position-relative">{{ $sala->hour_formated }}
                             @if ($sala->qtd_maquinas - $cadastros[$sala->id] > 0)
-                                +{{ $sala->qtd_maquinas - $cadastros[$sala->id] }} Vagas
-                            @else
-                                Esgotado
-                            @endif
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning"> +{{ $sala->qtd_maquinas - $cadastros[$sala->id] }} Vagas
+                                @else
+                                   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> esgotado
+                                @endif
                         </span>
                         </button></td>
                         <td>
