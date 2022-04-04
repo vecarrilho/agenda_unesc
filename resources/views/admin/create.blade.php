@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <title>Lista Agendamento</title>
+    <title>Cadastrar Salas</title>
 </head>
 <body>
     <header>
@@ -34,6 +34,13 @@
             </div>
         </nav>
     </header>
+    <div class="container-fluid">
+        <div class="row">
+            @if(session('msg-success'))
+                <p class="msg-success">{{session('msg-success')}}</p>
+            @endif
+            @yield('content')
+        </div>
     <div class="container">
         <a href="/" class="btn btn-secondary btn-voltar" >Voltar</a>
 
@@ -66,6 +73,10 @@
             <div class="form-group">
                 <label>Data</label>
                 <input class="form-control" type="date" name="data" min="{{date('Y-m-d')}}">
+            </div>
+            <div class="form-group">
+                <label>Polo</label>
+                <input class="form-control" type="text" name="polo" placeholder="Polo">
             </div>
             <div class="form-group">
                 <input class="form-control" type="submit" value="Salvar">

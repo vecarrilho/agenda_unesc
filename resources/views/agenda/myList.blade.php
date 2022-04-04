@@ -53,6 +53,7 @@
             <thead>
                 <tr>
                     <th>#</th>
+                    <th>Polo</th>
                     <th>Bloco</th>
                     <th>Sala</th>
                     <th>Data</th>
@@ -64,6 +65,7 @@
                 @foreach($cadastros as $cadastro)
                     <tr>
                         <td>{{ $cadastro->id }}</td>
+                        <td>{{ $cadastro->polo }}</td>
                         <td>{{ $cadastro->bloco }}</td>
                         <td>{{ $cadastro->nsala }}</td>
                         <td>{{ $cadastro->date_formated }}</td>
