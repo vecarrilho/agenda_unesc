@@ -61,6 +61,8 @@
                     <th>Polo</th>
                     <th>Data</th>
                     <th>Hora</th>
+                    {{-- <th>Máquinas Disponíveis</th> --}}
+
                     <th>Ação</th>
                 </tr>
             </thead>
@@ -68,16 +70,16 @@
                 @foreach($salas as $sala)
                     <tr>
                         <td>{{ $sala->id }}</td>
-                        <td>{{ $sala->polo }}</td>
-                        <td>{{ date('d/m/Y', strtotime($sala->data)) }}</td>
-                        <td><button type="button" class="btn btn-light position-relative">{{ date('H:i', strtotime($sala->hora))}}<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning">
-                                @if ($sala->qtd_maquinas - $cadastros[$sala->id] > 0)
-                                    +{{ $sala->qtd_maquinas - $cadastros[$sala->id] }} Vagas
-                                @else
-                                    Esgotado
-                                @endif
-                            </span>
-                            </button></td>
+                        <td>{{ $sala->bloco }}</td>
+                        <td>{{ $sala->date_formated }}</td>
+                        <td><button type="button" class="btn btn-light position-relative">{{ $sala->hour_formated }}<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning">
+                            @if ($sala->qtd_maquinas - $cadastros[$sala->id] > 0)
+                                +{{ $sala->qtd_maquinas - $cadastros[$sala->id] }} Vagas
+                            @else
+                                Esgotado
+                            @endif
+                        </span>
+                        </button></td>
                         <td>
                             <form action="{{route('agenda.store')}}" method="POST">
                                 @csrf

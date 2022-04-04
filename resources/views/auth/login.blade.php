@@ -44,5 +44,8 @@
                 </x-jet-button>
             </div>
         </form>
+        <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('register') }}">
+            {{ __('Ainda não tem cadastro?') }}
+        </a>
     </x-jet-authentication-card>
 </x-guest-layout>

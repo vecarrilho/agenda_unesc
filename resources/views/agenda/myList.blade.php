@@ -48,7 +48,7 @@
     </div>
     <div class="container">
         <a href="/" class="btn btn-secondary btn-voltar" >Voltar</a>
-        <h2>Sua lista de provas</h2>
+        <h2>Meus horários agendados</h2>
         <table class="table">
             <thead>
                 <tr>
@@ -68,8 +68,8 @@
                         <td>{{ $cadastro->polo }}</td>
                         <td>{{ $cadastro->bloco }}</td>
                         <td>{{ $cadastro->nsala }}</td>
-                        <td>{{ date('d/m/Y', strtotime($cadastro->data)) }}</td>
-                        <td>{{ date('H:i', strtotime($cadastro->hora)) }}</td>
+                        <td>{{ $cadastro->date_formated }}</td>
+                        <td>{{ $cadastro->hour_formated }}</td>
                         <form action="{{ route('agenda.destroy', ['agenda' => $cadastro->id_cadastro]) }}" method="POST">
                             @csrf
                             @method('DELETE')

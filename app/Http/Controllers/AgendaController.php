@@ -18,7 +18,11 @@ class AgendaController extends Controller
     //redireciona para pagina inicial
     public function index()
     {
-        return view('welcome');
+        if (Auth::user() == null) {
+            return view('auth.login');
+        }else{
+            return view('welcome');
+        }
     }
 
     /**
@@ -83,6 +87,11 @@ class AgendaController extends Controller
         //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
         $salas = Sala::exibicao()->get();
 
+        for ($i=0; $i < count($salas); $i++) { 
+            $salas[$i]->date_formated = $salas[$i]->data;
+            $salas[$i]->hour_formated = $salas[$i]->hora;
+        }
+
         $cadastros = '';
 
         //popula o array $cadastros['id_sala'] para verificar quantos computadores estão ocupados em cada sala
@@ -132,7 +141,8 @@ class AgendaController extends Controller
         return redirect('agenda')->with('msg-success', 'Agendamento removido com sucesso!');
     }
 
-    public function search(){
+    public function search()
+    {
         //captura valores dos filtros
         $data = request('data');
         $hora = request('hora');
@@ -173,10 +183,15 @@ class AgendaController extends Controller
         return view('agenda.show',['salas' => $salas, 'cadastros' => $cadastros]);
     }
     
-    public function showMyList($id_aluno){
+    public function showMyList($id_aluno)
+    {
         //retorna todos as salas que o usuario esta cadastrado
         $cadastros = Cadastro::minhaLista($id_aluno)->get();
 
+        for ($i=0; $i < count($cadastros); $i++) { 
+            $cadastros[$i]->date_formated = $cadastros[$i]->data;
+            $cadastros[$i]->hour_formated = $cadastros[$i]->hora;
+        }
         return view('agenda.myList', ['cadastros' => $cadastros,]);
     }
 }
