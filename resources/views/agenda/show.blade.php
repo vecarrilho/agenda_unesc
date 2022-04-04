@@ -77,7 +77,7 @@
                             @if ($sala->qtd_maquinas - $cadastros[$sala->id] > 0)
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning"> +{{ $sala->qtd_maquinas - $cadastros[$sala->id] }} Vagas
                                 @else
-                                   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> esgotado
+                                   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> Esgotado
                                 @endif
                         </span>
                         </button></td>
