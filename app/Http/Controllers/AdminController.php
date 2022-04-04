@@ -39,13 +39,16 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        $sala = new Sala;
-        $sala->bloco = $request->bloco;
-        $sala->nsala = $request->nsala;
-        $sala->qtd_maquinas = $request->qtd_maquinas;
-        $sala->hora = $request->hora;
-        $sala->data = $request->data;
-        $sala->save();
+        // $sala = new Sala;
+        // $sala->bloco = $request->bloco;
+        // $sala->nsala = $request->nsala;
+        // $sala->qtd_maquinas = $request->qtd_maquinas;
+        // $sala->hora = $request->hora;
+        // $sala->data = $request->data;
+        // $sala->save();
+        $data = $request->all();
+
+        Sala::create($data);
     
 
         return redirect()->route('admin.create')->with('msg-success', 'Sala cadastrada com sucesso!');
@@ -96,5 +99,4 @@ class AdminController extends Controller
     {
         //
     }
-
 }
