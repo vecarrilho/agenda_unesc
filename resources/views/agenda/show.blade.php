@@ -46,19 +46,21 @@
                 <input class="form-control" type="time" name="hora">
             </div>
             <div class="form-group">
+                <label>Polo</label>
+                <input class="form-control" type="text" name="polo" placeholder="polo">
+            </div>
+            <div class="form-group">
                 <input class="form-control" type="submit" value="Pesquisar">
             </div>
+            
         </form>
         <table class="table">
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Bloco</th>
-                    <th>Sala</th>
+                    <th>Polo</th>
                     <th>Data</th>
                     <th>Hora</th>
-                    <th>Total de computadores</th>
-                    {{-- <th>Máquinas Disponíveis</th> --}}
                     <th>Ação</th>
                 </tr>
             </thead>
@@ -66,16 +68,21 @@
                 @foreach($salas as $sala)
                     <tr>
                         <td>{{ $sala->id }}</td>
-                        <td>{{ $sala->bloco }}</td>
-                        <td>{{ $sala->nsala }}</td>
-                        <td>{{ $sala->data }}</td>
-                        <td>{{ $sala->hora }}</td>
-                        <td>{{ $cadastros[$sala->id] . '/' . $sala->qtd_maquinas }} </td>
+                        <td>{{ $sala->polo }}</td>
+                        <td>{{ date('d/m/Y', strtotime($sala->data)) }}</td>
+                        <td><button type="button" class="btn btn-light position-relative">{{ date('H:i', strtotime($sala->hora))}}<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning">
+                                @if ($sala->qtd_maquinas - $cadastros[$sala->id] > 0)
+                                    +{{ $sala->qtd_maquinas - $cadastros[$sala->id] }} Vagas
+                                @else
+                                    Esgotado
+                                @endif
+                            </span>
+                            </button></td>
                         <td>
                             <form action="{{route('agenda.store')}}" method="POST">
                                 @csrf
                                 <input type="hidden" name="id_sala" value="{{$sala->id}}">
-                                <button class="btn btn-primary" type="submit">Entrar</button>
+                                <button class="btn btn-primary" type="submit">Agendar este horário</button>
                             </form> 
                             {{-- <a href="{{  }}" class="btn btn-primary">Entrar</a> --}}
                         </td>

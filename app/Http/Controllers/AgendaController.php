@@ -129,21 +129,32 @@ class AgendaController extends Controller
         //deleta o cadastro do usuario naquela sala
         Cadastro::deleteCadastro($id)->delete();
 
-        return redirect('agenda')->with('msg-success', 'Prova removida com sucesso!');
+        return redirect('agenda')->with('msg-success', 'Agendamento removido com sucesso!');
     }
 
     public function search(){
         //captura valores dos filtros
         $data = request('data');
         $hora = request('hora');
+        $polo = request('polo');
 
         //faz as requisiçoes conforme as variaveis estao vazias ou não
         if ($data) {
             if($hora){
-                $salas = Sala::data($data)->hora($hora)->get();
+                if($polo){
+                    $salas = Sala::data($data)->hora($hora)->polo($polo)->get();
+                }else{
+                    $salas = Sala::data($data)->polo($polo)->get();
+                }
+            }elseif($hora){
+                $salas = Sala::hora($hora)->data($data)->get();
             }else{
-                $salas = Sala::data($data)->get();
+                $salas = Sala::hora($hora)->polo($polo)->get();
             }
+        }elseif($polo){
+            $salas = Sala::polo($polo)->get();
+        }elseif($data){
+            $salas = Sala::data($data)->get();
         }elseif($hora){
             $salas = Sala::hora($hora)->get();
         }else{

@@ -53,6 +53,7 @@
             <thead>
                 <tr>
                     <th>#</th>
+                    <th>Polo</th>
                     <th>Bloco</th>
                     <th>Sala</th>
                     <th>Data</th>
@@ -64,6 +65,7 @@
                 @foreach($cadastros as $cadastro)
                     <tr>
                         <td>{{ $cadastro->id }}</td>
+                        <td>{{ $cadastro->polo }}</td>
                         <td>{{ $cadastro->bloco }}</td>
                         <td>{{ $cadastro->nsala }}</td>
                         <td>{{ date('d/m/Y', strtotime($cadastro->data)) }}</td>
@@ -71,7 +73,7 @@
                         <form action="{{ route('agenda.destroy', ['agenda' => $cadastro->id_cadastro]) }}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <td><button type="submit" class="btn btn-danger"><span>Sair</span></button></td>
+                            <td><button type="submit" class="btn btn-danger"><span>Cancelar este horário</span></button></td>
                         </form>
                         <td></td>
                     </tr> 
