@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
@@ -20,6 +21,8 @@ class InsertSalasData extends Migration
                 'hora' => '19:00:00',
                 'data' => '2022-04-30',
                 'qtd_maquinas' => 20,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
                 'nsala' => 1
             )
         );
@@ -29,6 +32,8 @@ class InsertSalasData extends Migration
                 'hora' => '12:00:00',
                 'data' => '2022-04-20',
                 'qtd_maquinas' => 30,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
                 'nsala' => 2
             )
         );
