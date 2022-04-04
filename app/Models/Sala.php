@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Sala extends Model
 {
+    protected $fillable = ['bloco', 'hora', 'data', 'qtd_maquinas', 'nsala', 'polo'];
+
     public function scopeExibicao($query)
     {
         return $query->where('data', '>=', date('Y-m-d'));
