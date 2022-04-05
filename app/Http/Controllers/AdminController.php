@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreUpdateSalaFormRequest;
+use App\Models\Polo;
 use App\Models\Sala;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -26,9 +27,16 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function createSala()
     {
-        return view('admin.create');
+        $polos = Polo::exibicao()->get();
+
+        return view('admin.create.sala', ['polos' => $polos]);
+    }
+
+    public function createPolo()
+    {
+        return view('admin.create.polo');
     }
 
     /**
@@ -37,7 +45,7 @@ class AdminController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function storeSala(Request $request)
     {
         // $sala = new Sala;
         // $sala->bloco = $request->bloco;
@@ -49,9 +57,19 @@ class AdminController extends Controller
         $data = $request->all();
 
         Sala::create($data);
-    
 
-        return redirect()->route('admin.create')->with('msg-success', 'Sala cadastrada com sucesso!');
+        return redirect()->route('admin.createSala')->with('msg-success', 'Sala cadastrada com sucesso!');
+
+    }
+
+    public function storePolo(Request $request)
+    {
+        $data = $request->all();
+        $data['status'] = 'Ativo';
+
+        Polo::create($data);
+
+        return redirect()->route('admin.createPolo')->with('msg-success', 'Polo cadastrado com sucesso!');
 
     }
 

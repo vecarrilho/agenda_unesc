@@ -24,7 +24,7 @@ class InsertSalasData extends Migration
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'nsala' => 1,
-                'polo' => 'POLO CRICIMA'
+                'polo' => 1
             )
         );
         
@@ -37,7 +37,7 @@ class InsertSalasData extends Migration
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'nsala' => 2,
-                'polo' => 'POLO CRICIMA'
+                'polo' => 1
             )
         );
     }
