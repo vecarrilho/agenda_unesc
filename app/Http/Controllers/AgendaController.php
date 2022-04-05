@@ -65,12 +65,50 @@ class AgendaController extends Controller
                 //adiciona os dados na tabela cadastro
                 Cadastro::create($data);
 
-                return redirect('agenda')->with('msg-success', 'Prova agendada com sucesso!');
+                //retorna todos as salas que o usuario esta cadastrado
+                $cadastros = Cadastro::minhaLista(Auth::user()->id)->get();
+
+                for ($i=0; $i < count($cadastros); $i++) { 
+                    $cadastros[$i]->date_formated = $cadastros[$i]->data;
+                    $cadastros[$i]->hour_formated = $cadastros[$i]->hora;
+                }
+
+                return view('agenda.myList', ['cadastros' => $cadastros])->with('msgSuccess', 'Prova agendada com sucesso!');
             }else{
-                return redirect('agenda')->with('msg-error', 'Máquinas insuficientes para esta data!');
+                //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
+                $salas = Sala::exibicao()->get();
+        
+                for ($i=0; $i < count($salas); $i++) { 
+                    $salas[$i]->date_formated = $salas[$i]->data;
+                    $salas[$i]->hour_formated = $salas[$i]->hora;
+                }
+        
+                $cadastros = '';
+        
+                //popula o array $cadastros['id_sala'] para verificar quantos computadores estão ocupados em cada sala
+                foreach($salas as $sala){
+                    $cadastros[$sala->id] = Cadastro::countMaquinas($sala->id);
+                }
+
+                return view('agenda.show', ['salas' => $salas, 'cadastros' => $cadastros])->with('msgError', 'Máquinas insuficientes para esta data!');
             }
         }else{
-            return redirect('agenda')->with('msg-error', 'Você já esta cadastrado nesta sala!');
+            //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
+            $salas = Sala::exibicao()->get();
+    
+            for ($i=0; $i < count($salas); $i++) { 
+                $salas[$i]->date_formated = $salas[$i]->data;
+                $salas[$i]->hour_formated = $salas[$i]->hora;
+            }
+    
+            $cadastros = '';
+    
+            //popula o array $cadastros['id_sala'] para verificar quantos computadores estão ocupados em cada sala
+            foreach($salas as $sala){
+                $cadastros[$sala->id] = Cadastro::countMaquinas($sala->id);
+            }
+
+            return view('agenda.show', ['salas' => $salas, 'cadastros' => $cadastros])->with('msgError', 'Você já esta cadastrado nesta sala!');
         }
     }
 
@@ -96,8 +134,6 @@ class AgendaController extends Controller
 
         //popula o array $cadastros['id_sala'] para verificar quantos computadores estão ocupados em cada sala
         foreach($salas as $sala){
-            $sala->data = date('d/m/Y', strtotime($sala->data));
-            $sala->hora = date('H:i', strtotime($sala->hora));
             $cadastros[$sala->id] = Cadastro::countMaquinas($sala->id);
         }
         
@@ -175,8 +211,6 @@ class AgendaController extends Controller
 
         //popula o array $cadastros['id_sala'] para verificar quantos computadores estão ocupados em cada sala
         foreach($salas as $sala){
-            $sala->data = date('d/m/Y', strtotime($sala->data));
-            $sala->hora = date('H:i', strtotime($sala->hora));
             $cadastros[$sala->id] = Cadastro::countMaquinas($sala->id);
         }
         

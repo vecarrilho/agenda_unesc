@@ -34,6 +34,13 @@
             </div>
         </nav>
     </header>
+    <div class="container-fluid">
+        <div class="row">
+            @if(!empty($msgError))
+                <p class="msg-error">{{$msgError}}</p>
+            @endif
+        </div>
+    </div>
     <div class="container">
         <a href="/" class="btn btn-secondary btn-voltar" >Voltar</a>
         <form action="/search" method="GET"> 
