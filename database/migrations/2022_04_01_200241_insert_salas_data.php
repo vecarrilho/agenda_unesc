@@ -24,9 +24,10 @@ class InsertSalasData extends Migration
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'nsala' => 1,
-                'polo' => 'POLO CRICIÚMA'
+                'polo' => 'POLO CRICIMA'
             )
         );
+        
         DB::table('salas')->insert(
             array(
                 'bloco' => 'XXIB',
@@ -36,7 +37,7 @@ class InsertSalasData extends Migration
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'nsala' => 2,
-                'polo' => 'POLO CRICIÚMA'
+                'polo' => 'POLO CRICIMA'
             )
         );
     }
