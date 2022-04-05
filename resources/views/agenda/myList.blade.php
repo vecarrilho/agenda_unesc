@@ -38,12 +38,9 @@
     </header>
     <div class="container-fluid">
         <div class="row">
-            @if(session('msg-success'))
-                <p class="msg-success">{{session('msg-success')}}</p>
-            @elseif(session('msg-error'))
-                <p class="msg-error">{{session('msg-error')}}</p>
+            @if(!empty($msgSuccess))
+                <p class="msg-success">{{$msgSuccess}}</p>
             @endif
-            @yield('content')
         </div>
     </div>
     <div class="container">

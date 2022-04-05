@@ -23,7 +23,8 @@ class InsertSalasData extends Migration
                 'qtd_maquinas' => 20,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
-                'nsala' => 1
+                'nsala' => 1,
+                'polo' => 'POLO CRICIÚMA'
             )
         );
         DB::table('salas')->insert(
@@ -34,7 +35,8 @@ class InsertSalasData extends Migration
                 'qtd_maquinas' => 30,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
-                'nsala' => 2
+                'nsala' => 2,
+                'polo' => 'POLO CRICIÚMA'
             )
         );
     }
