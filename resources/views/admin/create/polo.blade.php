@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <title>Cadastrar Salas</title>
+    <title>Cadastrar Polo</title>
 </head>
 <body>
     <header>
@@ -50,33 +50,21 @@
                     <li class="error">{{ $error }}</li>
                 @endforeach
             </ul>
-
         @endif
 
-        <form action="{{ route('admin.store') }}" method="GET"> 
+        <form action="{{ route('admin.storePolo') }}" method="POST"> 
+            @csrf
             <div class="form-group">
-                <label>Bloco</label>
-                <input class="form-control" type="text" name="bloco" placeholder="Bloco">
+                <label>Nome</label>
+                <input class="form-control" type="text" name="descricao">
             </div>
             <div class="form-group">
-                <label>Sala</label>
-                <input class="form-control" type="text" name="nsala" placeholder="Sala">
+                <label>Endereço</label>
+                <input class="form-control" type="text" name="endereco">
             </div>
             <div class="form-group">
-                <label>Quantidade de Maquinas</label>
-                <input class="form-control" type="number" name="qtd_maquinas" placeholder="Quantidade de maquinas">
-            </div>
-            <div class="form-group">
-                <label>Hora</label>
-                <input class="form-control" type="time" name="hora">
-            </div>
-            <div class="form-group">
-                <label>Data</label>
-                <input class="form-control" type="date" name="data" min="{{date('Y-m-d')}}">
-            </div>
-            <div class="form-group">
-                <label>Polo</label>
-                <input class="form-control" type="text" name="polo" placeholder="Polo">
+                <label>Localização</label>
+                <textarea class="form-control" name="localizacao"></textarea>
             </div>
             <div class="form-group">
                 <input class="form-control" type="submit" value="Salvar">
