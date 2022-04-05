@@ -6,7 +6,7 @@ use App\Http\Controllers\AdminController;
 
 
 Route::resource('agenda', AgendaController::class);
-Route::resource('admin', AgendaController::class);
+Route::resource('admin', AdminController::class);
 
 Route::get('/', [AgendaController::class, 'index']);
 
@@ -17,11 +17,21 @@ Route::get('/showMyList/{id_aluno}', [AgendaController::class, 'showMyList'])
     ->name('agenda.myList')
     ->middleware('auth');
 
-Route::get('/admin/create', [Admincontroller::class, 'create'])
-->name('admin.create');
+Route::get('/admin/create/polo', [AdminController::class, 'createPolo'])
+    ->middleware('auth')
+    ->name('admin.createPolo');
 
-Route::get('/admin', [Admincontroller::class, 'store'])
-->name('admin.store');
+Route::post('/admin/store/polo', [AdminController::class, 'storePolo'])
+    ->middleware('auth')
+    ->name('admin.storePolo');
+
+Route::get('/admin/create/sala', [AdminController::class, 'createSala'])
+    ->middleware('auth')
+    ->name('admin.createSala');
+
+Route::post('/admin/store/sala', [AdminController::class, 'storeSala'])
+    ->middleware('auth')
+    ->name('admin.storeSala');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('welcome');
