@@ -44,7 +44,10 @@
         </div>
     </div>
     <div class="container">
-        <a href="/" class="btn btn-secondary btn-voltar" >Voltar</a>
+        <ul class="lista-botoes inline-flex">
+            <li><a href="{{ route('agenda.show', true) }}" class="btn btn-primary">Agendamentos Disponíveis</a></li>
+            <li><a href="{{ route('agenda.myList', Auth::user()->id) }}" class="btn btn-primary">Meus Agendamentos</a></li>
+        </ul>
         <form action="/search" method="GET"> 
             <div class="form-group">
                 <label>Data</label>
