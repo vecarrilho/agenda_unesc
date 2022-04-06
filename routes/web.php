@@ -33,6 +33,5 @@ Route::post('/admin/store/sala', [AdminController::class, 'storeSala'])
     ->middleware('auth')
     ->name('admin.storeSala');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('welcome');
-})->name('dashboard');
+//rota ao logar
+Route::middleware(['auth:sanctum', 'verified'])->get('/', [AgendaController::class, 'index']);

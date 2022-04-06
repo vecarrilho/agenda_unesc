@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Sala;
 use App\Models\Cadastro;
 use App\Models\Polo;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class AgendaController extends Controller
@@ -22,7 +23,39 @@ class AgendaController extends Controller
         if (Auth::user() == null) {
             return view('auth.login');
         }else{
-            return view('welcome');
+            $user = User::find(Auth::user()->id);
+            if($user->hasPermissionTo('user')){
+                //retorna todos as salas que o usuario esta cadastrado
+                $cadastros = Cadastro::minhaLista(Auth::user()->id)->get();
+                if(count($cadastros)>0){
+                    for ($i=0; $i < count($cadastros); $i++) { 
+                        $cadastros[$i]->date_formated = $cadastros[$i]->data;
+                        $cadastros[$i]->hour_formated = $cadastros[$i]->hora;
+                    }
+                    return view('agenda.myList', ['cadastros' => $cadastros,]);
+                }else{
+                    //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
+                    $salas = Sala::exibicao()->get();
+            
+                    $polos = Polo::exibicao()->get();
+            
+                    for ($i=0; $i < count($salas); $i++) { 
+                        $salas[$i]->date_formated = $salas[$i]->data;
+                        $salas[$i]->hour_formated = $salas[$i]->hora;
+                    }
+            
+                    $cadastros = '';
+            
+                    //popula o array $cadastros['id_sala'] para verificar quantos computadores estão ocupados em cada sala
+                    foreach($salas as $sala){
+                        $cadastros[$sala->id] = Cadastro::countMaquinas($sala->id);
+                    }
+                    
+                    return view('agenda.show', ['salas' => $salas, 'cadastros' => $cadastros, 'polos' => $polos]);
+                }
+            }else{
+                return view('welcome');
+            }
         }
     }
 
