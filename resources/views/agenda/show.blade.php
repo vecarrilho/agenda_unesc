@@ -54,7 +54,12 @@
             </div>
             <div class="form-group">
                 <label>Polo</label>
-                <input class="form-control" type="text" name="polo" placeholder="polo">
+                <select name="polo" class="form-select">
+                    <option value="">Selecione um polo</option>
+                    @foreach($polos as $polo)
+                        <option value="{{ $polo->id }}">{{ $polo->descricao }}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="form-group">
                 <input class="form-control" type="submit" value="Pesquisar">
@@ -78,14 +83,14 @@
                 @foreach($salas as $sala)
                     <tr>
                         <td>{{ $sala->id }}</td>
-                        <td>{{ $sala->polo }}</td>
+                        <td>{{ $sala->descricao }}</td>
                         <td>{{ $sala->date_formated }}</td>
                         <td><button type="button" class="btn btn-light position-relative">{{ $sala->hour_formated }}
                             @if ($sala->qtd_maquinas - $cadastros[$sala->id] > 0)
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning"> +{{ $sala->qtd_maquinas - $cadastros[$sala->id] }} Vagas
-                                @else
-                                   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> Esgotado
-                                @endif
+                            @else
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> Esgotado
+                            @endif
                         </span>
                         </button></td>
                         <td>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Sala;
 use App\Models\Cadastro;
+use App\Models\Polo;
 use Illuminate\Support\Facades\Auth;
 
 class AgendaController extends Controller
@@ -125,6 +126,8 @@ class AgendaController extends Controller
         //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
         $salas = Sala::exibicao()->get();
 
+        $polos = Polo::exibicao()->get();
+
         for ($i=0; $i < count($salas); $i++) { 
             $salas[$i]->date_formated = $salas[$i]->data;
             $salas[$i]->hour_formated = $salas[$i]->hora;
@@ -137,7 +140,7 @@ class AgendaController extends Controller
             $cadastros[$sala->id] = Cadastro::countMaquinas($sala->id);
         }
         
-        return view('agenda.show', ['salas' => $salas, 'cadastros' => $cadastros]);
+        return view('agenda.show', ['salas' => $salas, 'cadastros' => $cadastros, 'polos' => $polos]);
     }
 
     /**
@@ -179,6 +182,7 @@ class AgendaController extends Controller
 
     public function search()
     {
+        $polos = Polo::exibicao()->get();
         //captura valores dos filtros
         $data = request('data');
         $hora = request('hora');
@@ -186,25 +190,35 @@ class AgendaController extends Controller
 
         //faz as requisiçoes conforme as variaveis estao vazias ou não
         if ($data) {
-            if($hora){
-                if($polo){
-                    $salas = Sala::data($data)->hora($hora)->polo($polo)->get();
-                }else{
-                    $salas = Sala::data($data)->polo($polo)->get();
+            if ($hora) {
+                if ($polo) {
+                    $salas = Sala::joinPolos()->data($data)->hora($hora)->polo($polo)->get();
+                } else {
+                    $salas = Sala::joinPolos()->data($data)->hora($hora)->get();
                 }
-            }elseif($hora){
-                $salas = Sala::hora($hora)->data($data)->get();
-            }else{
-                $salas = Sala::hora($hora)->polo($polo)->get();
+            } else {
+                if($polo){
+                    $salas = Sala::joinPolos()->data($data)->polo($polo)->get();
+                }else{
+                    $salas = Sala::joinPolos()->data($data)->get();
+                }
+            }
+        } elseif ($hora) {
+            if ($polo) {
+                $salas = Sala::joinPolos()->hora($hora)->polo($polo)->get();
+            } else {
+                $salas = Sala::joinPolos()->hora($hora)->get();
             }
         }elseif($polo){
-            $salas = Sala::polo($polo)->get();
-        }elseif($data){
-            $salas = Sala::data($data)->get();
-        }elseif($hora){
-            $salas = Sala::hora($hora)->get();
+            $salas = Sala::joinPolos()->polo($polo)->get();
         }else{
             $salas = Sala::exibicao()->get();
+        }
+
+        //formata data e hora
+        for ($i=0; $i < count($salas); $i++) { 
+            $salas[$i]->date_formated = $salas[$i]->data;
+            $salas[$i]->hour_formated = $salas[$i]->hora;
         }
         
         $cadastros = '';
@@ -214,7 +228,7 @@ class AgendaController extends Controller
             $cadastros[$sala->id] = Cadastro::countMaquinas($sala->id);
         }
         
-        return view('agenda.show',['salas' => $salas, 'cadastros' => $cadastros]);
+        return view('agenda.show',['salas' => $salas, 'cadastros' => $cadastros, 'polos' => $polos]);
     }
     
     public function showMyList($id_aluno)
