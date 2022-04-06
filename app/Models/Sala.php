@@ -9,9 +9,15 @@ class Sala extends Model
 {
     protected $fillable = ['bloco', 'hora', 'data', 'qtd_maquinas', 'nsala', 'polo'];
 
+    public function scopeJoinPolos($query){
+        return $query->join('polos', 'salas.id', '=', 'polos.id')
+                     ->select('salas.id', 'polos.descricao', 'salas.data', 'salas.hora', 'salas.qtd_maquinas');
+    }
+
     public function scopeExibicao($query)
     {
-        return $query->where('data', '>=', date('Y-m-d'));
+        return $query->joinPolos()
+                     ->where('data', '>=', date('Y-m-d'));
     }
 
     public function scopeData($query, $data)
@@ -24,9 +30,9 @@ class Sala extends Model
         return $query->where('hora', date('H:i:s', strtotime($hora)));
     }
 
-    public function scopeBloco($query, $hora)
+    public function scopePolo($query, $polo)
     {
-        return $query->where('bloco');
+        return $query->where('polo', $polo);
     }
 
     public function setDateFormatedAttribute($value)
