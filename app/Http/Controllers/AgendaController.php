@@ -67,15 +67,30 @@ class AgendaController extends Controller
                 //adiciona os dados na tabela cadastro
                 Cadastro::create($data);
 
-                //retorna todos as salas que o usuario esta cadastrado
-                $cadastros = Cadastro::minhaLista(Auth::user()->id)->get();
-
-                for ($i=0; $i < count($cadastros); $i++) { 
-                    $cadastros[$i]->date_formated = $cadastros[$i]->data;
-                    $cadastros[$i]->hour_formated = $cadastros[$i]->hora;
+                //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
+                $salas = Sala::exibicao()->get();
+        
+                for ($i=0; $i < count($salas); $i++) { 
+                    $salas[$i]->date_formated = $salas[$i]->data;
+                    $salas[$i]->hour_formated = $salas[$i]->hora;
+                }
+        
+                $cadastros = '';
+        
+                //popula o array $cadastros['id_sala'] para verificar quantos computadores estão ocupados em cada sala
+                foreach($salas as $sala){
+                    $cadastros[$sala->id] = Cadastro::countMaquinas($sala->id);
                 }
 
-                return view('agenda.myList', ['cadastros' => $cadastros])->with('msgSuccess', 'Prova agendada com sucesso!');
+                //retorna todos as salas que o usuario esta cadastrado
+                // $cadastros = Cadastro::minhaLista(Auth::user()->id)->get();
+
+                // for ($i=0; $i < count($cadastros); $i++) { 
+                //     $cadastros[$i]->date_formated = $cadastros[$i]->data;
+                //     $cadastros[$i]->hour_formated = $cadastros[$i]->hora;
+                // }
+
+                return view('agenda.show', ['cadastros' => $cadastros, 'polos' => $polos, 'salas' => $salas])->with('msgSuccess', 'Prova agendada com sucesso!');
             }else{
                 //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
                 $salas = Sala::exibicao()->get();
@@ -177,8 +192,16 @@ class AgendaController extends Controller
     {
         //deleta o cadastro do usuario naquela sala
         Cadastro::deleteCadastro($id)->delete();
+        
+        //retorna todos as salas que o usuario esta cadastrado
+        $cadastros = Cadastro::minhaLista(Auth::user()->id)->get();
 
-        return redirect('agenda')->with('msg-success', 'Agendamento removido com sucesso!');
+        for ($i=0; $i < count($cadastros); $i++) { 
+            $cadastros[$i]->date_formated = $cadastros[$i]->data;
+            $cadastros[$i]->hour_formated = $cadastros[$i]->hora;
+        }
+
+        return view('agenda.myList', ['cadastros' => $cadastros])->with('msgSuccess', 'Agendamento removido com sucesso!');
     }
 
     public function search()
