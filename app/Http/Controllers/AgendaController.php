@@ -192,8 +192,16 @@ class AgendaController extends Controller
     {
         //deleta o cadastro do usuario naquela sala
         Cadastro::deleteCadastro($id)->delete();
+        
+        //retorna todos as salas que o usuario esta cadastrado
+        $cadastros = Cadastro::minhaLista(Auth::user()->id)->get();
 
-        return redirect('agenda')->with('msg-success', 'Agendamento removido com sucesso!');
+        for ($i=0; $i < count($cadastros); $i++) { 
+            $cadastros[$i]->date_formated = $cadastros[$i]->data;
+            $cadastros[$i]->hour_formated = $cadastros[$i]->hora;
+        }
+
+        return view('agenda.myList', ['cadastros' => $cadastros])->with('msgSuccess', 'Agendamento removido com sucesso!');
     }
 
     public function search()
