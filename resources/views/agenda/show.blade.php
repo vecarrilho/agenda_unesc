@@ -38,6 +38,8 @@
         <div class="row">
             @if(!empty($msgError))
                 <p class="msg-error">{{$msgError}}</p>
+            @elseif(!empty($msgSuccess))
+                <p class="msg-success">{{$msgSuccess}}</p>
             @endif
         </div>
     </div>
