@@ -46,6 +46,7 @@ class AgendaController extends Controller
     //função p/ inserir dados na tabela cadastros
     public function store(Request $request)
     {
+        $polos = Polo::exibicao()->get();
         //traz todos dados do form
         $data = $request->all();
         $data['id_usuario'] = Auth::user()->id;
@@ -91,7 +92,7 @@ class AgendaController extends Controller
                     $cadastros[$sala->id] = Cadastro::countMaquinas($sala->id);
                 }
 
-                return view('agenda.show', ['salas' => $salas, 'cadastros' => $cadastros])->with('msgError', 'Máquinas insuficientes para esta data!');
+                return view('agenda.show', ['salas' => $salas, 'cadastros' => $cadastros, 'polos' => $polos])->with('msgError', 'Máquinas insuficientes para esta data!');
             }
         }else{
             //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
@@ -109,7 +110,7 @@ class AgendaController extends Controller
                 $cadastros[$sala->id] = Cadastro::countMaquinas($sala->id);
             }
 
-            return view('agenda.show', ['salas' => $salas, 'cadastros' => $cadastros])->with('msgError', 'Você já esta cadastrado nesta sala!');
+            return view('agenda.show', ['salas' => $salas, 'cadastros' => $cadastros, 'polos' => $polos])->with('msgError', 'Você já esta cadastrado nesta sala!');
         }
     }
 
@@ -182,7 +183,7 @@ class AgendaController extends Controller
 
     public function search()
     {
-        $polos = Polo::exibicao()->get();
+
         //captura valores dos filtros
         $data = request('data');
         $hora = request('hora');
@@ -227,6 +228,8 @@ class AgendaController extends Controller
         foreach($salas as $sala){
             $cadastros[$sala->id] = Cadastro::countMaquinas($sala->id);
         }
+
+        $polos = Polo::exibicao()->get();
         
         return view('agenda.show',['salas' => $salas, 'cadastros' => $cadastros, 'polos' => $polos]);
     }
