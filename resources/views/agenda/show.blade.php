@@ -28,7 +28,7 @@
                                 @csrf
                                 <li><button class="btn btn-primary dropdown-item" type="submit" onclick="event.preventDefault(); this.closest('form').submit();"><span>Sair</span></button></li>
                             </form>
-                        </ul>
+                        </ul> 
                     </div>
                 </ul>
             </div>
