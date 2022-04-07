@@ -80,6 +80,14 @@ nav.navbar{
 .form-group {
     margin-bottom: 25px;
     width: 30%;
+    margin-left: 50px;
+}
+
+.form-group2 {
+    margin-bottom: 25px;
+    width: 30%;
+    margin-left: 50px;
+    margin-top: 23px;
 }
 
 .form-control {
@@ -94,4 +102,9 @@ nav.navbar{
 .table{
     margin-top: 20px;
     text-align: center;
+}
+
+.form-inline{
+    display: flex;
+    width: 80%;
 }
