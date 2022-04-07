@@ -44,12 +44,12 @@
                 </x-jet-button>
             </div>
         </form>
-        <div class="grid grid-cols-3">
+        {{-- <div class="grid grid-cols-3">
             <div class="col-start-2">
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('register') }}">
                     {{ __('Ainda não tem cadastro?') }}
                 </a>
             </div>
-        </div>
+        </div> --}}
     </x-jet-authentication-card>
 </x-guest-layout>
