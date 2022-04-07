@@ -48,15 +48,7 @@
             <li><a href="{{ route('agenda.show', true) }}" class="btn btn-primary">Agendamentos Disponíveis</a></li>
             <li><a href="{{ route('agenda.myList', Auth::user()->id) }}" class="btn btn-primary">Meus Agendamentos</a></li>
         </ul>
-        <form action="/search" method="GET"> 
-            <div class="form-group">
-                <label>Data</label>
-                <input class="form-control" type="date" name="data" min="{{date('Y-m-d')}}">
-            </div>
-            <div class="form-group">
-                <label>Hora</label>
-                <input class="form-control" type="time" name="hora">
-            </div>
+        <form class="form-inline" action="/search" method="GET"> 
             <div class="form-group">
                 <label>Polo</label>
                 <select name="polo" class="form-select">
@@ -67,9 +59,12 @@
                 </select>
             </div>
             <div class="form-group">
-                <input class="form-control" type="submit" value="Pesquisar">
+                <label class="sr-only" for="inlineFormInputName2">Data</label>
+                <input class="form-control" id="inlineFormInputName2" type="date" name="data" min="{{date('Y-m-d')}}">
             </div>
-            
+            <div class="form-group2">
+                <input class="form-control" type="submit" value="Pesquisar">
+            </div> 
         </form>
         <table class="table">
             <thead>
