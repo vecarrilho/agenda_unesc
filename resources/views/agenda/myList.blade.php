@@ -52,9 +52,7 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>#</th>
                     <th>Polo</th>
-                    <th>Bloco</th>
                     <th>Sala</th>
                     <th>Data</th>
                     <th>Hora</th>
@@ -64,10 +62,8 @@
             <tbody>
                 @foreach($cadastros as $cadastro)
                     <tr>
-                        <td>{{ $cadastro->id }}</td>
-                        <td>{{ $cadastro->polo }}</td>
+                        <td>{{ $cadastro->descricao }}</td>
                         <td>{{ $cadastro->bloco }}</td>
-                        <td>{{ $cadastro->nsala }}</td>
                         <td>{{ $cadastro->date_formated }}</td>
                         <td>{{ $cadastro->hour_formated }}</td>
                         <form action="{{ route('agenda.destroy', ['agenda' => $cadastro->id_cadastro]) }}" method="POST">
