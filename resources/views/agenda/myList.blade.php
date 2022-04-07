@@ -16,24 +16,24 @@
                 <a class="navbar-brand" href="#">
                     <img src="/img/logo.png" alt="">
                 </a>
+                @auth
+                    <div class="dropdown-header">
+                        <ul class="nav justify-content-end">
+                            <div class="dropdown nav-item">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ Auth::user()->name }}
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <form action="/logout" method="POST">
+                                        @csrf
+                                        <li><button class="btn btn-primary dropdown-item" type="submit" onclick="event.preventDefault(); this.closest('form').submit();"><span>Sair</span></button></li>
+                                    </form>
+                                </ul>
+                            </div>
+                        </ul>
+                    </div>
+                @endauth
             </div>
-            @auth
-                <div class="dropdown-header">
-                    <ul class="nav justify-content-end">
-                        <div class="dropdown nav-item">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ Auth::user()->name }}
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <form action="/logout" method="POST">
-                                    @csrf
-                                    <li><button class="btn btn-primary dropdown-item" type="submit" onclick="event.preventDefault(); this.closest('form').submit();"><span>Sair</span></button></li>
-                                </form>
-                            </ul>
-                        </div>
-                    </ul>
-                </div>
-            @endauth
         </nav>
     </header>
     <div class="container-fluid">
