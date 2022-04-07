@@ -80,9 +80,9 @@
                     <tr>
                         <td>{{ $sala->descricao }}</td>
                         <td>{{ $sala->date_formated }}</td>
-                        @if ($sala->qtd_maquinas - $cadastros[$sala->id] > 0)
+                        @if ($sala->qtd_maquinas > 0)
                             <td><button type="button" class="btn btn-light position-relative">{{ $sala->hour_formated }}
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning"> +{{ $sala->qtd_maquinas - $cadastros[$sala->id] }} Vagas
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning"> +{{ $sala->qtd_maquinas }} Vagas
                                 </span>
                             </button></td>
                             <td>
