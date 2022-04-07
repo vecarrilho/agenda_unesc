@@ -45,8 +45,12 @@
     </div>
     <div class="container">
         <ul class="lista-botoes inline-flex">
-            <li><a href="{{ route('agenda.show', true) }}" class="btn btn-primary">Horários Disponíveis</a></li>
-            <li><a href="{{ route('agenda.myList', Auth::user()->id) }}" class="btn btn-primary">Meus Agendamentos</a></li>
+            @can('user')
+                <li><a href="{{ route('agenda.myList', Auth::user()->id) }}" class="btn btn-primary">Meus Agendamentos</a></li>
+            @elsecan('admin')
+                <li><a href="{{ route('admin.createSala') }}" class="btn btn-primary">Cadastrar Sala</a></li>
+                <li><a href="{{ route('admin.createPolo') }}" class="btn btn-primary">Cadastrar Polo</a></li>
+            @endcan
         </ul>
         <form class="form-inline" action="/search" method="GET"> 
             <div class="form-group">
