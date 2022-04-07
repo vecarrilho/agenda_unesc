@@ -45,7 +45,7 @@
     </div>
     <div class="container">
         <ul class="lista-botoes inline-flex">
-            <li><a href="{{ route('agenda.show', true) }}" class="btn btn-primary">Agendamentos Disponíveis</a></li>
+            <li><a href="{{ route('agenda.show', true) }}" class="btn btn-primary">Horários Disponíveis</a></li>
             <li><a href="{{ route('agenda.myList', Auth::user()->id) }}" class="btn btn-primary">Meus Agendamentos</a></li>
         </ul>
         <form class="form-inline" action="/search" method="GET"> 
