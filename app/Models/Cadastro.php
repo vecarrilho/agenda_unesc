@@ -30,8 +30,9 @@ class Cadastro extends Model
     public function scopeMinhaLista($query, $id_aluno)
     {
         return $query->join('salas', 'salas.id', '=', 'cadastros.id_sala')
+                     ->join('polos', 'polos.id', '=', 'salas.id')
                      ->where('cadastros.id_usuario', $id_aluno)
-                     ->select('salas.id', 'salas.bloco', 'salas.hora', 'salas.data', 'cadastros.id AS id_cadastro', 'salas.nsala', 'salas.polo');
+                     ->select('salas.id', 'salas.bloco', 'salas.hora', 'salas.data', 'cadastros.id AS id_cadastro', 'salas.nsala', 'salas.polo', 'polos.descricao');
     }
 
     public function setDateFormatedAttribute($value)
