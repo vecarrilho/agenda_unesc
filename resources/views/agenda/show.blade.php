@@ -74,17 +74,15 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>#</th>
                     <th>Polo</th>
                     <th>Data</th>
                     <th>Hora</th>
-                    <th>Ação</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($salas as $sala)
                     <tr>
-                        <td>{{ $sala->id }}</td>
                         <td>{{ $sala->descricao }}</td>
                         <td>{{ $sala->date_formated }}</td>
                         @if ($sala->qtd_maquinas - $cadastros[$sala->id] > 0)
