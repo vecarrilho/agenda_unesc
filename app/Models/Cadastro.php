@@ -4,9 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 class Cadastro extends Model
 {
+    use HasFactory;
+
     protected $fillable = ['id_usuario', 'id_sala'];
 
     public function scopeCountMaquinas($query, $id_sala)
@@ -45,5 +46,26 @@ class Cadastro extends Model
         $this->attributes['hour_formated'] = date('H:i', strtotime($value));
     }
 
-    use HasFactory;
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::saved(function ($model)  {
+             $sala = Sala::find($model->id_sala);
+             $sala->qtd_maquinas--;
+             $sala->save();
+        });
+
+        static::deleted(function ($model)  {
+            $sala = Sala::find($model->id_sala);
+            $sala->qtd_maquinas++;
+            $sala->save();
+        });
+    }
+
+
 }

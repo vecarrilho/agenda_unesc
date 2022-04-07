@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Sala extends Model
 {
+    use HasFactory;
+
     protected $fillable = ['bloco', 'hora', 'data', 'qtd_maquinas', 'nsala', 'polo'];
 
     public function scopeJoinPolos($query){
@@ -44,6 +46,10 @@ class Sala extends Model
     {
         $this->attributes['hour_formated'] = date('H:i', strtotime($value));
     }
- 
-    use HasFactory;
+
+
+    public function cadastros()
+    {
+        return $this->belongsToMany(Cadastro::class, 'id_sala');
+    }
 }
