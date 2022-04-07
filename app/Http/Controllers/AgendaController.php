@@ -242,33 +242,18 @@ class AgendaController extends Controller
 
         //captura valores dos filtros
         $data = request('data');
-        $hora = request('hora');
         $polo = request('polo');
 
         //faz as requisiçoes conforme as variaveis estao vazias ou não
         if ($data) {
-            if ($hora) {
-                if ($polo) {
-                    $salas = Sala::joinPolos()->data($data)->hora($hora)->polo($polo)->get();
-                } else {
-                    $salas = Sala::joinPolos()->data($data)->hora($hora)->get();
-                }
-            } else {
-                if($polo){
-                    $salas = Sala::joinPolos()->data($data)->polo($polo)->get();
-                }else{
-                    $salas = Sala::joinPolos()->data($data)->get();
-                }
-            }
-        } elseif ($hora) {
             if ($polo) {
-                $salas = Sala::joinPolos()->hora($hora)->polo($polo)->get();
+                $salas = Sala::joinPolos()->data($data)->polo($polo)->get();
             } else {
-                $salas = Sala::joinPolos()->hora($hora)->get();
+                $salas = Sala::joinPolos()->data($data)->get();
             }
-        }elseif($polo){
-            $salas = Sala::joinPolos()->polo($polo)->get();
-        }else{
+        } elseif ($polo) {
+                $salas = Sala::joinPolos()->polo($polo)->get();
+        } else {
             $salas = Sala::exibicao()->get();
         }
 
