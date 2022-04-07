@@ -78,9 +78,6 @@
                     <th>Polo</th>
                     <th>Data</th>
                     <th>Hora</th>
-
-                    {{-- <th>Máquinas Disponíveis</th> --}}
-
                     <th>Ação</th>
                 </tr>
             </thead>
@@ -90,23 +87,31 @@
                         <td>{{ $sala->id }}</td>
                         <td>{{ $sala->descricao }}</td>
                         <td>{{ $sala->date_formated }}</td>
-                        <td><button type="button" class="btn btn-light position-relative">{{ $sala->hour_formated }}
-                            @if ($sala->qtd_maquinas - $cadastros[$sala->id] > 0)
+                        @if ($sala->qtd_maquinas - $cadastros[$sala->id] > 0)
+                            <td><button type="button" class="btn btn-light position-relative">{{ $sala->hour_formated }}
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning"> +{{ $sala->qtd_maquinas - $cadastros[$sala->id] }} Vagas
-                            @else
+                                </span>
+                            </button></td>
+                            <td>
+                                <form action="{{route('agenda.store')}}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="id_sala" value="{{$sala->id}}">
+                                    <button class="btn btn-primary" type="submit">Agendar este horário</button>
+                                </form> 
+                            </td>
+                        @else
+                            <td><button type="button" class="btn btn-light position-relative">{{ $sala->hour_formated }}
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> Esgotado
-                            @endif
-                        </span>
-                        </button></td>
-                        <td>
-                            <form action="{{route('agenda.store')}}" method="POST">
-                                @csrf
-                                <input type="hidden" name="id_sala" value="{{$sala->id}}">
-                                <button class="btn btn-primary" type="submit">Agendar este horário</button>
-                            </form> 
-                            {{-- <a href="{{  }}" class="btn btn-primary">Entrar</a> --}}
-                        </td>
-                        {{-- <td><a href="/insert_cadastro/{{$sala->id}}/{{Auth::user()->id}}" class="btn-primary btn">Entrar</a></td> --}}
+                                </span>
+                            </button></td>
+                            <td>
+                                <form action="{{route('agenda.store')}}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="id_sala" value="{{$sala->id}}">
+                                    <button class="btn btn-primary" type="submit" disabled>Agendar este horário</button>
+                                </form> 
+                            </td>
+                        @endif
                     </tr>
                 @endforeach
             </tbody>
