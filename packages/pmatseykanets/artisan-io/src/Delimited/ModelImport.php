@@ -128,7 +128,7 @@ class ModelImport extends BaseImport
             return;
         }
 
-        $record = $this->model->create($row)->givePermissionTo('user');
+        $record = $this->model->create($row);
     }
 
     /**
