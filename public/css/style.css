@@ -119,9 +119,9 @@ nav.navbar{
 
 .table tbody{
     display:block;
-    width: 100%;
+    width: 98%;
     overflow: auto;
-    height: 300px;
+    height: 350px;
   }
   
   .table thead tr {
@@ -131,7 +131,7 @@ nav.navbar{
   .table th, .table td {
     padding: 10px;
     text-align: left;
-    width: 500px;
+    width:400px;
   }
 
 
