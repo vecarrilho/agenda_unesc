@@ -16,7 +16,7 @@ class CreateSalasTable extends Migration
     {
         Schema::create('salas', function (Blueprint $table) {
             $table->id();
-            $table->string('bloco', 20);
+            $table->string('bloco', 40);
             $table->time('hora');
             $table->date('data');
         });
