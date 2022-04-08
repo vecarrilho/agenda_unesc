@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Sala extends Model
 {
+    public $timestamps = false;
     use HasFactory;
 
     protected $fillable = ['bloco', 'hora', 'data', 'qtd_maquinas', 'nsala', 'polo', 'qtd_maquinas_original'];
