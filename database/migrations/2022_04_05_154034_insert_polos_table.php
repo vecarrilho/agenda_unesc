@@ -17,17 +17,8 @@ class InsertPolosTable extends Migration
         DB::table('polos')->insert(
             array(
                 'descricao' => 'POLO CRICIUMA',
-                'endereco' => 'RUA UNIVERSITARIO 100',
-                'localizacao' => 'www.google.com',
-                'status' => 'Ativo'
-            )
-        );
-
-        DB::table('polos')->insert(
-            array(
-                'descricao' => 'POLO ARARANGUA',
-                'endereco' => 'RUA CHILE 200',
-                'localizacao' => 'www.facebook.com',
+                'endereco' => 'Avenida Universitária, n° 1105',
+                'localizacao' => 'www.unesc.net',
                 'status' => 'Ativo'
             )
         );

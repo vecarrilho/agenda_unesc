@@ -14,7 +14,7 @@ class AddNsalaToSalaTable extends Migration
     public function up()
     {
         Schema::table('salas', function (Blueprint $table) {
-            $table->integer('nsala');
+            $table->integer('nsala')->nullable();
         });
     }
 
