@@ -37,6 +37,14 @@ class Sala extends Model
         return $query->where('polo', $polo);
     }
 
+    public function scopeOrderByData($query){
+        return $query->orderBy('data', 'asc');
+    }
+
+    public function scopeOrderByHora($query){
+        return $query->orderBy('hora', 'asc');
+    }
+
     public function setDateFormatedAttribute($value)
     {
         $this->attributes['date_formated'] = date('d/m/Y', strtotime($value));

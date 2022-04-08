@@ -173,7 +173,7 @@ class AgendaController extends Controller
     public function show($id)
     {
         //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
-        $salas = Sala::exibicao()->get();
+        $salas = Sala::exibicao()->orderByData()->orderByHora()->get();
 
         $polos = Polo::exibicao()->get();
 
@@ -247,14 +247,14 @@ class AgendaController extends Controller
         //faz as requisiçoes conforme as variaveis estao vazias ou não
         if ($data) {
             if ($polo) {
-                $salas = Sala::joinPolos()->data($data)->polo($polo)->get();
+                $salas = Sala::joinPolos()->data($data)->polo($polo)->orderByHora()->get();
             } else {
-                $salas = Sala::joinPolos()->data($data)->get();
+                $salas = Sala::joinPolos()->data($data)->orderByHora()->get();
             }
         } elseif ($polo) {
-                $salas = Sala::joinPolos()->polo($polo)->get();
+                $salas = Sala::joinPolos()->polo($polo)->orderByData()->orderByHora()->get();
         } else {
-            $salas = Sala::exibicao()->get();
+            $salas = Sala::exibicao()->orderByData()->orderByHora()->get();
         }
 
         //formata data e hora
