@@ -13,7 +13,7 @@ class Sala extends Model
 
     public function scopeJoinPolos($query){
         return $query->join('polos', 'salas.polo', '=', 'polos.id')
-                     ->select('salas.id', 'polos.descricao', 'salas.data', 'salas.hora', 'salas.qtd_maquinas');
+                     ->select('salas.id', 'polos.descricao', 'salas.data', 'salas.hora', 'salas.qtd_maquinas', 'salas.bloco');
     }
 
     public function scopeExibicao($query)

@@ -29,17 +29,19 @@ ul.lista-botoes li a{
 }
 
 .dropdown-menu{
-    padding-right: 50px;
+    padding-right: 0;
 }
 
 .container{
     padding: 10px 0;
     margin-left: 20px;
-    margin-right: 0;
+    margin-right: 10px;
+    max-width: 100%;
 }
 
 nav.navbar{
     padding: 0;
+    margin-right: 0px;
 }
 
 .btn{

@@ -67,12 +67,13 @@
                 <input class="form-control" id="inlineFormInputName2" type="date" name="data" min="{{date('Y-m-d')}}">
             </div>
             <div class="form-group2">
-                <input class="form-control" type="submit" value="Pesquisar">
+                <input class="form-control" type="submit" value="Filtrar">
             </div> 
         </form>
         <table class="table">
             <thead>
                 <tr>
+                    <th>Bloco</th>
                     <th>Polo</th>
                     <th>Data</th>
                     <th>Hora</th>
@@ -82,6 +83,7 @@
             <tbody>
                 @foreach($salas as $sala)
                     <tr>
+                        <td>{{ $sala->bloco }}</td>
                         <td>{{ $sala->descricao }}</td>
                         <td>{{ $sala->date_formated }}</td>
                         @if ($sala->qtd_maquinas > 0)
