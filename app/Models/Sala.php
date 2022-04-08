@@ -12,7 +12,7 @@ class Sala extends Model
     protected $fillable = ['bloco', 'hora', 'data', 'qtd_maquinas', 'nsala', 'polo', 'qtd_maquinas_original'];
 
     public function scopeJoinPolos($query){
-        return $query->join('polos', 'salas.id', '=', 'polos.id')
+        return $query->join('polos', 'salas.polo', '=', 'polos.id')
                      ->select('salas.id', 'polos.descricao', 'salas.data', 'salas.hora', 'salas.qtd_maquinas');
     }
 
