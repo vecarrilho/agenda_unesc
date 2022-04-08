@@ -35,7 +35,7 @@ ul.lista-botoes li a{
 .container{
     padding: 10px 0;
     margin-left: 20px;
-    margin-right: 10px;
+    margin-right: 20px;
     max-width: 100%;
 }
 
@@ -85,6 +85,10 @@ nav.navbar{
     margin-left: 50px;
 }
 
+.form-select {
+    font-size: 19px;
+}
+
 .form-group2 {
     margin-bottom: 25px;
     width: 30%;
@@ -101,12 +105,36 @@ nav.navbar{
     margin-bottom: 20px;
 }
 
-.table{
-    margin-top: 20px;
-    text-align: center;
-}
-
 .form-inline{
     display: flex;
     width: 80%;
 }
+
+.table{
+    margin-top: 20px;
+    text-align: center;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.table tbody{
+    display:block;
+    width: 100%;
+    overflow: auto;
+    height: 300px;
+  }
+  
+  .table thead tr {
+     display: block;
+  }
+  
+  .table th, .table td {
+    padding: 10px;
+    text-align: left;
+    width: 500px;
+  }
+
+
+
+
+
