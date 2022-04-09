@@ -82,7 +82,7 @@ nav.navbar{
 .form-group {
     margin-bottom: 25px;
     width: 30%;
-    margin-left: 50px;
+    margin-right: 20px;
 }
 
 .form-select {
@@ -92,7 +92,6 @@ nav.navbar{
 .form-group2 {
     margin-bottom: 25px;
     width: 30%;
-    margin-left: 50px;
     margin-top: 23px;
 }
 

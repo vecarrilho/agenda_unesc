@@ -36,27 +36,27 @@
             </div>
         </nav>
     </header>
-    @can('user')
-        <div class="container-fluid">
-            <div class="row">
-                @if(session('msg-success'))
-                    <p class="msg-success">{{session('msg-success')}}</p>
-                @elseif(session('msg-error'))
-                    <p class="msg-error">{{session('msg-error')}}</p>
-                @endif
-                @yield('content')
+    <div class="container">
+        @can('user')
+            <div class="container-fluid">
+                <div class="row">
+                    @if(session('msg-success'))
+                        <p class="msg-success">{{session('msg-success')}}</p>
+                    @elseif(session('msg-error'))
+                        <p class="msg-error">{{session('msg-error')}}</p>
+                    @endif
+                    @yield('content')
+                </div>
             </div>
-        </div>
-        <div class="container">
-    @elsecan('admin')
-        @auth
-            <ul class="lista-botoes">
-                <li><a href="{{ route('agenda.show', true) }}" class="btn btn-primary">Agendamentos Disponíveis</a></li>
-                <li><a href="{{ route('admin.createSala') }}" class="btn btn-primary">Cadastrar Sala</a></li>
-                <li><a href="{{ route('admin.createPolo') }}" class="btn btn-primary">Cadastrar Polo</a></li>
-            </ul>
-        @endauth
-    @endcan
+        @elsecan('admin')
+            @auth
+                <ul class="lista-botoes">
+                    <li><a href="{{ route('agenda.show', true) }}" class="btn btn-primary">Agendamentos Disponíveis</a></li>
+                    <li><a href="{{ route('admin.createSala') }}" class="btn btn-primary">Cadastrar Sala</a></li>
+                    <li><a href="{{ route('admin.createPolo') }}" class="btn btn-primary">Cadastrar Polo</a></li>
+                </ul>
+            @endauth
+        @endcan
         @guest
             <ul>
                 <li><a href="/login" class="btn btn-primary">Login</a></li>
