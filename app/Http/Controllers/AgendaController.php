@@ -277,7 +277,7 @@ class AgendaController extends Controller
     public function showMyList($id_aluno)
     {
         //retorna todos as salas que o usuario esta cadastrado
-        $cadastros = Cadastro::minhaLista(Auth::user())->get();
+        $cadastros = Cadastro::minhaLista(Auth::user()->id)->get();
 
         for ($i=0; $i < count($cadastros); $i++) { 
             $cadastros[$i]->date_formated = $cadastros[$i]->data;
