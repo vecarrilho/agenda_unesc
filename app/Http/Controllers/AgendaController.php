@@ -97,33 +97,55 @@ class AgendaController extends Controller
 
             //verifica se o numero de vagas disponiveis é diferente do total de vagas ocupadas
             if($salas->qtd_maquinas != $maquinasReservadas){
-                //adiciona os dados na tabela cadastro
-                Cadastro::create($data);
+                //verifica se usuario tem mais de 3 agendamentos
+                $cadastrosUsuario = Cadastro::countCadastros()->count();
+                
+                if($cadastrosUsuario < 3){
+                    //adiciona os dados na tabela cadastro
+                    Cadastro::create($data);
+    
+                    //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
+                    $salas = Sala::exibicao()->get();
+            
+                    for ($i=0; $i < count($salas); $i++) { 
+                        $salas[$i]->date_formated = $salas[$i]->data;
+                        $salas[$i]->hour_formated = $salas[$i]->hora;
+                    }
+            
+                    $cadastros = '';
+            
+                    //popula o array $cadastros['id_sala'] para verificar quantos computadores estão ocupados em cada sala
+                    foreach($salas as $sala){
+                        $cadastros[$sala->id] = Cadastro::countMaquinas($sala->id);
+                    }
+    
+                    //retorna todos as salas que o usuario esta cadastrado
+                    // $cadastros = Cadastro::minhaLista(Auth::user()->id)->get();
+    
+                    // for ($i=0; $i < count($cadastros); $i++) { 
+                    //     $cadastros[$i]->date_formated = $cadastros[$i]->data;
+                    //     $cadastros[$i]->hour_formated = $cadastros[$i]->hora;
+                    // }
+    
+                    return view('agenda.show', ['cadastros' => $cadastros, 'polos' => $polos, 'salas' => $salas])->with('msgSuccess', 'Prova agendada com sucesso!');
 
-                //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
-                $salas = Sala::exibicao()->get();
-        
-                for ($i=0; $i < count($salas); $i++) { 
-                    $salas[$i]->date_formated = $salas[$i]->data;
-                    $salas[$i]->hour_formated = $salas[$i]->hora;
+                }else{
+                    //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
+                    $salas = Sala::exibicao()->get();
+            
+                    for ($i=0; $i < count($salas); $i++) { 
+                        $salas[$i]->date_formated = $salas[$i]->data;
+                        $salas[$i]->hour_formated = $salas[$i]->hora;
+                    }
+            
+                    $cadastros = '';
+            
+                    //popula o array $cadastros['id_sala'] para verificar quantos computadores estão ocupados em cada sala
+                    foreach($salas as $sala){
+                        $cadastros[$sala->id] = Cadastro::countMaquinas($sala->id);
+                    }
+                    return view('agenda.show', ['salas' => $salas, 'cadastros' => $cadastros, 'polos' => $polos])->with('msgError', 'Máximo de 3 agendamentos atingidos!');    
                 }
-        
-                $cadastros = '';
-        
-                //popula o array $cadastros['id_sala'] para verificar quantos computadores estão ocupados em cada sala
-                foreach($salas as $sala){
-                    $cadastros[$sala->id] = Cadastro::countMaquinas($sala->id);
-                }
-
-                //retorna todos as salas que o usuario esta cadastrado
-                // $cadastros = Cadastro::minhaLista(Auth::user()->id)->get();
-
-                // for ($i=0; $i < count($cadastros); $i++) { 
-                //     $cadastros[$i]->date_formated = $cadastros[$i]->data;
-                //     $cadastros[$i]->hour_formated = $cadastros[$i]->hora;
-                // }
-
-                return view('agenda.show', ['cadastros' => $cadastros, 'polos' => $polos, 'salas' => $salas])->with('msgSuccess', 'Prova agendada com sucesso!');
             }else{
                 //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
                 $salas = Sala::exibicao()->get();

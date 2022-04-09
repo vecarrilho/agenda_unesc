@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+
 class Cadastro extends Model
 {
     use HasFactory;
@@ -34,6 +36,12 @@ class Cadastro extends Model
                      ->join('polos', 'polos.id', '=', 'salas.polo')
                      ->where('cadastros.id_usuario', $id_aluno)
                      ->select('salas.id', 'salas.bloco', 'salas.hora', 'salas.data', 'cadastros.id AS id_cadastro', 'salas.nsala', 'salas.polo', 'polos.descricao');
+    }
+
+    public function scopeCountCadastros($query){
+        return $query->join('salas', 'salas.id', '=', 'cadastros.id_sala')
+                     ->where('cadastros.id_usuario', Auth::user()->id)
+                     ->where('salas.data', '>', date('Y-m-d'));
     }
 
     public function setDateFormatedAttribute($value)
