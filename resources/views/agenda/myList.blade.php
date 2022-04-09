@@ -52,7 +52,7 @@
             <thead>
                 <tr>
                     <th>Polo</th>
-                    <th>Sala</th>
+                    <th>Bloco</th>
                     <th>Data</th>
                     <th>Hora</th>
                     <th>Ação</th>
@@ -70,7 +70,6 @@
                             @method('DELETE')
                             <td><button type="submit" class="btn btn-danger"><span>Cancelar este horário</span></button></td>
                         </form>
-                        <td></td>
                     </tr> 
                 @endforeach
             </tbody>
