@@ -271,6 +271,8 @@ class AgendaController extends Controller
 
     public function search()
     {
+        $user = User::find(Auth::user()->id);
+
         //captura valores dos filtros
         if(request('data')){
             $dataFilter = request('data');
@@ -293,12 +295,20 @@ class AgendaController extends Controller
             if ($poloFilter) {
                 $salas = Sala::joinPolos()->data($dataFilter)->polo($poloFilter)->orderBybloco()->orderByData()->orderByHora()->get();
             } else {
-                $salas = Sala::joinPolos()->data($dataFilter)->orderBybloco()->orderByData()->orderByHora()->get();
+                if($user->hasPermissionTo('admin')){
+                    $salas = Sala::joinPolos()->data($dataFilter)->orderBybloco()->orderByData()->orderByHora()->get();
+                }else{
+                    $salas = Sala::joinPolos()->verificaPolo()->data($dataFilter)->orderBybloco()->orderByData()->orderByHora()->get();
+                }
             }
         } elseif ($poloFilter) {
                 $salas = Sala::joinPolos()->polo($poloFilter)->orderBybloco()->orderByData()->orderByHora()->get();
         } else {
-            $salas = Sala::exibicao()->orderBybloco()->orderByData()->orderByHora()->get();
+            if($user->hasPermissionTo('admin')){
+                $salas = Sala::exibicao()->orderBybloco()->orderByData()->orderByHora()->get();
+            }else{
+                $salas = Sala::exibicao()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
+            }
         }
 
         //formata data e hora
