@@ -34,6 +34,8 @@ class User extends Authenticatable
         'password',
         'perfil',
         'tipo_deficiencia',
+        'cd_polo',
+        'nm_polo',
     ];
 
     /**
