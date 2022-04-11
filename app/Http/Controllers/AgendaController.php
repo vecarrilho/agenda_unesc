@@ -43,6 +43,12 @@ class AgendaController extends Controller
                         $salas[$i]->date_formated = $salas[$i]->data;
                         $salas[$i]->hour_formated = $salas[$i]->hora;
                     }
+                    
+                    $datas = Sala::groupDatas()->verificaPolo()->get();
+            
+                    for ($i=0; $i < count($datas); $i++) { 
+                        $datas[$i]->date_formated = $datas[$i]->data;
+                    }
             
                     $cadastros = '';
             
@@ -51,7 +57,7 @@ class AgendaController extends Controller
                         $cadastros[$sala->id] = Cadastro::countMaquinas($sala->id);
                     }
                     
-                    return view('agenda.show', ['salas' => $salas, 'cadastros' => $cadastros, 'polos' => $polos]);
+                    return view('agenda.show', ['salas' => $salas, 'cadastros' => $cadastros, 'polos' => $polos, 'datas' => $datas]);
                 }
             }else{
                 return view('welcome');
@@ -79,6 +85,7 @@ class AgendaController extends Controller
     //função p/ inserir dados na tabela cadastros
     public function store(Request $request)
     {
+        $user = User::find(Auth::user()->id);
         $polos = Polo::exibicao()->get();
         //traz todos dados do form
         $data = $request->all();
@@ -111,6 +118,16 @@ class AgendaController extends Controller
                         $salas[$i]->date_formated = $salas[$i]->data;
                         $salas[$i]->hour_formated = $salas[$i]->hora;
                     }
+
+                    if($user->hasPermissionTo('admin')){
+                        $datas = Sala::groupDatas()->get();
+                    }else{
+                        $datas = Sala::groupDatas()->verificaPolo()->get();
+                    }
+            
+                    for ($i=0; $i < count($datas); $i++) { 
+                        $datas[$i]->date_formated = $datas[$i]->data;
+                    }
             
                     // $cadastros = '';
             
@@ -127,9 +144,20 @@ class AgendaController extends Controller
                     //     $cadastros[$i]->hour_formated = $cadastros[$i]->hora;
                     // }
     
-                    return view('agenda.show', ['polos' => $polos, 'salas' => $salas])->with('msgSuccess', 'Prova agendada com sucesso!');
+                    return view('agenda.show', ['polos' => $polos, 'salas' => $salas, 'datas' => $datas])->with('msgSuccess', 'Prova agendada com sucesso!');
 
                 }else{
+                    
+                    if($user->hasPermissionTo('admin')){
+                        $datas = Sala::groupDatas()->get();
+                    }else{
+                        $datas = Sala::groupDatas()->verificaPolo()->get();
+                    }
+            
+                    for ($i=0; $i < count($datas); $i++) { 
+                        $datas[$i]->date_formated = $datas[$i]->data;
+                    }
+                    
                     //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
                     $salas = Sala::exibicao()->get();
             
@@ -144,7 +172,7 @@ class AgendaController extends Controller
                     // foreach($salas as $sala){
                     //     $cadastros[$sala->id] = Cadastro::countMaquinas($sala->id);
                     // }
-                    return view('agenda.show', ['salas' => $salas, 'polos' => $polos])->with('msgError', 'Máximo de 3 agendamentos atingidos!');    
+                    return view('agenda.show', ['salas' => $salas, 'polos' => $polos, 'datas' => $datas])->with('msgError', 'Máximo de 3 agendamentos atingidos!');    
                 }
             }else{
                 //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
@@ -154,6 +182,16 @@ class AgendaController extends Controller
                     $salas[$i]->date_formated = $salas[$i]->data;
                     $salas[$i]->hour_formated = $salas[$i]->hora;
                 }
+                    
+                if($user->hasPermissionTo('admin')){
+                    $datas = Sala::groupDatas()->get();
+                }else{
+                    $datas = Sala::groupDatas()->verificaPolo()->get();
+                }
+        
+                for ($i=0; $i < count($datas); $i++) { 
+                    $datas[$i]->date_formated = $datas[$i]->data;
+                }
         
                 // $cadastros = '';
         
@@ -162,7 +200,7 @@ class AgendaController extends Controller
                 //     $cadastros[$sala->id] = Cadastro::countMaquinas($sala->id);
                 // }
 
-                return view('agenda.show', ['salas' => $salas, 'polos' => $polos])->with('msgError', 'Máquinas insuficientes para esta data!');
+                return view('agenda.show', ['salas' => $salas, 'polos' => $polos, 'datas' => $datas])->with('msgError', 'Máquinas insuficientes para esta data!');
             }
         }else{
             //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
@@ -172,6 +210,16 @@ class AgendaController extends Controller
                 $salas[$i]->date_formated = $salas[$i]->data;
                 $salas[$i]->hour_formated = $salas[$i]->hora;
             }
+                    
+            if($user->hasPermissionTo('admin')){
+                $datas = Sala::groupDatas()->get();
+            }else{
+                $datas = Sala::groupDatas()->verificaPolo()->get();
+            }
+    
+            for ($i=0; $i < count($datas); $i++) { 
+                $datas[$i]->date_formated = $datas[$i]->data;
+            }
     
             // $cadastros = '';
     
@@ -180,7 +228,7 @@ class AgendaController extends Controller
             //     $cadastros[$sala->id] = Cadastro::countMaquinas($sala->id);
             // }
 
-            return view('agenda.show', ['salas' => $salas, 'polos' => $polos])->with('msgError', 'Você já esta cadastrado nesta sala!');
+            return view('agenda.show', ['salas' => $salas, 'polos' => $polos, 'datas' => $datas])->with('msgError', 'Você já esta cadastrado nesta sala!');
         }
     }
 
