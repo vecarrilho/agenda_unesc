@@ -121,7 +121,7 @@ nav.navbar{
     display:block;
     width: 98%;
     overflow: auto;
-    height: 350px;
+    height: 400px;
   }
   
   .table thead tr {
@@ -133,6 +133,10 @@ nav.navbar{
     text-align: left;
     width:400px;
   }
+
+  ::-webkit-scrollbar {
+    display: none;
+    }
 
 
 
