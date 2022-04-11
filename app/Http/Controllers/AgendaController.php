@@ -35,16 +35,16 @@ class AgendaController extends Controller
                     return view('agenda.myList', ['cadastros' => $cadastros,]);
                 }else{
                     //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
-                    $salas = Sala::exibicao()->get();
+                    $salas = Sala::exibicao()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
+
+                    $datas = Sala::groupDatas()->verificaPolo()->get();
             
-                    $polos = Polo::exibicao()->get();
+                    $polos = Polo::exibicao()->verificaPolo()->get();
             
                     for ($i=0; $i < count($salas); $i++) { 
                         $salas[$i]->date_formated = $salas[$i]->data;
                         $salas[$i]->hour_formated = $salas[$i]->hora;
                     }
-                    
-                    $datas = Sala::groupDatas()->verificaPolo()->get();
             
                     for ($i=0; $i < count($datas); $i++) { 
                         $datas[$i]->date_formated = $datas[$i]->data;
