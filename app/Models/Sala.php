@@ -46,6 +46,10 @@ class Sala extends Model
         return $query->orderBy('hora', 'asc');
     }
 
+    public function scopeOrderByBloco($query){
+        return $query->orderBy('bloco', 'asc');
+    }
+
     public function setDateFormatedAttribute($value)
     {
         $this->attributes['date_formated'] = date('d/m/Y', strtotime($value));
