@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Sala extends Model
 {
@@ -21,6 +22,10 @@ class Sala extends Model
     {
         return $query->joinPolos()
                      ->where('data', '>=', date('Y-m-d'));
+    }
+
+    public function scopeVerificaPolo($query){
+        return $query->where('polo', Auth::user()->cd_polo);
     }
 
     public function scopeData($query, $data)
@@ -44,6 +49,10 @@ class Sala extends Model
 
     public function scopeOrderByHora($query){
         return $query->orderBy('hora', 'asc');
+    }
+
+    public function scopeOrderByBloco($query){
+        return $query->orderBy('bloco', 'asc');
     }
 
     public function setDateFormatedAttribute($value)

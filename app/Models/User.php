@@ -33,6 +33,9 @@ class User extends Authenticatable
         'email',
         'password',
         'perfil',
+        'tipo_deficiencia',
+        'cd_polo',
+        'nm_polo',
     ];
 
     /**
