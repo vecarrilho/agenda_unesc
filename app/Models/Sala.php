@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Sala extends Model
 {
@@ -20,7 +21,8 @@ class Sala extends Model
     public function scopeExibicao($query)
     {
         return $query->joinPolos()
-                     ->where('data', '>=', date('Y-m-d'));
+                     ->where('data', '>=', date('Y-m-d'))
+                     ->where('polo', Auth::user()->cd_polo);
     }
 
     public function scopeData($query, $data)
