@@ -194,8 +194,11 @@ class AgendaController extends Controller
      //função para mostrar as salas
     public function show($id)
     {
+        // if(session()->has('polo') || session()->has('data')){
+        //     return redirect('search');
+        // }
         //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
-        $salas = Sala::exibicao()->orderBybloco()->get();
+        $salas = Sala::exibicao()->orderBybloco()->orderByData()->orderByHora()->get();
 
         $polos = Polo::exibicao()->get();
 
@@ -262,8 +265,17 @@ class AgendaController extends Controller
     public function search()
     {
         //captura valores dos filtros
-        $dataFilter = request('data');
-        $poloFilter = request('polo');
+        if(request('data')){
+            $dataFilter = request('data');
+        }else{
+            $dataFilter = session('data');
+        }
+
+        if(request('polo')){
+            $poloFilter = request('polo');
+        }else{
+            $poloFilter = session('polo');
+        }
 
         //adiciona os valores do filtro em uma sessão
         session(['polo' => $poloFilter]);
