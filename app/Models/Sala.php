@@ -21,8 +21,11 @@ class Sala extends Model
     public function scopeExibicao($query)
     {
         return $query->joinPolos()
-                     ->where('data', '>=', date('Y-m-d'))
-                     ->where('polo', Auth::user()->cd_polo);
+                     ->where('data', '>=', date('Y-m-d'));
+    }
+
+    public function scopeVerificaPolo($query){
+        return $query->where('polo', Auth::user()->cd_polo);
     }
 
     public function scopeData($query, $data)

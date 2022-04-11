@@ -194,13 +194,20 @@ class AgendaController extends Controller
      //função para mostrar as salas
     public function show($id)
     {
+        $user = User::find(Auth::user()->id);
         // if(session()->has('polo') || session()->has('data')){
         //     return redirect('search');
         // }
         //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
-        $salas = Sala::exibicao()->orderBybloco()->orderByData()->orderByHora()->get();
-
-        $polos = Polo::exibicao()->get();
+        if($user->hasPermissionTo('admin')){
+            $salas = Sala::exibicao()->orderBybloco()->orderByData()->orderByHora()->get();
+    
+            $polos = Polo::exibicao()->get();
+        }else{
+            $salas = Sala::exibicao()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
+    
+            $polos = Polo::exibicao()->verificaPolo()->get();
+        }
 
         for ($i=0; $i < count($salas); $i++) { 
             $salas[$i]->date_formated = $salas[$i]->data;
