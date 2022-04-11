@@ -58,13 +58,17 @@
                 <select name="polo" class="form-select">
                     <option value="">Selecione um polo</option>
                     @foreach($polos as $polo)
-                        <option value="{{ $polo->id }}">{{ $polo->descricao }}</option>
+                        @if($polo->id == session('polo'))
+                            <option value="{{ $polo->id }}" selected>{{ $polo->descricao }}</option>
+                        @else
+                            <option value="{{ $polo->id }}">{{ $polo->descricao }}</option>
+                        @endif
                     @endforeach
                 </select>
             </div>
             <div class="form-group input-filter">
                 <label class="sr-only" for="inlineFormInputName2">Data</label>
-                <input class="form-control" id="inlineFormInputName2" type="date" name="data" min="{{date('Y-m-d')}}">
+                <input class="form-control" id="inlineFormInputName2" type="date" name="data" min="{{date('Y-m-d')}}" value="{{ session('data') }}">
             </div>
             <div class="form-group2 input-filter">
                 <input class="form-control" type="submit" value="Filtrar">
