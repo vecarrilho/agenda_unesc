@@ -28,6 +28,12 @@ class Sala extends Model
         return $query->where('polo', Auth::user()->cd_polo);
     }
 
+    public function scopeGroupDatas($query){
+        return $query->select('data')
+                     ->where('data', '>', date('Y-m-d'))
+                     ->groupBy('data');
+    }
+
     public function scopeData($query, $data)
     {
         return $query->where('data', $data);

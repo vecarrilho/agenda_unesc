@@ -70,7 +70,17 @@
             @endcan
             <div class="form-group input-filter">
                 <label class="sr-only" for="inlineFormInputName2">Data</label>
-                <input class="form-control" id="inlineFormInputName2" type="date" name="data" min="{{date('Y-m-d')}}" value="{{ session('data') }}">
+                {{-- <input class="form-control" id="inlineFormInputName2" type="date" name="data" min="{{date('Y-m-d')}}" value="{{ session('data') }}"> --}}
+                <select name="data" class="form-select">
+                    <option value="">Selecione uma data</option>
+                    @foreach($datas as $data)
+                        @if(session('data') == $data->data)
+                            <option value="{{ $data->data }}" selected>{{ $data->date_formated }}</option>
+                        @else
+                            <option value="{{ $data->data }}">{{ $data->date_formated }}</option>
+                        @endif
+                    @endforeach
+                </select>
             </div>
             <div class="form-group2 input-filter">
                 <input class="form-control" type="submit" value="Filtrar">
