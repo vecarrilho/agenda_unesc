@@ -53,7 +53,7 @@
             @endcan
         </ul>
         <form class="form-inline" action="/search" method="GET"> 
-            <div class="form-group input-filter">
+            {{-- <div class="form-group input-filter">
                 <label>Polo</label>
                 <select name="polo" class="form-select">
                     <option value="">Selecione um polo</option>
@@ -65,7 +65,7 @@
                         @endif
                     @endforeach
                 </select>
-            </div>
+            </div> --}}
             <div class="form-group input-filter">
                 <label class="sr-only" for="inlineFormInputName2">Data</label>
                 <input class="form-control" id="inlineFormInputName2" type="date" name="data" min="{{date('Y-m-d')}}" value="{{ session('data') }}">
