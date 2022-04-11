@@ -112,7 +112,15 @@ class AgendaController extends Controller
                     Cadastro::create($data);
     
                     //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
-                    $salas = Sala::exibicao()->get();
+                    if($user->hasPermissionTo('admin')){
+                        $salas = Sala::exibicao()->orderBybloco()->orderByData()->orderByHora()->get();
+
+                        $polos = Polo::exibicao()->get();
+                    }else{
+                        $salas = Sala::exibicao()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
+                
+                        $polos = Polo::exibicao()->verificaPolo()->get();
+                    }
             
                     for ($i=0; $i < count($salas); $i++) { 
                         $salas[$i]->date_formated = $salas[$i]->data;
@@ -159,7 +167,15 @@ class AgendaController extends Controller
                     }
                     
                     //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
-                    $salas = Sala::exibicao()->get();
+                    if($user->hasPermissionTo('admin')){
+                        $salas = Sala::exibicao()->orderBybloco()->orderByData()->orderByHora()->get();
+
+                        $polos = Polo::exibicao()->get();
+                    }else{
+                        $salas = Sala::exibicao()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
+                
+                        $polos = Polo::exibicao()->verificaPolo()->get();
+                    }
             
                     for ($i=0; $i < count($salas); $i++) { 
                         $salas[$i]->date_formated = $salas[$i]->data;
@@ -176,7 +192,15 @@ class AgendaController extends Controller
                 }
             }else{
                 //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
-                $salas = Sala::exibicao()->get();
+                if($user->hasPermissionTo('admin')){
+                    $salas = Sala::exibicao()->orderBybloco()->orderByData()->orderByHora()->get();
+
+                    $polos = Polo::exibicao()->get();
+                }else{
+                    $salas = Sala::exibicao()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
+            
+                    $polos = Polo::exibicao()->verificaPolo()->get();
+                }
         
                 for ($i=0; $i < count($salas); $i++) { 
                     $salas[$i]->date_formated = $salas[$i]->data;
@@ -204,7 +228,15 @@ class AgendaController extends Controller
             }
         }else{
             //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
-            $salas = Sala::exibicao()->get();
+            if($user->hasPermissionTo('admin')){
+                $salas = Sala::exibicao()->orderBybloco()->orderByData()->orderByHora()->get();
+
+                $polos = Polo::exibicao()->get();
+            }else{
+                $salas = Sala::exibicao()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
+        
+                $polos = Polo::exibicao()->verificaPolo()->get();
+            }
     
             for ($i=0; $i < count($salas); $i++) { 
                 $salas[$i]->date_formated = $salas[$i]->data;
