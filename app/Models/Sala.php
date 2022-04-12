@@ -11,7 +11,7 @@ class Sala extends Model
     public $timestamps = false;
     use HasFactory;
 
-    protected $fillable = ['bloco', 'hora', 'data', 'qtd_maquinas', 'nsala', 'polo', 'qtd_maquinas_original'];
+    protected $fillable = ['bloco', 'hora', 'data', 'qtd_maquinas', 'nsala', 'polo', 'qtd_maquinas_original', 'status'];
 
     public function scopeJoinPolos($query){
         return $query->join('polos', 'salas.polo', '=', 'polos.id')
@@ -22,6 +22,11 @@ class Sala extends Model
     {
         return $query->joinPolos()
                      ->where('data', '>=', date('Y-m-d'));
+    }
+
+    public function scopeStatusAtivo($query)
+    {
+        return $query->where('salas.status', 'Ativo');
     }
 
     public function scopeVerificaPolo($query){
@@ -70,7 +75,6 @@ class Sala extends Model
     {
         $this->attributes['hour_formated'] = date('H:i', strtotime($value));
     }
-
 
     public function cadastros()
     {
