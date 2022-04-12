@@ -50,6 +50,7 @@
             @elsecan('admin')
                 <li><a href="{{ route('admin.createSala') }}" class="btn btn-primary">Cadastrar Sala</a></li>
                 <li><a href="{{ route('admin.createPolo') }}" class="btn btn-primary">Cadastrar Polo</a></li>
+                <li><a href="{{ route('admin.createExport') }}" class="btn btn-primary">Exportar Excel</a></li>
             @endcan
         </ul>
         <form class="form-inline" action="/search" method="GET"> 

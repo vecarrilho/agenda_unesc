@@ -21,6 +21,10 @@ Route::get('/admin/create/polo', [AdminController::class, 'createPolo'])
     ->middleware('auth')
     ->name('admin.createPolo');
 
+Route::get('/admin/create/export', [AdminController::class, 'createExport'])
+    ->middleware('auth')
+    ->name('admin.createExport');
+
 Route::post('/admin/store/polo', [AdminController::class, 'storePolo'])
     ->middleware('auth')
     ->name('admin.storePolo');

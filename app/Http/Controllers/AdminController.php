@@ -39,6 +39,37 @@ class AdminController extends Controller
         return view('admin.create.polo');
     }
 
+    public function createExport()
+    {
+
+        return view('admin.create.export');
+    }
+
+    public function searchExport()
+    {
+        $cadastro = Cadasrto::find(Auth::cadastro()->id);
+
+        //captura valores dos filtros
+        if(request('data')){
+            $dataFilter = request('data');
+        }else{
+            $dataFilter = session('data');
+        }
+
+        //adiciona os valores do filtro em uma sessão
+        session(['data' => $dataFilter]);
+
+        if ($dataFilter) {
+                $salas = Sala::joinPolos()->data($dataFilter)->orderByData()->get();
+            }else{
+                $salas = Sala::exibicao()->orderByData()->get();
+            }
+
+         //formata data e hora
+         for ($i=0; $i < count($salas); $i++) { 
+            $salas[$i]->hour_formated = $salas[$i]->hora;
+        }
+    }
     /**
      * Store a newly created resource in storage.
      *
