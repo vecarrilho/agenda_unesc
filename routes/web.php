@@ -5,8 +5,8 @@ use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\AdminController;
 
 
-Route::resource('agenda', AgendaController::class);
-Route::resource('admin', AdminController::class);
+Route::resource('agenda', AgendaController::class)->middleware('auth');
+Route::resource('admin', AdminController::class)->middleware('auth');
 
 Route::get('/', [AgendaController::class, 'index']);
 
