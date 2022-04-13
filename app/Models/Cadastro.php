@@ -17,6 +17,18 @@ class Cadastro extends Model
         return $query->where('id_sala', $id_sala)->count();
     }
 
+    public function scopeJoinSalas($query){
+        return $query->join('salas', 'cadastros.id_sala', 'salas.id');
+    }
+
+    public function scopeJoinUsers($query){
+        return $query->join('users', 'cadastros.id_usuario', 'users.id');
+    }
+
+    public function scopeJoinPolos($query){
+        return $query->join('polos', 'salas.polo', 'polos.id');
+    }
+
     public function scopeVerificaAgenda($query, $id_aluno, $id_sala)
     {
         return $query->where([
