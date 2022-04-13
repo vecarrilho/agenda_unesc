@@ -49,15 +49,8 @@ class AgendaController extends Controller
                     for ($i=0; $i < count($datas); $i++) { 
                         $datas[$i]->date_formated = $datas[$i]->data;
                     }
-            
-                    $cadastros = '';
-            
-                    //popula o array $cadastros['id_sala'] para verificar quantos computadores estão ocupados em cada sala
-                    foreach($salas as $sala){
-                        $cadastros[$sala->id] = Cadastro::countMaquinas($sala->id);
-                    }
                     
-                    return view('agenda.show', ['salas' => $salas, 'cadastros' => $cadastros, 'polos' => $polos, 'datas' => $datas]);
+                    return view('agenda.show', ['salas' => $salas, 'polos' => $polos, 'datas' => $datas]);
                 }
             }else{
                 return view('welcome');
