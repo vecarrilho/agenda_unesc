@@ -33,9 +33,7 @@ ul.lista-botoes li a{
 }
 
 .container{
-    padding: 10px 0;
-    margin-left: 20px;
-    margin-right: 20px;
+    padding: 10px;
     max-width: 100%;
 }
 
