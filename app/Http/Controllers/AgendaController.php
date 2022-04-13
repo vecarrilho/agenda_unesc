@@ -100,7 +100,7 @@ class AgendaController extends Controller
                 //verifica se usuario tem mais de 3 agendamentos
                 $cadastrosUsuario = Cadastro::countCadastros()->count();
                 
-                if($cadastrosUsuario < 3){
+                if($cadastrosUsuario < 5){
                     //adiciona os dados na tabela cadastro
                     Cadastro::create($data);
     
@@ -181,7 +181,7 @@ class AgendaController extends Controller
                     // foreach($salas as $sala){
                     //     $cadastros[$sala->id] = Cadastro::countMaquinas($sala->id);
                     // }
-                    return view('agenda.show', ['salas' => $salas, 'polos' => $polos, 'datas' => $datas])->with('msgError', 'Máximo de 3 agendamentos atingidos!');    
+                    return view('agenda.show', ['salas' => $salas, 'polos' => $polos, 'datas' => $datas])->with('msgError', 'Máximo de 5 agendamentos atingidos!');    
                 }
             }else{
                 //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
