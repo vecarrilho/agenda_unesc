@@ -33,6 +33,7 @@ class User extends Authenticatable
         'email',
         'password',
         'perfil',
+        'cd_pessoa',
         'tipo_deficiencia',
         'cd_polo',
         'nm_polo',
