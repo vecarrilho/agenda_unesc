@@ -4,9 +4,10 @@ namespace App\Exports;
 
 use App\Models\Sala;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class salasExport implements FromCollection, WithHeadings
+class salasExport implements FromCollection, WithHeadings, ShouldAutoSize
 {
     protected $data;
 
