@@ -39,6 +39,11 @@ class Sala extends Model
                      ->groupBy('data');
     }
 
+    public function scopeGroupDatasRelatorio($query){
+        return $query->select('data')
+                     ->groupBy('data');
+    }
+
     public function scopeData($query, $data)
     {
         return $query->where('data', $data);

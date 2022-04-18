@@ -93,7 +93,7 @@ class AdminController extends Controller
     {   
         $user = User::find(Auth::user()->id);
         if($user->hasPermissionTo('admin')){
-            $salas = Sala::groupDatas()->get();
+            $salas = Sala::statusAtivo()->groupDatasRelatorio()->get();
     
             for ($i=0; $i < count($salas); $i++) { 
                 $salas[$i]->date_formated = $salas[$i]->data;
