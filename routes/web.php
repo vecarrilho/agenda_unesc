@@ -37,5 +37,9 @@ Route::post('/admin/store/sala', [AdminController::class, 'storeSala'])
     ->middleware('auth')
     ->name('admin.storeSala');
 
+Route::get('/export', [AdminController::class, 'export'])
+    ->middleware('auth')
+    ->name('admin.export');
+
 //rota ao logar
 Route::middleware(['auth:sanctum', 'verified'])->get('/', [AgendaController::class, 'index']);

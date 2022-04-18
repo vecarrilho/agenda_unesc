@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\salasExport;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreUpdateSalaFormRequest;
+use App\Models\Cadastro;
 use App\Models\Polo;
 use App\Models\Sala;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Validator;
 
 class AdminController extends Controller
@@ -45,31 +48,6 @@ class AdminController extends Controller
         return view('admin.create.export');
     }
 
-    public function searchExport()
-    {
-        $cadastro = Cadasrto::find(Auth::cadastro()->id);
-
-        //captura valores dos filtros
-        if(request('data')){
-            $dataFilter = request('data');
-        }else{
-            $dataFilter = session('data');
-        }
-
-        //adiciona os valores do filtro em uma sessão
-        session(['data' => $dataFilter]);
-
-        if ($dataFilter) {
-                $salas = Sala::joinPolos()->data($dataFilter)->orderByData()->get();
-            }else{
-                $salas = Sala::exibicao()->orderByData()->get();
-            }
-
-         //formata data e hora
-         for ($i=0; $i < count($salas); $i++) { 
-            $salas[$i]->hour_formated = $salas[$i]->hora;
-        }
-    }
     /**
      * Store a newly created resource in storage.
      *
@@ -112,8 +90,19 @@ class AdminController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        //
+    {   
+        $user = User::find(Auth::user()->id);
+        if($user->hasPermissionTo('admin')){
+            $salas = Sala::groupDatas()->get();
+    
+            for ($i=0; $i < count($salas); $i++) { 
+                $salas[$i]->date_formated = $salas[$i]->data;
+            }
+    
+            return view('admin.show', ['salas' => $salas]);
+        }else{
+            return redirect(route('/')) ;
+        }
     }
 
     /**
@@ -148,5 +137,16 @@ class AdminController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function export(){
+        $user = User::find(Auth::user()->id);
+        if($user->hasPermissionTo('admin')){
+            $data = request('data');
+    
+            return Excel::download(new salasExport($data), 'salas.xlsx');
+        }else{
+            return redirect(route('agenda.index'));
+        }
     }
 }

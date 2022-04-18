@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <title>Cadastrar Sala</title>
+    <title>Gerar Relatório</title>
 </head>
 <body>
     <header>
@@ -36,29 +36,21 @@
     </header>
     <div class="container">
         <a href="/" class="btn btn-secondary btn-voltar" >Voltar</a>
-
-    <form class="form-inline" action="/searchExport" method="GET"> 
-        <div class="form-group input-filter">
-            <label class="sr-only" for="inlineFormInputName2">Data</label>
-            <input class="form-control" id="inlineFormInputName2" type="date" name="data" min="{{date('Y-m-d')}}" value="{{ session('data') }}">
-        </div>
-        <div class="form-group2 input-filter">
-            <input class="form-control" type="submit" value="Filtrar">
-        </div> 
-    </form>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Aluno</th>
-                    <th>Bloco</th>
-                    <th>Polo</th>
-                    <th>Hora</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+        <form class="form-inline" action="{{ route('admin.export') }}" method="GET"> 
+            @csrf
+            <div class="form-group input-filter">
+                <label class="sr-only" for="inlineFormInputName2">Data</label>
+                <select name="data" class="form-select">
+                    <option value="">Selecione uma data</option>
+                    @foreach ($salas as $sala)
+                        <option value="{{ $sala->data }}">{{ $sala->date_formated }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group2 input-filter">
+                <input class="form-control" type="submit" value="Filtrar">
+            </div> 
+        </form>
     </div>
 
 

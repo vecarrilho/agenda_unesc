@@ -44,6 +44,16 @@ class Sala extends Model
         return $query->where('data', $data);
     }
 
+    public function scopeSalasExport($query, $data)
+    {
+        return $query->select('name', 'bloco', 'hora')
+                     ->join('cadastros', 'cadastros.id_sala', 'salas.id')
+                     ->join('users', 'users.id', 'cadastros.id_usuario')
+                     ->where('data', $data)
+                     ->orderBy('name', 'asc')
+                     ->orderBy('hora', 'asc');
+    }
+
     public function scopeHora($query, $hora)
     {
         return $query->where('hora', date('H:i:s', strtotime($hora)));
