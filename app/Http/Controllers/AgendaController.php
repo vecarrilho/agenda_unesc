@@ -93,10 +93,10 @@ class AgendaController extends Controller
             $salas = Sala::find($data['id_sala']);
 
             //verifica numero de máquinas já ocupadas
-            $maquinasReservadas = Cadastro::countMaquinas($salas->id);
+            // $maquinasReservadas = Cadastro::countMaquinas($salas->id);
 
             //verifica se o numero de vagas disponiveis é diferente do total de vagas ocupadas
-            if($salas->qtd_maquinas != $maquinasReservadas){
+            if($salas->qtd_maquinas != 0){
                 //verifica se usuario tem mais de 3 agendamentos
                 $cadastrosUsuario = Cadastro::countCadastros()->count();
                 
