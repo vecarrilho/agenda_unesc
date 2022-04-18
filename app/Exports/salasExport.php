@@ -6,8 +6,10 @@ use App\Models\Sala;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class salasExport implements FromCollection, WithHeadings, ShouldAutoSize
+class salasExport implements FromCollection, WithHeadings, ShouldAutoSize, WithStyles
 {
     protected $data;
 
@@ -29,6 +31,14 @@ class salasExport implements FromCollection, WithHeadings, ShouldAutoSize
             'Nome',
             'Bloco',
             'Hora',
+        ];
+    }
+
+    public function styles(Worksheet $sheet)
+    {
+        return [
+        // Style the first row as bold text.
+        1    => ['font' => ['bold' => true]],
         ];
     }
 }
