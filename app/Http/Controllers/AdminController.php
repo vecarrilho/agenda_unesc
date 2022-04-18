@@ -144,7 +144,7 @@ class AdminController extends Controller
         if($user->hasPermissionTo('admin')){
             $data = request('data');
     
-            return Excel::download(new salasExport($data), 'salas.xlsx');
+            return Excel::download(new salasExport($data), 'salas.xls');
         }else{
             return redirect(route('agenda.index'));
         }
