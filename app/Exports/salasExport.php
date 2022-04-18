@@ -4,8 +4,9 @@ namespace App\Exports;
 
 use App\Models\Sala;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class salasExport implements FromCollection
+class salasExport implements FromCollection, WithHeadings
 {
     protected $data;
 
@@ -19,5 +20,14 @@ class salasExport implements FromCollection
     public function collection()
     {
         return Sala::salasExport($this->data)->get();
+    }
+
+    public function headings(): array
+    {
+        return [
+            'Nome',
+            'Bloco',
+            'Hora',
+        ];
     }
 }
