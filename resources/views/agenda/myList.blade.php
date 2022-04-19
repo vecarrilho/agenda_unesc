@@ -44,9 +44,9 @@
         </div>
     </div>
     <div class="container">
-        <ul class="lista-botoes inline-flex">
+        {{-- <ul class="lista-botoes inline-flex">
             <li><a href="{{ route('agenda.show', true) }}" class="btn btn-primary">Horários Disponíveis</a></li>
-        </ul>
+        </ul> --}}
         <h2>Meus horários agendados</h2>
         <table class="table">
             <thead>
@@ -65,11 +65,12 @@
                         <td>{{ $cadastro->bloco }}</td>
                         <td>{{ $cadastro->date_formated }}</td>
                         <td>{{ $cadastro->hour_formated }}</td>
-                        <form action="{{ route('agenda.destroy', ['agenda' => $cadastro->id_cadastro]) }}" method="POST">
+                        <td></td>
+                        {{-- <form action="{{ route('agenda.destroy', ['agenda' => $cadastro->id_cadastro]) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <td><button type="submit" class="btn btn-danger"><span>Cancelar este horário</span></button></td>
-                        </form>
+                        </form> --}}
                     </tr> 
                 @endforeach
             </tbody>
