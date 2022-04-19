@@ -65,6 +65,7 @@ class AdminController extends Controller
         // $sala->save();
         $data = $request->all();
         $data['qtd_maquinas_original'] = $request->qtd_maquinas;
+        $data['status'] = 'Ativo';
 
         Sala::create($data);
 

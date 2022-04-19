@@ -58,10 +58,10 @@
                 <label>Bloco</label>
                 <input class="form-control" type="text" name="bloco" placeholder="Bloco">
             </div>
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label>Sala</label>
                 <input class="form-control" type="text" name="nsala" placeholder="Sala">
-            </div>
+            </div> --}}
             <div class="form-group">
                 <label>Quantidade de Maquinas</label>
                 <input class="form-control" type="number" name="qtd_maquinas" placeholder="Quantidade de maquinas">
@@ -83,14 +83,14 @@
                     @endforeach
                 </select>
             </div>
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label>Status</label>
                 <select class="form-select" name="status">
                     <option value="">Selecione um polo</option>
                     <option value="Ativo">Ativo</option>
                     <option value="Inativo">Inativo</option>
                 </select>
-            </div>
+            </div> --}}
             <div class="form-group">
                 <input class="form-control" type="submit" value="Salvar">
             </div>
