@@ -27,31 +27,31 @@ class AgendaController extends Controller
             if($user->hasPermissionTo('user')){
                 //retorna todos as salas que o usuario esta cadastrado
                 $cadastros = Cadastro::minhaLista(Auth::user()->id)->get();
-                if(count($cadastros)>0){
+                // if(count($cadastros)>0){
                     for ($i=0; $i < count($cadastros); $i++) { 
                         $cadastros[$i]->date_formated = $cadastros[$i]->data;
                         $cadastros[$i]->hour_formated = $cadastros[$i]->hora;
                     }
                     return view('agenda.myList', ['cadastros' => $cadastros,]);
-                }else{
-                    //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
-                    $salas = Sala::exibicao()->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
+                // }else{
+                //     //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
+                //     $salas = Sala::exibicao()->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
 
-                    $datas = Sala::groupDatas()->statusAtivo()->verificaPolo()->get();
+                //     $datas = Sala::groupDatas()->statusAtivo()->verificaPolo()->get();
             
-                    $polos = Polo::exibicao()->verificaPolo()->get();
+                //     $polos = Polo::exibicao()->verificaPolo()->get();
             
-                    for ($i=0; $i < count($salas); $i++) { 
-                        $salas[$i]->date_formated = $salas[$i]->data;
-                        $salas[$i]->hour_formated = $salas[$i]->hora;
-                    }
+                //     for ($i=0; $i < count($salas); $i++) { 
+                //         $salas[$i]->date_formated = $salas[$i]->data;
+                //         $salas[$i]->hour_formated = $salas[$i]->hora;
+                //     }
             
-                    for ($i=0; $i < count($datas); $i++) { 
-                        $datas[$i]->date_formated = $datas[$i]->data;
-                    }
+                //     for ($i=0; $i < count($datas); $i++) { 
+                //         $datas[$i]->date_formated = $datas[$i]->data;
+                //     }
                     
-                    return view('agenda.show', ['salas' => $salas, 'polos' => $polos, 'datas' => $datas]);
-                }
+                //     return view('agenda.show', ['salas' => $salas, 'polos' => $polos, 'datas' => $datas]);
+                // }
             }else{
                 return view('welcome');
             }
