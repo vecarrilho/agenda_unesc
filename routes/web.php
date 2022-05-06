@@ -9,6 +9,7 @@ Route::resource('agenda', AgendaController::class)->middleware('auth');
 Route::resource('admin', AdminController::class)->middleware('auth');
 
 Route::get('/', [AgendaController::class, 'index']);
+Route::get('/dashboard', [AgendaController::class, 'index']);
 
 Route::get('/search', [AgendaController::class, 'search'])
     ->middleware('auth');
