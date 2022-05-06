@@ -110,11 +110,11 @@
                                 </span>
                             </button></td>
                             <td>
-                                {{-- <form action="{{route('agenda.store')}}" method="POST">
+                                <form action="{{route('agenda.store')}}" method="POST">
                                     @csrf
                                     <input type="hidden" name="id_sala" value="{{$sala->id}}">
-                                    <button class="btn btn-primary" type="submit">Agendar este horário</button>
-                                </form>  --}}
+                                    <button class="btn btn-primary" type="submit" >Agendar este horário</button>
+                                </form> 
                             </td>
                         @else
                             <td><button type="button" class="btn btn-light position-relative">{{ $sala->hour_formated }}
