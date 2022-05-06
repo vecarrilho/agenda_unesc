@@ -69,6 +69,10 @@ class Sala extends Model
         return $query->where('polo', $polo);
     }
 
+    public function scopeTipoProva($query, $tipoProva){
+        return $query->where('tipo_prova', $tipoProva);
+    } 
+
     public function scopeOrderByData($query){
         return $query->orderBy('data', 'asc');
     }
