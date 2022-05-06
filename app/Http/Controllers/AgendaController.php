@@ -27,31 +27,33 @@ class AgendaController extends Controller
             if($user->hasPermissionTo('user')){
                 //retorna todos as salas que o usuario esta cadastrado
                 $cadastros = Cadastro::minhaLista(Auth::user()->id)->get();
-                // if(count($cadastros)>0){
+                if(count($cadastros)>0){
                     for ($i=0; $i < count($cadastros); $i++) { 
                         $cadastros[$i]->date_formated = $cadastros[$i]->data;
                         $cadastros[$i]->hour_formated = $cadastros[$i]->hora;
                     }
                     return view('agenda.myList', ['cadastros' => $cadastros,]);
-                // }else{
-                //     //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
-                //     $salas = Sala::exibicao()->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
+                }else{
+                    //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
+                    //REC
+                    $salas = Sala::exibicao()->statusAtivo()->verificaPolo()->tipoProva('PR')->orderBybloco()->orderByData()->orderByHora()->get();
 
-                //     $datas = Sala::groupDatas()->statusAtivo()->verificaPolo()->get();
+                    //REC
+                    $datas = Sala::tipoProva('PR')->groupDatas()->statusAtivo()->verificaPolo()->get();
             
-                //     $polos = Polo::exibicao()->verificaPolo()->get();
+                    $polos = Polo::exibicao()->verificaPolo()->get();
             
-                //     for ($i=0; $i < count($salas); $i++) { 
-                //         $salas[$i]->date_formated = $salas[$i]->data;
-                //         $salas[$i]->hour_formated = $salas[$i]->hora;
-                //     }
-            
-                //     for ($i=0; $i < count($datas); $i++) { 
-                //         $datas[$i]->date_formated = $datas[$i]->data;
-                //     }
+                    for ($i=0; $i < count($salas); $i++) { 
+                        $salas[$i]->date_formated = $salas[$i]->data;
+                        $salas[$i]->hour_formated = $salas[$i]->hora;
+                    }
                     
-                //     return view('agenda.show', ['salas' => $salas, 'polos' => $polos, 'datas' => $datas]);
-                // }
+                    for ($i=0; $i < count($datas); $i++) { 
+                        $datas[$i]->date_formated = $datas[$i]->data;
+                    }
+                    
+                    return view('agenda.show', ['salas' => $salas, 'polos' => $polos, 'datas' => $datas]);
+                }
             }else{
                 return view('welcome');
             }
@@ -97,7 +99,7 @@ class AgendaController extends Controller
 
             //verifica se o numero de vagas disponiveis é diferente do total de vagas ocupadas
             if($salas->qtd_maquinas != 0){
-                //verifica se usuario tem mais de 3 agendamentos
+                //verifica se usuario tem mais de 5 agendamentos
                 $cadastrosUsuario = Cadastro::countCadastros()->count();
                 
                 if($cadastrosUsuario < 5){
@@ -110,7 +112,7 @@ class AgendaController extends Controller
 
                         $polos = Polo::exibicao()->get();
                     }else{
-                        $salas = Sala::exibicao()->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
+                        $salas = Sala::exibicao()->tipoProva('PR')->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
                 
                         $polos = Polo::exibicao()->verificaPolo()->get();
                     }
@@ -123,7 +125,7 @@ class AgendaController extends Controller
                     if($user->hasPermissionTo('admin')){
                         $datas = Sala::groupDatas()->get();
                     }else{
-                        $datas = Sala::statusAtivo()->groupDatas()->verificaPolo()->get();
+                        $datas = Sala::statusAtivo()->tipoProva('PR')->groupDatas()->verificaPolo()->get();
                     }
             
                     for ($i=0; $i < count($datas); $i++) { 
@@ -152,7 +154,8 @@ class AgendaController extends Controller
                     if($user->hasPermissionTo('admin')){
                         $datas = Sala::groupDatas()->get();
                     }else{
-                        $datas = Sala::statusAtivo()->groupDatas()->verificaPolo()->get();
+                        //REC
+                        $datas = Sala::statusAtivo()->tipoProva('PR')->groupDatas()->verificaPolo()->get();
                     }
             
                     for ($i=0; $i < count($datas); $i++) { 
@@ -165,7 +168,8 @@ class AgendaController extends Controller
 
                         $polos = Polo::exibicao()->get();
                     }else{
-                        $salas = Sala::exibicao()->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
+                        //REC
+                        $salas = Sala::exibicao()->tipoProva('PR')->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
                 
                         $polos = Polo::exibicao()->verificaPolo()->get();
                     }
@@ -190,7 +194,8 @@ class AgendaController extends Controller
 
                     $polos = Polo::exibicao()->get();
                 }else{
-                    $salas = Sala::exibicao()->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
+                    //REC
+                    $salas = Sala::exibicao()->tipoProva('PR')->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
             
                     $polos = Polo::exibicao()->verificaPolo()->get();
                 }
@@ -203,7 +208,8 @@ class AgendaController extends Controller
                 if($user->hasPermissionTo('admin')){
                     $datas = Sala::groupDatas()->get();
                 }else{
-                    $datas = Sala::statusAtivo()->groupDatas()->verificaPolo()->get();
+                    //REC
+                    $datas = Sala::statusAtivo()->tipoProva('PR')->groupDatas()->verificaPolo()->get();
                 }
         
                 for ($i=0; $i < count($datas); $i++) { 
@@ -226,7 +232,8 @@ class AgendaController extends Controller
 
                 $polos = Polo::exibicao()->get();
             }else{
-                $salas = Sala::exibicao()->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
+                //REC
+                $salas = Sala::exibicao()->tipoProva('PR')->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
         
                 $polos = Polo::exibicao()->verificaPolo()->get();
             }
@@ -239,7 +246,8 @@ class AgendaController extends Controller
             if($user->hasPermissionTo('admin')){
                 $datas = Sala::groupDatas()->get();
             }else{
-                $datas = Sala::statusAtivo()->verificaPolo()->groupDatas()->get();
+                //REC
+                $datas = Sala::statusAtivo()->tipoProva('PR')->verificaPolo()->groupDatas()->get();
             }
     
             for ($i=0; $i < count($datas); $i++) { 
@@ -279,9 +287,11 @@ class AgendaController extends Controller
     
             $polos = Polo::exibicao()->get();
         }else{
-            $salas = Sala::exibicao()->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
+            //REC
+            $salas = Sala::exibicao()->tipoProva('PR')->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
 
-            $datas = Sala::statusAtivo()->groupDatas()->verificaPolo()->get();
+            //REC
+            $datas = Sala::statusAtivo()->tipoProva('PR')->groupDatas()->verificaPolo()->get();
     
             $polos = Polo::exibicao()->verificaPolo()->get();
         }
@@ -379,7 +389,8 @@ class AgendaController extends Controller
                 if($user->hasPermissionTo('admin')){
                     $salas = Sala::joinPolos()->data($dataFilter)->orderBybloco()->orderByData()->orderByHora()->get();
                 }else{
-                    $salas = Sala::joinPolos()->statusAtivo()->verificaPolo()->data($dataFilter)->orderBybloco()->orderByData()->orderByHora()->get();
+                    //REC
+                    $salas = Sala::joinPolos()->tipoProva('PR')->statusAtivo()->verificaPolo()->data($dataFilter)->orderBybloco()->orderByData()->orderByHora()->get();
                 }
             }
         } elseif ($poloFilter) {
@@ -388,7 +399,7 @@ class AgendaController extends Controller
             if($user->hasPermissionTo('admin')){
                 $salas = Sala::exibicao()->orderBybloco()->orderByData()->orderByHora()->get();
             }else{
-                $salas = Sala::exibicao()->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
+                $salas = Sala::exibicao()->tipoProva('PR')->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
             }
         }
 
@@ -396,7 +407,7 @@ class AgendaController extends Controller
         if($user->hasPermissionTo('admin')){
             $datas = Sala::groupDatas()->get();
         }else{
-            $datas = Sala::statusAtivo()->groupDatas()->verificaPolo()->get();
+            $datas = Sala::statusAtivo()->tipoProva('PR')->groupDatas()->verificaPolo()->get();
         }
 
         //formata data e hora
