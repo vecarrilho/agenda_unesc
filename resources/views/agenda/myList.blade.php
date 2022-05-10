@@ -47,6 +47,22 @@
         <ul class="lista-botoes inline-flex">
             <li><a href="{{ route('agenda.show', true) }}" class="btn btn-primary">Horários Disponíveis</a></li>
         </ul>
+        <form class="form-inline" action="/search" method="GET"> 
+            @can('writer')
+                <div class="form-group input-filter">
+                    <label>Aluno</label>
+                    <select name="aluno" id="aluno" onchange="getAluno()" class="form-select" data-live-search="true" required>
+                        <option value="">Selecione um código de aluno</option>
+                        @foreach($users as $user)
+                            <option value="{{ $user->cd_pessoa }}">{{ $user->nomeExibicao  }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            @endcan
+            <div class="form-group2 input-filter">
+                <input class="form-control" type="submit" value="Filtrar">
+            </div> 
+        </form>
         <h2>Meus horários agendados</h2>
         <table class="table">
             <thead>

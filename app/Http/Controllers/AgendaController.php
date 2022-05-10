@@ -182,6 +182,7 @@ class AgendaController extends Controller
     {
         $user = User::find(Auth::user()->id);
         $polos = '';
+        $users = '';
         
         //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
         if($user->hasPermissionTo('admin')){
@@ -190,6 +191,16 @@ class AgendaController extends Controller
             $datas = Sala::groupDatas()->get();
     
             $polos = Polo::exibicao()->get();
+        }elseif($user->hasPermissionTo('writer')){
+            $users = User::where('cd_pessoa', '!=', 1)->orderByCodigo()->get();
+
+            for ($i=0; $i < count($users); $i++) { 
+                $users[$i]->nomeExibicao = $users[$i]->cd_pessoa . '-' . $users[$i]->name;
+            }
+
+            $salas = Sala::exibicao()->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
+
+            $datas = Sala::statusAtivo()->groupDatas()->verificaPolo()->get();
         }else{
             $salas = Sala::exibicao()->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
 
@@ -205,7 +216,7 @@ class AgendaController extends Controller
             $datas[$i]->date_formated = $datas[$i]->data;
         }
         
-        return view('agenda.show', ['salas' => $salas, 'polos' => $polos, 'datas' => $datas]);
+        return view('agenda.show', ['salas' => $salas, 'polos' => $polos, 'datas' => $datas, 'users' => $users]);
     }
 
     /**
@@ -239,9 +250,18 @@ class AgendaController extends Controller
      */
     public function destroy($id)
     {
+        $users = '';
         //deleta o cadastro do usuario naquela sala
         Cadastro::deleteCadastro($id)->delete();
         
+        $user = User::find(Auth::user()->id);
+        if($user->hasPermissionTo('writer')){
+            $users = User::where('cd_pessoa', '!=', 1)->orderByCodigo()->get();
+
+            for ($i=0; $i < count($users); $i++) { 
+                $users[$i]->nomeExibicao = $users[$i]->cd_pessoa . '-' . $users[$i]->name;
+            }
+        }
         //retorna todos as salas que o usuario esta cadastrado
         $cadastros = Cadastro::minhaLista(Auth::user()->id)->get();
 
@@ -250,7 +270,7 @@ class AgendaController extends Controller
             $cadastros[$i]->hour_formated = $cadastros[$i]->hora;
         }
 
-        return view('agenda.myList', ['cadastros' => $cadastros])->with('msgSuccess', 'Agendamento removido com sucesso!');
+        return view('agenda.myList', ['cadastros' => $cadastros, 'users' => $users])->with('msgSuccess', 'Agendamento removido com sucesso!');
     }
 
     public function search()
@@ -352,12 +372,23 @@ class AgendaController extends Controller
     {
         //retorna todos as salas que o usuario esta cadastrado
         $cadastros = Cadastro::minhaLista(Auth::user()->id)->get();
+        $user = User::find(Auth::user()->id);
+
+        if($user->hasPermissionTo('writer')){
+            $users = User::where('cd_pessoa', '!=', 1)->orderByCodigo()->get();
+
+            for ($i=0; $i < count($users); $i++) { 
+                $users[$i]->nomeExibicao = $users[$i]->cd_pessoa . '-' . $users[$i]->name;
+            }
+        }else{
+            $users = '';
+        }
 
         for ($i=0; $i < count($cadastros); $i++) { 
             $cadastros[$i]->date_formated = $cadastros[$i]->data;
             $cadastros[$i]->hour_formated = $cadastros[$i]->hora;
         }
-        return view('agenda.myList', ['cadastros' => $cadastros]);
+        return view('agenda.myList', ['cadastros' => $cadastros, 'users' => $users]);
     }
 
     public function getAluno($id){
