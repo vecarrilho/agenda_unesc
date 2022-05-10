@@ -11,7 +11,7 @@ class Sala extends Model
     public $timestamps = false;
     use HasFactory;
 
-    protected $fillable = ['bloco', 'hora', 'data', 'qtd_maquinas', 'nsala', 'polo', 'qtd_maquinas_original', 'status'];
+    protected $fillable = ['bloco', 'hora', 'data', 'qtd_maquinas', 'nsala', 'polo', 'qtd_maquinas_original', 'status', 'tipo_prova'];
 
     public function scopeJoinPolos($query){
         return $query->join('polos', 'salas.polo', '=', 'polos.id')

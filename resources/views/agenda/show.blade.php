@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <title>Lista Agendamento</title>
 </head>
 <body>
@@ -67,6 +68,24 @@
                                 <option value="{{ $polo->id }}">{{ $polo->descricao }}</option>
                             @endif
                         @endforeach
+                    </select>
+                </div>
+            @elsecan('writer')
+                <div class="form-group input-filter">
+                    <label>Aluno</label>
+                    <select name="aluno" id="aluno" onchange="getAluno()" class="form-select" data-live-search="true">
+                        <option value="">Selecione um código de aluno</option>
+                        @foreach($users as $user)
+                            <option value="{{ $user->cd_pessoa }}">{{ $user->nomeExibicao  }}</option>
+                        @endforeach
+                        {{-- <option value="">Selecione um polo</option>
+                        @foreach($polos as $polo)
+                            @if($polo->id == session('polo'))
+                                <option value="{{ $polo->id }}" selected>{{ $polo->descricao }}</option>
+                            @else
+                                <option value="{{ $polo->id }}">{{ $polo->descricao }}</option>
+                            @endif
+                        @endforeach --}}
                     </select>
                 </div>
             @endcan
@@ -135,4 +154,17 @@
         </table>
     </div>
 </body>
+<script type="text/javascript">
+    // function getAluno(){
+    //     let idAluno = $('#aluno').val();
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: "{{ route('getAluno.get') }}",
+    //         data: {idAluno : 'idAluno'},
+    //         success: function(result){
+    //             console.log(result);
+    //         }
+    //     });
+    // }
+</script>
 </html>

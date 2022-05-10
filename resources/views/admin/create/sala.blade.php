@@ -83,6 +83,14 @@
                     @endforeach
                 </select>
             </div>
+            <div class="form-group">
+                <label>Tipo da Prova</label>
+                <select class="form-select" name="tipo_prova">
+                    <option value="">Selecione um tipo de prova</option>
+                    <option value="PN">Prova Normal</option>
+                    <option value="PR">Prova de Recuperação</option>
+                </select>
+            </div>
             {{-- <div class="form-group">
                 <label>Status</label>
                 <select class="form-select" name="status">

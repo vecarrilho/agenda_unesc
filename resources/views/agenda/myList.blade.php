@@ -65,7 +65,6 @@
                         <td>{{ $cadastro->bloco }}</td>
                         <td>{{ $cadastro->date_formated }}</td>
                         <td>{{ $cadastro->hour_formated }}</td>
-                        <td></td>
                         <form action="{{ route('agenda.destroy', ['agenda' => $cadastro->id_cadastro]) }}" method="POST">
                             @csrf
                             @method('DELETE')

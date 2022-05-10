@@ -70,6 +70,14 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+    public function scopeCodigoAluno($query, $codigo){
+        return $query->where('cd_pessoa', $codigo);
+    }
+
+    public function scopeOrderByCodigo($query){
+        return $query->orderBy('cd_pessoa', 'asc');
+    }
+
 
     public function password(): Attribute
     {
