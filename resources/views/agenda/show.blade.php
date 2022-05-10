@@ -73,7 +73,7 @@
             @elsecan('writer')
                 <div class="form-group input-filter">
                     <label>Aluno</label>
-                    <select name="aluno" id="aluno" onchange="getAluno()" class="form-select" data-live-search="true">
+                    <select name="aluno" id="aluno" onchange="getAluno()" class="form-select" data-live-search="true" required>
                         <option value="">Selecione um código de aluno</option>
                         @foreach($users as $user)
                             <option value="{{ $user->cd_pessoa }}">{{ $user->nomeExibicao  }}</option>
