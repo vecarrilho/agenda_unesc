@@ -52,7 +52,8 @@
                 <li><a href="{{ route('admin.createSala') }}" class="btn btn-primary">Cadastrar Sala</a></li>
                 {{-- <li><a href="{{ route('admin.createPolo') }}" class="btn btn-primary">Cadastrar Polo</a></li> --}}
                 <li><a href="{{ route('admin.show', true) }}" class="btn btn-primary">Exportar Excel</a></li>
-
+            @elsecan('writer')
+                <li><a href="{{ route('agenda.myList', Auth::user()->id) }}" class="btn btn-primary">Meus Agendamentos</a></li>
             @endcan
         </ul>
         <form class="form-inline" action="/search" method="GET"> 
