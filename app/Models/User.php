@@ -71,7 +71,7 @@ class User extends Authenticatable
     ];
 
     public function scopeCodigoAluno($query, $codigo){
-        return $query->where('cd_pessoa', $codigo);
+        return $query->where('id', $codigo);
     }
 
     public function scopeOrderByCodigo($query){

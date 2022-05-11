@@ -14,6 +14,9 @@ Route::get('/dashboard', [AgendaController::class, 'index']);
 Route::get('/search', [AgendaController::class, 'search'])
     ->middleware('auth');
 
+Route::get('/search/MyList', [AgendaController::class, 'searchMyList'])
+    ->middleware('auth');
+
 Route::get('/showMyList/{id_aluno}', [AgendaController::class, 'showMyList'])
     ->name('agenda.myList')
     ->middleware('auth');

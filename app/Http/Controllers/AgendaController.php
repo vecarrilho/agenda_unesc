@@ -100,8 +100,7 @@ class AgendaController extends Controller
         //traz todos dados do form
         $data = $request->all();
         if(session('aluno')){
-            $aluno = User::where('cd_pessoa', session('aluno'))->first();
-            $data['id_usuario'] = $aluno->id;
+            $data['id_usuario'] = session('aluno');
         }else{
             $data['id_usuario'] = Auth::user()->id;
         }
@@ -329,6 +328,7 @@ class AgendaController extends Controller
             if($user->hasPermissionTo('writer')){
                 if($alunoFilter){
                     $poloAluno = User::codigoAluno($alunoFilter)->first();
+
                     $salas = Sala::exibicao()->polo($poloAluno->cd_polo)->orderBybloco()->orderByData()->orderByHora()->get();
                 }else{
                     $salas = Sala::exibicao()->orderBybloco()->orderByData()->orderByHora()->get();
@@ -366,6 +366,39 @@ class AgendaController extends Controller
         }
 
         return view('agenda.show')->with(compact('salas', 'polos', 'datas', 'users'));
+    }
+
+    public function searchMyList()
+    {
+        $user = User::find(Auth::user()->id);
+        $users = '';
+
+        //captura valores dos filtros
+        if(request('aluno')){
+            $alunoFilter = request('aluno');
+        }else{
+            $alunoFilter = '';
+        }
+
+        //adiciona os valores do filtro em uma sessão
+        session(['aluno' => $alunoFilter]);
+
+        if($user->hasPermissionTo('writer')){
+            $users = User::where('cd_pessoa', '!=', 1)->orderByCodigo()->get();
+
+            for ($i=0; $i < count($users); $i++) { 
+                $users[$i]->nomeExibicao = $users[$i]->cd_pessoa . '-' . $users[$i]->name;
+            }
+        }
+        //retorna todos as salas que o usuario esta cadastrado
+        $cadastros = Cadastro::minhaLista($alunoFilter)->get();
+
+        for ($i=0; $i < count($cadastros); $i++) { 
+            $cadastros[$i]->date_formated = $cadastros[$i]->data;
+            $cadastros[$i]->hour_formated = $cadastros[$i]->hora;
+        }
+
+        return view('agenda.myList', ['cadastros' => $cadastros, 'users' => $users]);
     }
     
     public function showMyList($id_aluno)

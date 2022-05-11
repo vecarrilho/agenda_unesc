@@ -47,14 +47,15 @@
         <ul class="lista-botoes inline-flex">
             <li><a href="{{ route('agenda.show', true) }}" class="btn btn-primary">Horários Disponíveis</a></li>
         </ul>
-        <form class="form-inline" action="/search" method="GET"> 
+        <form class="form-inline" action="/search/MyList" method="GET"> 
+            @csrf
             @can('writer')
                 <div class="form-group input-filter">
                     <label>Aluno</label>
                     <select name="aluno" id="aluno" onchange="getAluno()" class="form-select" data-live-search="true" required>
                         <option value="">Selecione um código de aluno</option>
                         @foreach($users as $user)
-                            <option value="{{ $user->cd_pessoa }}">{{ $user->nomeExibicao  }}</option>
+                            <option value="{{ $user->id }}">{{ $user->nomeExibicao  }}</option>
                         @endforeach
                     </select>
                 </div>

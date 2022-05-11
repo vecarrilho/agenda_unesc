@@ -53,10 +53,11 @@
                 {{-- <li><a href="{{ route('admin.createPolo') }}" class="btn btn-primary">Cadastrar Polo</a></li> --}}
                 <li><a href="{{ route('admin.show', true) }}" class="btn btn-primary">Exportar Excel</a></li>
             @elsecan('writer')
-                <li><a href="{{ route('agenda.myList', Auth::user()->id) }}" class="btn btn-primary">Meus Agendamentos</a></li>
+                <li><a href="{{ route('agenda.myList', Auth::user()->id) }}" class="btn btn-primary">Agendamentos</a></li>
             @endcan
         </ul>
         <form class="form-inline" action="/search" method="GET"> 
+            @csrf
             @can('admin')
                 <div class="form-group input-filter">
                     <label>Polo</label>
@@ -77,7 +78,7 @@
                     <select name="aluno" id="aluno" onchange="getAluno()" class="form-select" data-live-search="true" required>
                         <option value="">Selecione um código de aluno</option>
                         @foreach($users as $user)
-                            <option value="{{ $user->cd_pessoa }}">{{ $user->nomeExibicao  }}</option>
+                            <option value="{{ $user->id }}">{{ $user->nomeExibicao  }}</option>
                         @endforeach
                         {{-- <option value="">Selecione um polo</option>
                         @foreach($polos as $polo)
