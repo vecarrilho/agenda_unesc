@@ -78,7 +78,10 @@
                     <select name="aluno" id="aluno" onchange="getAluno()" class="form-select" data-live-search="true" required>
                         <option value="">Selecione um código de aluno</option>
                         @foreach($users as $user)
-                            <option value="{{ $user->id }}">{{ $user->nomeExibicao  }}</option>
+                            @if($user->id == session('aluno'))
+                                <option value="{{ $user->id }}" selected>{{ $user->nomeExibicao  }}</option>
+                            @endif
+                                <option value="{{ $user->id }}">{{ $user->nomeExibicao  }}</option>
                         @endforeach
                         {{-- <option value="">Selecione um polo</option>
                         @foreach($polos as $polo)
