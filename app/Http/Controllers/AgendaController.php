@@ -8,6 +8,7 @@ use App\Models\Cadastro;
 use App\Models\Polo;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class AgendaController extends Controller
 {
@@ -151,6 +152,16 @@ class AgendaController extends Controller
                     
                     $tipoMsg = 'msgSuccess';
                     $msg = 'Prova agendada com sucesso!';
+                    $sala->date_formated = $sala->data;
+                    $sala->hour_formated = $sala->hora;
+                    
+                    $dataEmail = array('data'=>$sala->date_formated, 'hora'=>$sala->hour_formated, 'bloco'=>$sala->bloco);
+                    Mail::send('emails.email', $dataEmail, function($message){
+                        $message->to('vecarrilho@unesc.net', 'Artisan')
+                                ->subject('Confirmação de agendamento de prova');
+                        $message->from('vecarrilho3@gmail.com', 'Vitor');
+                                
+                    });
                 }else{
                     
                     $tipoMsg = 'msgError';
