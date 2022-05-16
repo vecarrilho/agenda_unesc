@@ -57,8 +57,9 @@
                         @foreach($users as $user)
                             @if($user->id == session('aluno'))
                                 <option value="{{ $user->id }}" selected>{{ $user->nomeExibicao  }}</option>
-                            @endif
+                            @else
                                 <option value="{{ $user->id }}">{{ $user->nomeExibicao  }}</option>
+                            @endif
                         @endforeach
                     </select>
                 </div>
