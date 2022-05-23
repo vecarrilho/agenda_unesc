@@ -10,7 +10,9 @@ class Cadastro extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['id_usuario', 'id_sala'];
+    public $timestamps = false;
+
+    protected $fillable = ['id_usuario', 'id_sala', 'id_disciplina'];
 
     public function scopeCountMaquinas($query, $id_sala)
     {
