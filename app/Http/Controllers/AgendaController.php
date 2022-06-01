@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Sala;
 use App\Models\Cadastro;
+use App\Models\Disciplina;
 use App\Models\Polo;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -23,6 +24,7 @@ class AgendaController extends Controller
     {
         $users = '';
         $polos = '';
+        $disciplinas = [];
         if (Auth::user() == null) {
             return view('auth.login');
         }else{
@@ -49,6 +51,8 @@ class AgendaController extends Controller
 
                         $datas = Sala::groupDatas()->statusAtivo()->verificaPolo()->get();
 
+                        $disciplinas = Disciplina::joinUserDisciplinas(Auth::user()->id)->get();
+
                         if($user->hasPermissionTo('writer')){
                             $users = User::where('cd_pessoa', '!=', 1)->orderByCodigo()->get();
 
@@ -67,7 +71,7 @@ class AgendaController extends Controller
                         $datas[$i]->date_formated = $datas[$i]->data;
                     }
                     
-                    return view('agenda.show', ['salas' => $salas, 'polos' => $polos, 'datas' => $datas, 'users' => $users]);
+                    return view('agenda.show', ['salas' => $salas, 'polos' => $polos, 'datas' => $datas, 'users' => $users, 'disciplinas' => $disciplinas]);
                 }
             // }else{
             //     return view('welcome');
@@ -98,6 +102,7 @@ class AgendaController extends Controller
         $user = User::find(Auth::user()->id);
         $polos = '';
         $users = '';
+        $disciplinas =[];
         //traz todos dados do form
         $data = $request->all();
         if(session('aluno')){
@@ -115,6 +120,7 @@ class AgendaController extends Controller
             $salas = Sala::exibicao()->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
             $datas = Sala::statusAtivo()->groupDatas()->get();
             $users = User::where('cd_pessoa', '!=', 1)->orderByCodigo()->get();
+            $disciplinas = Disciplina::joinUserDisciplinas(session('aluno'))->get();
 
             for ($i=0; $i < count($users); $i++) { 
                 $users[$i]->nomeExibicao = $users[$i]->cd_pessoa . '-' . $users[$i]->name;
@@ -122,6 +128,7 @@ class AgendaController extends Controller
         }else{
             $salas = Sala::exibicao()->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
             $datas = Sala::statusAtivo()->groupDatas()->verificaPolo()->get();
+            $disciplinas = Disciplina::joinUserDisciplinas(Auth::user()->id)->get();
         }
 
         for ($i=0; $i < count($salas); $i++) { 
@@ -134,7 +141,7 @@ class AgendaController extends Controller
         }
         
         //verifica se o aluno ja esta cadastrado nesta sala
-        $cadastros = Cadastro::verificaAgenda($data['id_usuario'], $data['id_sala'])->first();
+        $cadastros = Cadastro::verificaAgenda($data['id_usuario'], $data['id_disciplina'])->first();
         
         //verifica se o retorno é vazio
         if(empty($cadastros)){
@@ -157,10 +164,10 @@ class AgendaController extends Controller
                     
                     $dataEmail = array('data'=>$sala->date_formated, 'hora'=>$sala->hour_formated, 'bloco'=>$sala->bloco);
                     Mail::send('emails.email', $dataEmail, function($message){
+                        //SUBSTITUIR PELO EMAIL DO ACADEMICO
                         $message->to('vecarrilho@unesc.net', 'Artisan')
-                                ->subject('Confirmação de agendamento de prova');
-                        $message->from('vecarrilho3@gmail.com', 'Vitor');
-                                
+                                ->subject('Agendamento de prova');
+                        $message->from('noreply.agendaprova@unesc.net');
                     });
                 }else{
                     
@@ -173,11 +180,11 @@ class AgendaController extends Controller
                 $msg = 'Máquinas insuficientes para esta data!';
             }
         }else{
-                    
+
             $tipoMsg = 'msgError';
-            $msg = 'Você já esta cadastrado nesta sala!';
+            $msg = 'Você já esta cadastrado nesta disciplina!';
         }
-        return view('agenda.show', ['salas' => $salas, 'polos' => $polos, 'datas' => $datas, 'users' => $users])->with($tipoMsg, $msg);
+        return view('agenda.show', ['salas' => $salas, 'polos' => $polos, 'datas' => $datas, 'users' => $users, 'disciplinas' => $disciplinas])->with($tipoMsg, $msg);
     }
 
     /**
@@ -190,43 +197,67 @@ class AgendaController extends Controller
      //função para mostrar as salas
     public function show($id)
     {
-        $user = User::find(Auth::user()->id);
-        $polos = '';
-        $users = '';
-        
-        //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
-        if($user->hasPermissionTo('admin')){
-            $salas = Sala::exibicao()->orderBybloco()->orderByData()->orderByHora()->get();
-
-            $datas = Sala::groupDatas()->get();
+        //verifica se existe uma sessão ativa
+        if(Auth::check()){
+            $user = User::find(Auth::user()->id);
+            $polos = '';
+            $users = '';
+            $disciplinas =[];
+            
+            //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
+            if($user->hasPermissionTo('admin')){
+                $salas = Sala::exibicao()->orderBybloco()->orderByData()->orderByHora()->get();
     
-            $polos = Polo::exibicao()->get();
-        }elseif($user->hasPermissionTo('writer')){
-            $users = User::where('cd_pessoa', '!=', 1)->orderByCodigo()->get();
-
-            for ($i=0; $i < count($users); $i++) { 
-                $users[$i]->nomeExibicao = $users[$i]->cd_pessoa . '-' . $users[$i]->name;
-            }
-
-            $salas = Sala::exibicao()->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
-
-            $datas = Sala::statusAtivo()->groupDatas()->verificaPolo()->get();
-        }else{
-            $salas = Sala::exibicao()->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
-
-            $datas = Sala::statusAtivo()->groupDatas()->verificaPolo()->get();
-        }
-
-        for ($i=0; $i < count($salas); $i++) { 
-            $salas[$i]->date_formated = $salas[$i]->data;
-            $salas[$i]->hour_formated = $salas[$i]->hora;
-        }
-
-        for ($i=0; $i < count($datas); $i++) { 
-            $datas[$i]->date_formated = $datas[$i]->data;
-        }
+                $datas = Sala::groupDatas()->get();
         
-        return view('agenda.show', ['salas' => $salas, 'polos' => $polos, 'datas' => $datas, 'users' => $users]);
+                $polos = Polo::exibicao()->get();
+            }elseif($user->hasPermissionTo('writer')){
+                if(session('aluno')){
+                    $poloAluno = User::codigoAluno(session('aluno'))->first();
+
+                    $salas = Sala::exibicao()->polo($poloAluno->cd_polo)->orderBybloco()->orderByData()->orderByHora()->get();
+
+                    $users = User::where('cd_pessoa', '!=', 1)->orderByCodigo()->get();
+                    
+                    $datas = Sala::statusAtivo()->groupDatas()->verificaPolo()->get();
+
+                    $disciplinas = Disciplina::joinUserDisciplinas(session('aluno'))->get();
+
+                    for ($i=0; $i < count($users); $i++) { 
+                        $users[$i]->nomeExibicao = $users[$i]->cd_pessoa . '-' . $users[$i]->name;
+                    }
+                }else{
+                    $users = User::where('cd_pessoa', '!=', 1)->orderByCodigo()->get();
+        
+                    $salas = Sala::exibicao()->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
+        
+                    $datas = Sala::statusAtivo()->groupDatas()->verificaPolo()->get();
+
+                    for ($i=0; $i < count($users); $i++) { 
+                        $users[$i]->nomeExibicao = $users[$i]->cd_pessoa . '-' . $users[$i]->name;
+                    }
+                }
+            }else{
+                $salas = Sala::exibicao()->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
+    
+                $datas = Sala::statusAtivo()->groupDatas()->verificaPolo()->get();
+
+                $disciplinas = Disciplina::joinUserDisciplinas(Auth::user()->id)->get();
+            }
+    
+            for ($i=0; $i < count($salas); $i++) { 
+                $salas[$i]->date_formated = $salas[$i]->data;
+                $salas[$i]->hour_formated = $salas[$i]->hora;
+            }
+    
+            for ($i=0; $i < count($datas); $i++) { 
+                $datas[$i]->date_formated = $datas[$i]->data;
+            }
+            
+            return view('agenda.show', ['salas' => $salas, 'polos' => $polos, 'datas' => $datas, 'users' => $users, 'disciplinas' => $disciplinas]);
+        }else{
+            return view('auth.login');
+        }
     }
 
     /**
@@ -288,6 +319,7 @@ class AgendaController extends Controller
         $user = User::find(Auth::user()->id);
         $users = '';
         $polos = '';
+        $disciplinas = [];
 
         //captura valores dos filtros
         if(request('data')){
@@ -319,6 +351,7 @@ class AgendaController extends Controller
                 if($alunoFilter){
                     $poloAluno = User::codigoAluno($alunoFilter)->first();
                     $salas = Sala::exibicao()->data($dataFilter)->polo($poloAluno->cd_polo)->orderBybloco()->orderByData()->orderByHora()->get();
+                    $disciplinas = Disciplina::joinUserDisciplinas($alunoFilter)->get();
                 }else{
                     $salas = Sala::joinPolos()->statusAtivo()->verificaPolo()->data($dataFilter)->orderBybloco()->orderByData()->orderByHora()->get();
                 }
@@ -330,17 +363,21 @@ class AgendaController extends Controller
                         $salas = Sala::joinPolos()->data($dataFilter)->orderBybloco()->orderByData()->orderByHora()->get();
                     }else{
                         $salas = Sala::joinPolos()->statusAtivo()->verificaPolo()->data($dataFilter)->orderBybloco()->orderByData()->orderByHora()->get();
+                    
+                        $disciplinas = Disciplina::joinUserDisciplinas(Auth::user()->id)->get();
                     }
                 }
             }
         } elseif ($poloFilter) {
-                $salas = Sala::joinPolos()->polo($poloFilter)->orderBybloco()->orderByData()->orderByHora()->get();
+            $salas = Sala::exibicao()->polo($poloFilter)->orderBybloco()->orderByData()->orderByHora()->get();        
         } else {
             if($user->hasPermissionTo('writer')){
                 if($alunoFilter){
                     $poloAluno = User::codigoAluno($alunoFilter)->first();
 
                     $salas = Sala::exibicao()->polo($poloAluno->cd_polo)->orderBybloco()->orderByData()->orderByHora()->get();
+                
+                    $disciplinas = Disciplina::joinUserDisciplinas($alunoFilter)->get();
                 }else{
                     $salas = Sala::exibicao()->orderBybloco()->orderByData()->orderByHora()->get();
                 }
@@ -348,6 +385,8 @@ class AgendaController extends Controller
                 $salas = Sala::exibicao()->orderBybloco()->orderByData()->orderByHora()->get();
             }else{
                 $salas = Sala::exibicao()->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
+            
+                $disciplinas = Disciplina::joinUserDisciplinas(Auth::user()->id)->get();
             }
         }
 
@@ -376,7 +415,7 @@ class AgendaController extends Controller
             $datas[$i]->date_formated = $datas[$i]->data;
         }
 
-        return view('agenda.show')->with(compact('salas', 'polos', 'datas', 'users'));
+        return view('agenda.show')->with(compact('salas', 'polos', 'datas', 'users', 'disciplinas'));
     }
 
     public function searchMyList()
@@ -414,25 +453,37 @@ class AgendaController extends Controller
     
     public function showMyList($id_aluno)
     {
-        //retorna todos as salas que o usuario esta cadastrado
-        $cadastros = Cadastro::minhaLista(Auth::user()->id)->get();
-        $user = User::find(Auth::user()->id);
+        if(Auth::check()){
+            //retorna todos as salas que o usuario esta cadastrado
+            $user = User::find(Auth::user()->id);
+    
+            if($user->hasPermissionTo('writer')){
+                $users = User::where('cd_pessoa', '!=', 1)->orderByCodigo()->get();
 
-        if($user->hasPermissionTo('writer')){
-            $users = User::where('cd_pessoa', '!=', 1)->orderByCodigo()->get();
+                for ($i=0; $i < count($users); $i++) { 
+                    $users[$i]->nomeExibicao = $users[$i]->cd_pessoa . '-' . $users[$i]->name;
+                }
 
-            for ($i=0; $i < count($users); $i++) { 
-                $users[$i]->nomeExibicao = $users[$i]->cd_pessoa . '-' . $users[$i]->name;
+                if(session('aluno')){
+                    $cadastros = Cadastro::minhaLista(session('aluno'))->get();
+                }else{
+                    $cadastros = [];
+                }
+    
+            }else{
+                $users = '';
+                $cadastros = Cadastro::minhaLista(Auth::user()->id)->get();
             }
-        }else{
-            $users = '';
-        }
+    
+            for ($i=0; $i < count($cadastros); $i++) { 
+                $cadastros[$i]->date_formated = $cadastros[$i]->data;
+                $cadastros[$i]->hour_formated = $cadastros[$i]->hora;
+            }
 
-        for ($i=0; $i < count($cadastros); $i++) { 
-            $cadastros[$i]->date_formated = $cadastros[$i]->data;
-            $cadastros[$i]->hour_formated = $cadastros[$i]->hora;
+            return view('agenda.myList', ['cadastros' => $cadastros, 'users' => $users]);
+        }else{
+            return view('auth.login');
         }
-        return view('agenda.myList', ['cadastros' => $cadastros, 'users' => $users]);
     }
 
     public function getAluno($id){
