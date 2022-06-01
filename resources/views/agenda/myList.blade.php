@@ -47,32 +47,32 @@
         <ul class="lista-botoes inline-flex">
             <li><a href="{{ route('agenda.show', true) }}" class="btn btn-primary">Horários Disponíveis</a></li>
         </ul>
-        <form class="form-inline" action="/search/MyList" method="GET"> 
-            @csrf
             @can('writer')
-                <div class="form-group input-filter">
-                    <label>Aluno</label>
-                    <select name="aluno" id="aluno" onchange="getAluno()" class="form-select" data-live-search="true" required>
-                        <option value="">Selecione um código de aluno</option>
-                        @foreach($users as $user)
-                            @if($user->id == session('aluno'))
-                                <option value="{{ $user->id }}" selected>{{ $user->nomeExibicao  }}</option>
-                            @else
-                                <option value="{{ $user->id }}">{{ $user->nomeExibicao  }}</option>
-                            @endif
-                        @endforeach
-                    </select>
-                </div>
+                <form class="form-inline" action="/search/MyList" method="GET"> 
+                    @csrf
+                    <div class="form-group input-filter">
+                        <label>Aluno</label>
+                        <select name="aluno" id="aluno" onchange="getAluno()" class="form-select" data-live-search="true" required>
+                            <option value="">Selecione um código de aluno</option>
+                            @foreach($users as $user)
+                                @if($user->id == session('aluno'))
+                                    <option value="{{ $user->id }}" selected>{{ $user->nomeExibicao  }}</option>
+                                @else
+                                    <option value="{{ $user->id }}">{{ $user->nomeExibicao  }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group2 input-filter">
+                        <input class="form-control" type="submit" value="Filtrar">
+                    </div> 
+                </form>
             @endcan
-            <div class="form-group2 input-filter">
-                <input class="form-control" type="submit" value="Filtrar">
-            </div> 
-        </form>
         <h2>Meus horários agendados</h2>
         <table class="table">
             <thead>
                 <tr>
-                    <th>Polo</th>
+                    <th>Disciplina</th>
                     <th>Bloco</th>
                     <th>Data</th>
                     <th>Hora</th>
@@ -82,7 +82,7 @@
             <tbody>
                 @foreach($cadastros as $cadastro)
                     <tr>
-                        <td>{{ $cadastro->descricao }}</td>
+                        <td>{{ $cadastro->nm_reduzido }}</td>
                         <td>{{ $cadastro->bloco }}</td>
                         <td>{{ $cadastro->date_formated }}</td>
                         <td>{{ $cadastro->hour_formated }}</td>
