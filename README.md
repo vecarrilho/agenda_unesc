@@ -59,3 +59,16 @@ docker-compose exec app \
 ```
 
 Documetação https://github.com/pmatseykanets/artisan-io
+
+
+# Setup jQuery
+
+Rodar o comando
+```sh
+npm i install
+```
+
+Colar a linha abaixo em resources/js/bootstrap.js
+```sh
+window.$ = require('jquery'); 
+```
