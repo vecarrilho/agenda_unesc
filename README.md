@@ -72,3 +72,12 @@ Colar a linha abaixo em resources/js/bootstrap.js
 ```sh
 window.$ = require('jquery'); 
 ```
+
+
+# Criar permissão para writer (Secretária)
+
+Rodar o comando
+```sh
+php artisan permission:create-permission "writer"
+```
+Criar CSV com dados dos secretários do polo EAD, rodar comando de execução e trocar o ID na tabela de usuario X permissões
