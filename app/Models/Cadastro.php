@@ -31,11 +31,11 @@ class Cadastro extends Model
         return $query->join('polos', 'salas.polo', 'polos.id');
     }
 
-    public function scopeVerificaAgenda($query, $id_aluno, $id_sala)
+    public function scopeVerificaAgenda($query, $id_aluno, $id_disciplina)
     {
         return $query->where([
             ['id_usuario', $id_aluno],
-            ['id_sala', $id_sala]
+            ['id_disciplina', $id_disciplina]
         ]);
     }
 
@@ -48,9 +48,10 @@ class Cadastro extends Model
     {
         return $query->join('salas', 'salas.id', '=', 'cadastros.id_sala')
                      ->join('polos', 'polos.id', '=', 'salas.polo')
+                     ->join('disciplinas', 'disciplinas.id', 'cadastros.id_disciplina')
                      ->where('cadastros.id_usuario', $id_aluno)
                      ->where('salas.data', '>=', date('Y-m-d'))
-                     ->select('salas.id', 'salas.bloco', 'salas.hora', 'salas.data', 'cadastros.id AS id_cadastro', 'salas.nsala', 'salas.polo', 'polos.descricao');
+                     ->select('salas.id', 'salas.bloco', 'salas.hora', 'salas.data', 'cadastros.id AS id_cadastro', 'salas.nsala', 'salas.polo', 'polos.descricao', 'disciplinas.nm_reduzido');
     }
 
     public function scopeCountCadastros($query){
