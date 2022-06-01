@@ -123,10 +123,15 @@ nav.navbar{
   .table thead tr {
      display: block;
   }
+
+  td.text-align-right{
+      text-align: right;
+  }
   
   .table th, .table td {
     padding: 10px;
     text-align: left;
     width:400px;
   }
+
 
