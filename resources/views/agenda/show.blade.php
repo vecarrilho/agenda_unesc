@@ -6,9 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <title>Lista Agendamento</title>
+    <script>
+        function abrirModalDisciplinas(id_sala){
+            $("#id_sala").val(id_sala);
+            $("#disciplinasModal").modal('show');
+        }
+    </script>
 </head>
 <body>
     <header>
@@ -51,7 +57,7 @@
             @elsecan('admin')
                 <li><a href="{{ route('admin.createSala') }}" class="btn btn-primary">Cadastrar Sala</a></li>
                 {{-- <li><a href="{{ route('admin.createPolo') }}" class="btn btn-primary">Cadastrar Polo</a></li> --}}
-                <li><a href="{{ route('admin.show', true) }}" class="btn btn-primary">Exportar Excel</a></li>
+                {{-- <li><a href="{{ route('admin.show', true) }}" class="btn btn-primary">Exportar Excel</a></li> --}}
             @elsecan('writer')
                 <li><a href="{{ route('agenda.myList', Auth::user()->id) }}" class="btn btn-primary">Agendamentos</a></li>
             @endcan
@@ -135,11 +141,7 @@
                                 </span>
                             </button></td>
                             <td>
-                                <form action="{{route('agenda.store')}}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="id_sala" value="{{$sala->id}}">
-                                    <button class="btn btn-primary" type="submit" >Agendar este horário</button>
-                                </form> 
+                                <input type="button" class="btn btn-primary" value="Agendar este horário" onclick="abrirModalDisciplinas({{ $sala->id }})">
                             </td>
                         @else
                             <td><button type="button" class="btn btn-light position-relative">{{ $sala->hour_formated }}
@@ -147,11 +149,7 @@
                                 </span>
                             </button></td>
                             <td>
-                                <form action="{{route('agenda.store')}}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="id_sala" value="{{$sala->id}}">
-                                    <button class="btn btn-primary" type="submit" disabled>Agendar este horário</button>
-                                </form> 
+                                <input type="button" class="btn btn-primary" value="Agendar este horário"  disabled>
                             </td>
                         @endif
                     </tr>
@@ -159,6 +157,32 @@
             </tbody>
         </table>
     </div>
+      
+      <!-- Modal -->
+      <div class="modal fade" id="disciplinasModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Disciplinas para agendar</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{route('agenda.store')}}" method="POST">
+                    @csrf
+                    <input type="hidden" name="id_sala" id="id_sala">
+                    <select name="id_disciplina" class="form-select">
+                        <option value="">Selecione uma disciplina</option>
+                        @foreach ($disciplinas as $disciplina)
+                            <option value="{{ $disciplina->id }}">{{ $disciplina->nm_reduzido }}</option>
+                        @endforeach
+                    </select>
+                    <br>
+                    <button class="btn btn-primary" type="submit">Agendar</button>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
 </body>
 <script type="text/javascript">
     // function getAluno(){
