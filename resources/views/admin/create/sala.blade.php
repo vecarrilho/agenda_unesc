@@ -16,21 +16,21 @@
                 <a class="navbar-brand" href="#">
                     <img src="/img/logo.png" alt="">
                 </a>
-            </div>
-            <div class="dropdown-header">
-                <ul class="nav justify-content-end">
-                    <div class="dropdown nav-item">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ Auth::user()->name }}
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <form action="/logout" method="POST">
-                                @csrf
-                                <li><button class="btn btn-primary dropdown-item" type="submit" onclick="event.preventDefault(); this.closest('form').submit();"><span>Sair</span></button></li>
-                            </form>
-                        </ul>
-                    </div>
-                </ul>
+                <div class="dropdown-header">
+                    <ul class="nav justify-content-end">
+                        <div class="dropdown nav-item">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ Auth::user()->name }}
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <form action="/logout" method="POST">
+                                    @csrf
+                                    <li><button class="btn btn-primary dropdown-item" type="submit" onclick="event.preventDefault(); this.closest('form').submit();"><span>Sair</span></button></li>
+                                </form>
+                            </ul>
+                        </div>
+                    </ul>
+                </div>
             </div>
         </nav>
     </header>
@@ -58,10 +58,10 @@
                 <label>Bloco</label>
                 <input class="form-control" type="text" name="bloco" placeholder="Bloco">
             </div>
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label>Sala</label>
                 <input class="form-control" type="text" name="nsala" placeholder="Sala">
-            </div>
+            </div> --}}
             <div class="form-group">
                 <label>Quantidade de Maquinas</label>
                 <input class="form-control" type="number" name="qtd_maquinas" placeholder="Quantidade de maquinas">
@@ -83,6 +83,22 @@
                     @endforeach
                 </select>
             </div>
+            <div class="form-group">
+                <label>Tipo da Prova</label>
+                <select class="form-select" name="tipo_prova">
+                    <option value="">Selecione um tipo de prova</option>
+                    <option value="PN">Prova Normal</option>
+                    <option value="PR">Prova de Recuperação</option>
+                </select>
+            </div>
+            {{-- <div class="form-group">
+                <label>Status</label>
+                <select class="form-select" name="status">
+                    <option value="">Selecione um polo</option>
+                    <option value="Ativo">Ativo</option>
+                    <option value="Inativo">Inativo</option>
+                </select>
+            </div> --}}
             <div class="form-group">
                 <input class="form-control" type="submit" value="Salvar">
             </div>

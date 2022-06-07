@@ -16,18 +16,28 @@ class InsertPolosTable extends Migration
     {
         DB::table('polos')->insert(
             array(
+                'id' => 7,
                 'descricao' => 'POLO CRICIUMA',
-                'endereco' => 'RUA UNIVERSITARIO 100',
-                'localizacao' => 'www.google.com',
+                'endereco' => 'Avenida Universitária, n° 1105',
+                'localizacao' => 'www.unesc.net',
                 'status' => 'Ativo'
             )
         );
-
         DB::table('polos')->insert(
             array(
-                'descricao' => 'POLO ARARANGUA',
-                'endereco' => 'RUA CHILE 200',
-                'localizacao' => 'www.facebook.com',
+                'id' => 14,
+                'descricao' => 'POLO ARARANGUÁ',
+                'endereco' => 'Campus Araranguá Av. Governador Jorge Lacerda, nº 2320. Bairro Divinéia, Araranguá/SC',
+                'localizacao' => 'www.unesc.net',
+                'status' => 'Ativo'
+            )
+        );
+        DB::table('polos')->insert(
+            array(
+                'id' => 15,
+                'descricao' => 'POLO BALNEÁRIO RINCÃO',
+                'endereco' => 'Escola Arroio Rincão  Rua Jaguaruna S/N - Centro. Balneário Rincão/SC',
+                'localizacao' => 'www.unesc.net',
                 'status' => 'Ativo'
             )
         );

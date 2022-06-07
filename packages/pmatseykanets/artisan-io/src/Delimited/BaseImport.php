@@ -7,7 +7,6 @@ use Illuminate\Contracts\Container\Container;
 use Illuminate\Database\DatabaseManager as DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Factory as Validator;
-use Illuminate\Support\Facades\Hash;
 
 abstract class BaseImport
 {
@@ -151,8 +150,7 @@ abstract class BaseImport
                 throw new \RuntimeException("Position '$position' is out of scope for field '$column'. Make sure you use a proper delimiter.");
             }
 
-            $value = (strtolower($column) == 'password') ? Hash::make(trim($values[$position])) : trim($values[$position]);
-            $mapped[$column] = $value;
+            $mapped[$column] = trim($values[$position]);
         }
 
         return $mapped;

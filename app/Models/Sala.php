@@ -4,14 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Sala extends Model
 {
-    protected $fillable = ['bloco', 'hora', 'data', 'qtd_maquinas', 'nsala', 'polo'];
+    public $timestamps = false;
+    use HasFactory;
+
+    protected $fillable = ['bloco', 'hora', 'data', 'qtd_maquinas', 'nsala', 'polo', 'qtd_maquinas_original', 'status', 'tipo_prova'];
 
     public function scopeJoinPolos($query){
-        return $query->join('polos', 'salas.id', '=', 'polos.id')
-                     ->select('salas.id', 'polos.descricao', 'salas.data', 'salas.hora', 'salas.qtd_maquinas');
+        return $query->join('polos', 'salas.polo', '=', 'polos.id')
+                     ->select('salas.id', 'polos.descricao', 'salas.data', 'salas.hora', 'salas.qtd_maquinas', 'salas.bloco');
     }
 
     public function scopeExibicao($query)
@@ -20,9 +24,39 @@ class Sala extends Model
                      ->where('data', '>=', date('Y-m-d'));
     }
 
+    public function scopeStatusAtivo($query)
+    {
+        return $query->where('salas.status', 'Ativo');
+    }
+
+    public function scopeVerificaPolo($query){
+        return $query->where('polo', Auth::user()->cd_polo);
+    }
+
+    public function scopeGroupDatas($query){
+        return $query->select('data')
+                     ->where('data', '>', date('Y-m-d'))
+                     ->groupBy('data');
+    }
+
+    public function scopeGroupDatasRelatorio($query){
+        return $query->select('data')
+                     ->groupBy('data');
+    }
+
     public function scopeData($query, $data)
     {
         return $query->where('data', $data);
+    }
+
+    public function scopeSalasExport($query, $data)
+    {
+        return $query->select('name', 'bloco', 'hora')
+                     ->join('cadastros', 'cadastros.id_sala', 'salas.id')
+                     ->join('users', 'users.id', 'cadastros.id_usuario')
+                     ->where('data', $data)
+                     ->orderBy('name', 'asc')
+                     ->orderBy('hora', 'asc');
     }
 
     public function scopeHora($query, $hora)
@@ -35,6 +69,22 @@ class Sala extends Model
         return $query->where('polo', $polo);
     }
 
+    public function scopeTipoProva($query, $tipoProva){
+        return $query->where('tipo_prova', $tipoProva);
+    } 
+
+    public function scopeOrderByData($query){
+        return $query->orderBy('data', 'asc');
+    }
+
+    public function scopeOrderByHora($query){
+        return $query->orderBy('hora', 'asc');
+    }
+
+    public function scopeOrderByBloco($query){
+        return $query->orderBy('bloco', 'asc');
+    }
+
     public function setDateFormatedAttribute($value)
     {
         $this->attributes['date_formated'] = date('d/m/Y', strtotime($value));
@@ -44,6 +94,9 @@ class Sala extends Model
     {
         $this->attributes['hour_formated'] = date('H:i', strtotime($value));
     }
- 
-    use HasFactory;
+
+    public function cadastros()
+    {
+        return $this->belongsToMany(Cadastro::class, 'id_sala');
+    }
 }

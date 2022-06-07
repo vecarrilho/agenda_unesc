@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -10,6 +11,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Facades\Hash;
 
 
 class User extends Authenticatable
@@ -31,6 +33,10 @@ class User extends Authenticatable
         'email',
         'password',
         'perfil',
+        'cd_pessoa',
+        'tipo_deficiencia',
+        'cd_polo',
+        'nm_polo',
     ];
 
     /**
@@ -52,6 +58,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        // 'password' => 'encrypted'
     ];
 
     /**
@@ -62,4 +69,35 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function scopeCodigoAluno($query, $codigo){
+        return $query->where('id', $codigo);
+    }
+
+    public function scopeOrderByCodigo($query){
+        return $query->orderBy('cd_pessoa', 'asc');
+    }
+
+
+    public function password(): Attribute
+    {
+        return new Attribute(
+            set: fn ($value) => Hash::make($value),
+        );
+    }
+
+
+
+    protected static function booted()
+    {
+        static::saved(function ($model)  {
+            $model->givePermissionTo('user');
+        });
+    }
+
+
+    public function salas(){
+        return $this->belongsToMany( Sala::class, Cadastro::class, 'id_usuario', 'id_sala');
+    }
+
 }

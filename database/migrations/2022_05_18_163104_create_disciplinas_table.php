@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddNsalaToSalaTable extends Migration
+class CreateDisciplinasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class AddNsalaToSalaTable extends Migration
      */
     public function up()
     {
-        Schema::table('salas', function (Blueprint $table) {
-            $table->integer('nsala')->nullable();
+        Schema::create('disciplinas', function (Blueprint $table) {
+            $table->id();
+            $table->year('ano');
+            $table->integer('trimestre');
+            $table->string('nm_disciplina', 80);
+            $table->string('nm_reduzido', 20);
         });
     }
 
@@ -25,8 +29,6 @@ class AddNsalaToSalaTable extends Migration
      */
     public function down()
     {
-        Schema::table('salas', function (Blueprint $table) {
-            $table->dropColumn('nsala');
-        });
+        Schema::dropIfExists('disciplinas');
     }
 }

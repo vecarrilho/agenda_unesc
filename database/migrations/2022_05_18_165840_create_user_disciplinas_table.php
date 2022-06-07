@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTimestampsToSalasTable extends Migration
+class CreateUserDisciplinasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class AddTimestampsToSalasTable extends Migration
      */
     public function up()
     {
-        Schema::table('salas', function (Blueprint $table) {
-            $table->timestamps();
+        Schema::create('user_disciplinas', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('id_user');
+            $table->foreignId('id_disciplina');
+            $table->year('ano');
+            $table->integer('trimestre');
         });
     }
 
@@ -25,9 +29,6 @@ class AddTimestampsToSalasTable extends Migration
      */
     public function down()
     {
-        Schema::table('salas', function (Blueprint $table) {
-            $table->dropColumn('updates_at');
-            $table->dropColumn('created_at');
-        });
+        Schema::dropIfExists('user_disciplinas');
     }
 }

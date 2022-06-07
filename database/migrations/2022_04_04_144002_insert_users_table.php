@@ -18,7 +18,7 @@ class InsertUsersTable extends Migration
         User::create([
             'name' => 'Administrador',
             'email' => 'admin@unesc.net',
-            'password' => Hash::make('agendamento@unesc')
+            'password' => ('agendamento@unesc')
         ])->givePermissionTo('admin');
     }
 

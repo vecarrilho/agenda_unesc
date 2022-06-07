@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <title>Cadastrar Polo</title>
+    <title>Gerar Relatório</title>
 </head>
 <body>
     <header>
@@ -34,41 +34,26 @@
             </div>
         </nav>
     </header>
-    <div class="container-fluid">
-        <div class="row">
-            @if(session('msg-success'))
-                <p class="msg-success">{{session('msg-success')}}</p>
-            @endif
-            @yield('content')
-        </div>
     <div class="container">
         <a href="/" class="btn btn-secondary btn-voltar" >Voltar</a>
-
-        @if ($errors->any())
-            <ul class="errors">
-                @foreach ($errors as $error)
-                    <li class="error">{{ $error }}</li>
-                @endforeach
-            </ul>
-        @endif
-
-        <form action="{{ route('admin.storePolo') }}" method="POST"> 
+        <form class="form-inline" action="{{ route('admin.export') }}" method="GET"> 
             @csrf
-            <div class="form-group">
-                <label>Nome</label>
-                <input class="form-control" type="text" name="descricao">
+            <div class="form-group input-filter">
+                <label class="sr-only" for="inlineFormInputName2">Data</label>
+                <select name="data" class="form-select">
+                    <option value="">Selecione uma data</option>
+                    @foreach ($salas as $sala)
+                        <option value="{{ $sala->data }}">{{ $sala->date_formated }}</option>
+                    @endforeach
+                </select>
             </div>
-            <div class="form-group">
-                <label>Endereço</label>
-                <input class="form-control" type="text" name="endereco">
-            </div>
-            <div class="form-group">
-                <label>Localização</label>
-                <textarea class="form-control" name="localizacao"></textarea>
-            </div>
-            <div class="form-group">
-                <input class="form-control" type="submit" value="Salvar">
-            </div>
+            <div class="form-group2 input-filter">
+                <input class="form-control" type="submit" value="Filtrar">
+            </div> 
         </form>
+    </div>
+
+
+</div>
 </body>
 </html>

@@ -20,5 +20,9 @@
         "postcss": "^8.4.12",
         "postcss-import": "^14.0.1",
         "tailwindcss": "^3.0.23"
+    },
+    "dependencies": {
+        "bootstrap-select": "^1.13.18",
+        "jquery": "^3.6.0"
     }
 }

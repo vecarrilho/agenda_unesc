@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\salasExport;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreUpdateSalaFormRequest;
+use App\Models\Cadastro;
 use App\Models\Polo;
 use App\Models\Sala;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Validator;
 
 class AdminController extends Controller
@@ -39,6 +42,12 @@ class AdminController extends Controller
         return view('admin.create.polo');
     }
 
+    public function createExport()
+    {
+
+        return view('admin.create.export');
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -55,6 +64,8 @@ class AdminController extends Controller
         // $sala->data = $request->data;
         // $sala->save();
         $data = $request->all();
+        $data['qtd_maquinas_original'] = $request->qtd_maquinas;
+        $data['status'] = 'Ativo';
 
         Sala::create($data);
 
@@ -80,8 +91,19 @@ class AdminController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        //
+    {   
+        $user = User::find(Auth::user()->id);
+        if($user->hasPermissionTo('admin')){
+            $salas = Sala::statusAtivo()->groupDatasRelatorio()->get();
+    
+            for ($i=0; $i < count($salas); $i++) { 
+                $salas[$i]->date_formated = $salas[$i]->data;
+            }
+    
+            return view('admin.show', ['salas' => $salas]);
+        }else{
+            return redirect(route('/')) ;
+        }
     }
 
     /**
@@ -116,5 +138,16 @@ class AdminController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function export(){
+        $user = User::find(Auth::user()->id);
+        if($user->hasPermissionTo('admin')){
+            $data = request('data');
+    
+            return Excel::download(new salasExport($data), 'salas.xls');
+        }else{
+            return redirect(route('agenda.index'));
+        }
     }
 }

@@ -16,24 +16,24 @@
                 <a class="navbar-brand" href="#">
                     <img src="/img/logo.png" alt="">
                 </a>
+                @auth
+                    <div class="dropdown-header">
+                        <ul class="nav justify-content-end">
+                            <div class="dropdown nav-item">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ Auth::user()->name }}
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <form action="/logout" method="POST">
+                                        @csrf
+                                        <li><button class="btn btn-primary dropdown-item" type="submit" onclick="event.preventDefault(); this.closest('form').submit();"><span>Sair</span></button></li>
+                                    </form>
+                                </ul>
+                            </div>
+                        </ul>
+                    </div>
+                @endauth
             </div>
-            @auth
-                <div class="dropdown-header">
-                    <ul class="nav justify-content-end">
-                        <div class="dropdown nav-item">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ Auth::user()->name }}
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <form action="/logout" method="POST">
-                                    @csrf
-                                    <li><button class="btn btn-primary dropdown-item" type="submit" onclick="event.preventDefault(); this.closest('form').submit();"><span>Sair</span></button></li>
-                                </form>
-                            </ul>
-                        </div>
-                    </ul>
-                </div>
-            @endauth
         </nav>
     </header>
     <div class="container-fluid">
@@ -45,15 +45,35 @@
     </div>
     <div class="container">
         <ul class="lista-botoes inline-flex">
-            <li><a href="{{ route('agenda.show', true) }}" class="btn btn-primary">Agendamentos Disponíveis</a></li>
-            <li><a href="{{ route('agenda.myList', Auth::user()->id) }}" class="btn btn-primary">Meus Agendamentos</a></li>
+            <li><a href="{{ route('agenda.show', true) }}" class="btn btn-primary">Horários Disponíveis</a></li>
         </ul>
+            @can('writer')
+                <form class="form-inline" action="/search/MyList" method="GET"> 
+                    @csrf
+                    <div class="form-group input-filter">
+                        <label>Aluno</label>
+                        <select name="aluno" id="aluno" onchange="getAluno()" class="form-select" data-live-search="true" required>
+                            <option value="">Selecione um código de aluno</option>
+                            @foreach($users as $user)
+                                @if($user->id == session('aluno'))
+                                    <option value="{{ $user->id }}" selected>{{ $user->nomeExibicao  }}</option>
+                                @else
+                                    <option value="{{ $user->id }}">{{ $user->nomeExibicao  }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group2 input-filter">
+                        <input class="form-control" type="submit" value="Filtrar">
+                    </div> 
+                </form>
+            @endcan
         <h2>Meus horários agendados</h2>
         <table class="table">
             <thead>
                 <tr>
-                    <th>Polo</th>
-                    <th>Sala</th>
+                    <th>Disciplina</th>
+                    <th>Bloco</th>
                     <th>Data</th>
                     <th>Hora</th>
                     <th>Ação</th>
@@ -62,7 +82,7 @@
             <tbody>
                 @foreach($cadastros as $cadastro)
                     <tr>
-                        <td>{{ $cadastro->descricao }}</td>
+                        <td>{{ $cadastro->nm_reduzido }}</td>
                         <td>{{ $cadastro->bloco }}</td>
                         <td>{{ $cadastro->date_formated }}</td>
                         <td>{{ $cadastro->hour_formated }}</td>
@@ -71,7 +91,6 @@
                             @method('DELETE')
                             <td><button type="submit" class="btn btn-danger"><span>Cancelar este horário</span></button></td>
                         </form>
-                        <td></td>
                     </tr> 
                 @endforeach
             </tbody>

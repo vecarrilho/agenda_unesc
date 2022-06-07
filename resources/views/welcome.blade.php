@@ -16,47 +16,48 @@
                 <a class="navbar-brand" href="#">
                     <img src="/img/logo.png" alt="">
                 </a>
+                @auth
+                    <div class="dropdown-header">
+                        <ul class="nav justify-content-end">
+                            <div class="dropdown nav-item">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ Auth::user()->name }}
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <form action="/logout" method="POST">
+                                        @csrf
+                                        <li><button class="btn btn-primary dropdown-item" type="submit" onclick="event.preventDefault(); this.closest('form').submit();"><span>Sair</span></button></li>
+                                    </form>
+                                </ul>
+                            </div>
+                        </ul>
+                    </div>
+                @endauth
             </div>
-            @auth
-                <div class="dropdown-header">
-                    <ul class="nav justify-content-end">
-                        <div class="dropdown nav-item">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ Auth::user()->name }}
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <form action="/logout" method="POST">
-                                    @csrf
-                                    <li><button class="btn btn-primary dropdown-item" type="submit" onclick="event.preventDefault(); this.closest('form').submit();"><span>Sair</span></button></li>
-                                </form>
-                            </ul>
-                        </div>
-                    </ul>
-                </div>
-            @endauth
         </nav>
     </header>
-    @can('user')
-        <div class="container-fluid">
-            <div class="row">
-                @if(session('msg-success'))
-                    <p class="msg-success">{{session('msg-success')}}</p>
-                @elseif(session('msg-error'))
-                    <p class="msg-error">{{session('msg-error')}}</p>
-                @endif
-                @yield('content')
+    <div class="container">
+        @can('user')
+            <div class="container-fluid">
+                <div class="row">
+                    @if(session('msg-success'))
+                        <p class="msg-success">{{session('msg-success')}}</p>
+                    @elseif(session('msg-error'))
+                        <p class="msg-error">{{session('msg-error')}}</p>
+                    @endif
+                    @yield('content')
+                </div>
             </div>
-        </div>
-        <div class="container">
-    @elsecan('admin')
-        @auth
-            <ul class="lista-botoes">
-                <li><a href="{{ route('agenda.show', true) }}" class="btn btn-primary">Agendamentos Disponíveis</a></li>
-                <li><a href="{{ route('admin.createSala') }}" class="btn btn-primary">Cadastrar Sala</a></li>
-                <li><a href="{{ route('admin.createPolo') }}" class="btn btn-primary">Cadastrar Polo</a></li>
-            </ul>
-        @endauth
-    @endcan
+        @elsecan('admin')
+            @auth
+                <ul class="lista-botoes">
+                    <li><a href="{{ route('agenda.show', true) }}" class="btn btn-primary">Agendamentos Disponíveis</a></li>
+                    <li><a href="{{ route('admin.createSala') }}" class="btn btn-primary">Cadastrar Sala</a></li>
+                    {{-- <li><a href="{{ route('admin.createPolo') }}" class="btn btn-primary">Cadastrar Polo</a></li> --}}
+                    {{-- <li><a href="{{ route('admin.show', true) }}" class="btn btn-primary">Exportar Excel</a></li> --}}
+                </ul>
+            @endauth
+        @endcan
         @guest
             <ul>
                 <li><a href="/login" class="btn btn-primary">Login</a></li>

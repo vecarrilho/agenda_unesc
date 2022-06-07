@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddNsalaToSalaTable extends Migration
+class AddTipoProvaToSalasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddNsalaToSalaTable extends Migration
     public function up()
     {
         Schema::table('salas', function (Blueprint $table) {
-            $table->integer('nsala')->nullable();
+            $table->string('tipo_prova', 2);
         });
     }
 
@@ -26,7 +26,7 @@ class AddNsalaToSalaTable extends Migration
     public function down()
     {
         Schema::table('salas', function (Blueprint $table) {
-            $table->dropColumn('nsala');
+            $table->dropColumn('tipo_prova');
         });
     }
 }

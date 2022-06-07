@@ -29,17 +29,17 @@ ul.lista-botoes li a{
 }
 
 .dropdown-menu{
-    padding-right: 50px;
+    padding-right: 0;
 }
 
 .container{
-    padding: 10px 0;
-    margin-left: 20px;
-    margin-right: 0;
+    padding: 10px;
+    max-width: 100%;
 }
 
 nav.navbar{
     padding: 0;
+    margin-right: 0px;
 }
 
 .btn{
@@ -80,13 +80,16 @@ nav.navbar{
 .form-group {
     margin-bottom: 25px;
     width: 30%;
-    margin-left: 50px;
+    margin-right: 20px;
+}
+
+.form-select {
+    font-size: 19px;
 }
 
 .form-group2 {
     margin-bottom: 25px;
     width: 30%;
-    margin-left: 50px;
     margin-top: 23px;
 }
 
@@ -99,12 +102,36 @@ nav.navbar{
     margin-bottom: 20px;
 }
 
-.table{
-    margin-top: 20px;
-    text-align: center;
-}
-
 .form-inline{
     display: flex;
     width: 80%;
 }
+
+.table{
+    margin-top: 20px;
+    text-align: center;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.table tbody{
+    display:block;
+    width: 98%;
+    overflow: auto;
+  }
+  
+  .table thead tr {
+     display: block;
+  }
+
+  td.text-align-right{
+      text-align: right;
+  }
+  
+  .table th, .table td {
+    padding: 10px;
+    text-align: left;
+    width:400px;
+  }
+
+
