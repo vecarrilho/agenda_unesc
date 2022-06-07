@@ -81,7 +81,12 @@
             @elsecan('writer')
                 <div class="form-group input-filter">
                     <label>Aluno</label>
-                    <select name="aluno" id="aluno" onchange="getAluno()" class="form-select" data-live-search="true" required>
+                    <input type="text" name="aluno" class="form-control" placeholder="Digite o código do aluno" value="{{ session('aluno') }}" required>
+                    <br>
+                    <input type="text" class="form-control" value="{{ session('nome_aluno') }}" placeholder="Nome:" disabled>
+                    <br>
+                    <input type="text" class="form-control" value="{{ session('email_aluno') }}" placeholder="Email:" disabled>
+                    {{-- <select name="aluno" id="aluno" onchange="getAluno()" class="form-select" data-live-search="true" required>
                         <option value="">Selecione um código de aluno</option>
                         @foreach($users as $user)
                             @if($user->id == session('aluno'))
@@ -90,15 +95,15 @@
                                 <option value="{{ $user->id }}">{{ $user->nomeExibicao  }}</option>
                             @endif
                         @endforeach
-                        {{-- <option value="">Selecione um polo</option>
+                        <option value="">Selecione um polo</option>
                         @foreach($polos as $polo)
                             @if($polo->id == session('polo'))
                                 <option value="{{ $polo->id }}" selected>{{ $polo->descricao }}</option>
                             @else
                                 <option value="{{ $polo->id }}">{{ $polo->descricao }}</option>
                             @endif
-                        @endforeach --}}
-                    </select>
+                        @endforeach
+                    </select> --}}
                 </div>
             @endcan
             <div class="form-group input-filter">
@@ -170,7 +175,7 @@
                 <form action="{{route('agenda.store')}}" method="POST">
                     @csrf
                     <input type="hidden" name="id_sala" id="id_sala">
-                    <select name="id_disciplina" class="form-select">
+                    <select name="id_disciplina" class="form-select" required>
                         <option value="">Selecione uma disciplina</option>
                         @foreach ($disciplinas as $disciplina)
                             <option value="{{ $disciplina->id }}">{{ $disciplina->nm_reduzido }}</option>

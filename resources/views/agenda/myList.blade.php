@@ -52,7 +52,12 @@
                     @csrf
                     <div class="form-group input-filter">
                         <label>Aluno</label>
-                        <select name="aluno" id="aluno" onchange="getAluno()" class="form-select" data-live-search="true" required>
+                        <input type="text" name="aluno" class="form-control" placeholder="Digite o código do aluno" value="{{ session('aluno') }}">
+                        <br>
+                        <input type="text" class="form-control" value="{{ session('nome_aluno') }}" disabled>
+                        <br>
+                        <input type="text" class="form-control" value="{{ session('email_aluno') }}" disabled>
+                        {{-- <select name="aluno" id="aluno" onchange="getAluno()" class="form-select" data-live-search="true" required>
                             <option value="">Selecione um código de aluno</option>
                             @foreach($users as $user)
                                 @if($user->id == session('aluno'))
@@ -61,7 +66,7 @@
                                     <option value="{{ $user->id }}">{{ $user->nomeExibicao  }}</option>
                                 @endif
                             @endforeach
-                        </select>
+                        </select> --}}
                     </div>
                     <div class="form-group2 input-filter">
                         <input class="form-control" type="submit" value="Filtrar">
