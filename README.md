@@ -81,3 +81,22 @@ Rodar o comando
 php artisan permission:create-permission "writer"
 ```
 Criar CSV com dados dos secretários do polo EAD, rodar comando de execução e trocar o ID na tabela de usuario X permissões
+
+
+
+# Criar job para envio de email
+
+Rodar o comando (se não tiver rodado ainda no projeto)
+```sh
+php artisan migrate
+```
+
+Rodar o comando 
+```sh
+/usr/bin/php /home/account/laravel/artisan schedule:run >> /dev/null 2>&1
+```
+
+Rodar o comando 
+```sh
+php artisan queue:work
+```
