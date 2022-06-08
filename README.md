@@ -96,7 +96,7 @@ Rodar o comando
 /usr/bin/php /home/account/laravel/artisan schedule:run >> /dev/null 2>&1
 ```
 
-Rodar o comando 
+Rodar o comando (Não fechar o terminal no qual estiver rodando este comando)
 ```sh
 php artisan queue:work
 ```
