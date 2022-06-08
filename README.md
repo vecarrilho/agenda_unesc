@@ -86,6 +86,11 @@ Criar CSV com dados dos secretários do polo EAD, rodar comando de execução e 
 
 # Criar job para envio de email
 
+Alterar a linha QUEUE_CONNECTION no .ENV para 
+```sh
+QUEUE_CONNECTION=database
+```
+
 Rodar o comando (se não tiver rodado ainda no projeto)
 ```sh
 php artisan migrate
