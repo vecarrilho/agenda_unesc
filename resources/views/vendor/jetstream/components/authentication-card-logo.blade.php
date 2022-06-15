@@ -1,1 +1,1 @@
-<img src="{{ asset('/img/unesc-brand.svg') }}" width="120px">
+<img src="{{ asset('/img/unesc_virtual.svg') }}" width="200px">
