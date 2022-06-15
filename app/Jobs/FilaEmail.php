@@ -36,7 +36,7 @@ class FilaEmail implements ShouldQueue
         // $dataEmail = array('data'=>$this->, 'hora'=>'13:30', 'bloco'=>'XXIC');
         Mail::send('emails.email', $this->details, function($message){
             //SUBSTITUIR PELO EMAIL DO ACADEMICO
-            $message->to('vecarrilho@unesc.net', 'Artisan')
+            $message->to($this->details->email, 'Artisan')
                     ->subject('Agendamento de prova');
             $message->from('noreply.agendaprova@unesc.net');
         });
