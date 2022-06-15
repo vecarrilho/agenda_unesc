@@ -40,7 +40,7 @@ class FilaEmail implements ShouldQueue
                     ->subject('Agendamento de prova');
             $message->from('noreply.agendaprova@unesc.net');
         });
-        // $email = new SendMail($this->details);
-        // Mail::to('vecarrilho@unesc.net')->send($email);
+        $email = new SendMail($this->details);
+        Mail::to('vecarrilho@unesc.net')->send($email);
     }
 }
