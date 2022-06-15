@@ -175,10 +175,10 @@
                 <form action="{{route('agenda.store')}}" method="POST">
                     @csrf
                     <input type="hidden" name="id_sala" id="id_sala">
-                    <select name="id_disciplina" class="form-select" required>
+                    <select name="cd_disciplina" class="form-select" required>
                         <option value="">Selecione uma disciplina</option>
                         @foreach ($disciplinas as $disciplina)
-                            <option value="{{ $disciplina->id }}">{{ $disciplina->nm_reduzido }}</option>
+                            <option value="{{ $disciplina->cd_disciplina }}">{{ $disciplina->nm_reduzido }}</option>
                         @endforeach
                     </select>
                     <br>
@@ -189,17 +189,4 @@
         </div>
       </div>
 </body>
-<script type="text/javascript">
-    // function getAluno(){
-    //     let idAluno = $('#aluno').val();
-    //     $.ajax({
-    //         type: 'POST',
-    //         url: "{{ route('getAluno.get') }}",
-    //         data: {idAluno : 'idAluno'},
-    //         success: function(result){
-    //             console.log(result);
-    //         }
-    //     });
-    // }
-</script>
 </html>

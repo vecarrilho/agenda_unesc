@@ -52,7 +52,7 @@ class AgendaController extends Controller
 
                         $datas = Sala::groupDatas()->statusAtivo()->verificaPolo()->get();
 
-                        $disciplinas = Disciplina::joinUserDisciplinas(Auth::user()->id)->get();
+                        $disciplinas = Disciplina::joinUserDisciplinas($user->cd_pessoa)->get();
 
                         if($user->hasPermissionTo('writer')){
                             $users = User::where('cd_pessoa', '!=', 1)->orderByCodigo()->get();
@@ -99,18 +99,18 @@ class AgendaController extends Controller
     //função p/ inserir dados na tabela cadastros
     public function store(Request $request)
     {
-        $user = User::find(Auth::user()->id);
         $polos = '';
         $users = '';
         $disciplinas =[];
         //traz todos dados do form
         $data = $request->all();
         if(session('aluno')){
-            $idAluno = User::where('cd_pessoa', session('aluno'))->first()->id;
-            $data['id_usuario'] = $idAluno;
+            $user = User::where('cd_pessoa', session('aluno'))->first();
         }else{
-            $data['id_usuario'] = Auth::user()->id;
+            $user = User::find(Auth::user()->id);
         }
+
+        $data['id_usuario'] = $user->id;
 
         //traz as salas disponiveis conforme clausulas de scopeExibicao() do model
         if($user->hasPermissionTo('admin')){
@@ -119,10 +119,9 @@ class AgendaController extends Controller
             $datas = Sala::groupDatas()->get();
         }elseif($user->hasPermissionTo('writer')){
             $salas = Sala::exibicao()->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
-            // dd($salas);
             $datas = Sala::statusAtivo()->groupDatas()->get();
             $users = User::where('cd_pessoa', '!=', 1)->orderByCodigo()->get();
-            $disciplinas = Disciplina::joinUserDisciplinas($idAluno)->get();
+            $disciplinas = Disciplina::joinUserDisciplinas($user->cd_pessoa)->get();
 
             for ($i=0; $i < count($users); $i++) { 
                 $users[$i]->nomeExibicao = $users[$i]->cd_pessoa . '-' . $users[$i]->name;
@@ -130,7 +129,7 @@ class AgendaController extends Controller
         }else{
             $salas = Sala::exibicao()->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
             $datas = Sala::statusAtivo()->groupDatas()->verificaPolo()->get();
-            $disciplinas = Disciplina::joinUserDisciplinas(Auth::user()->id)->get();
+            $disciplinas = Disciplina::joinUserDisciplinas($user->cd_pessoa)->get();
         }
 
         for ($i=0; $i < count($salas); $i++) { 
@@ -143,7 +142,7 @@ class AgendaController extends Controller
         }
         
         //verifica se o aluno ja esta cadastrado nesta sala
-        $cadastros = Cadastro::verificaAgenda($data['id_usuario'], $data['id_disciplina'])->first();
+        $cadastros = Cadastro::verificaAgenda($data['id_usuario'], $data['cd_disciplina'])->first();
         
         //verifica se o retorno é vazio
         if(empty($cadastros)){
@@ -153,9 +152,9 @@ class AgendaController extends Controller
             //verifica se o numero de vagas disponiveis é diferente do total de vagas ocupadas
             if($sala->qtd_maquinas != 0){
                 //verifica se usuario tem mais de 5 agendamentos
-                $cadastrosUsuario = Cadastro::countCadastros()->count();
+                // $cadastrosUsuario = Cadastro::countCadastros()->count();
                 
-                if($cadastrosUsuario < 5){
+                // if($cadastrosUsuario < 5){
                     //adiciona os dados na tabela cadastro
                     Cadastro::create($data);
                     
@@ -172,11 +171,7 @@ class AgendaController extends Controller
                     //     $message->from('noreply.agendaprova@unesc.net');
                     // });
                     dispatch(new FilaEmail(['bloco' => $sala->bloco, 'data' => $sala->date_formated, 'hora' => $sala->hour_formated]));
-                }else{
-                    
-                    $tipoMsg = 'msgError';
-                    $msg = 'Máximo de 5 agendamentos atingidos!';
-                }
+                // }
             }else{
                     
                 $tipoMsg = 'msgError';
@@ -208,7 +203,8 @@ class AgendaController extends Controller
             $disciplinas =[];
 
             if(session('aluno')){
-                $alunoFilter = User::where('cd_pessoa', session('aluno'))->first()->id;
+                $aluno = User::where('cd_pessoa', session('aluno'))->first();
+                $alunoFilter = $aluno->id;
             }else{
                 $alunoFilter = '';
             }
@@ -230,7 +226,7 @@ class AgendaController extends Controller
                     
                     $datas = Sala::statusAtivo()->groupDatas()->verificaPolo()->get();
 
-                    $disciplinas = Disciplina::joinUserDisciplinas($alunoFilter)->get();
+                    $disciplinas = Disciplina::joinUserDisciplinas($aluno->cd_pessoa)->get();
 
                     for ($i=0; $i < count($users); $i++) { 
                         $users[$i]->nomeExibicao = $users[$i]->cd_pessoa . '-' . $users[$i]->name;
@@ -251,7 +247,7 @@ class AgendaController extends Controller
     
                 $datas = Sala::statusAtivo()->groupDatas()->verificaPolo()->get();
 
-                $disciplinas = Disciplina::joinUserDisciplinas(Auth::user()->id)->get();
+                $disciplinas = Disciplina::joinUserDisciplinas($user->cd_pessoa)->get();
             }
     
             for ($i=0; $i < count($salas); $i++) { 
@@ -358,6 +354,7 @@ class AgendaController extends Controller
         //adiciona os valores do filtro em uma sessão
         session(['polo' => $poloFilter]);
         session(['data' => $dataFilter]);
+        
 
         //faz as requisiçoes conforme as variaveis estao vazias ou não
         if ($dataFilter) {
@@ -365,7 +362,8 @@ class AgendaController extends Controller
                 if($alunoFilter){
                     $poloAluno = User::codigoAluno($alunoFilter)->first();
                     $salas = Sala::exibicao()->data($dataFilter)->polo($poloAluno->cd_polo)->orderBybloco()->orderByData()->orderByHora()->get();
-                    $disciplinas = Disciplina::joinUserDisciplinas($alunoFilter)->get();
+                    $disciplinas = Disciplina::joinUserDisciplinas($aluno->cd_pessoa)->get();
+
                 }else{
                     $salas = Sala::joinPolos()->statusAtivo()->verificaPolo()->data($dataFilter)->orderBybloco()->orderByData()->orderByHora()->get();
                 }
@@ -378,7 +376,7 @@ class AgendaController extends Controller
                     }else{
                         $salas = Sala::joinPolos()->statusAtivo()->verificaPolo()->data($dataFilter)->orderBybloco()->orderByData()->orderByHora()->get();
                     
-                        $disciplinas = Disciplina::joinUserDisciplinas(Auth::user()->id)->get();
+                        $disciplinas = Disciplina::joinUserDisciplinas($user->cd_pessoa)->get();
                     }
                 }
             }
@@ -391,7 +389,7 @@ class AgendaController extends Controller
 
                     $salas = Sala::exibicao()->polo($poloAluno->cd_polo)->orderBybloco()->orderByData()->orderByHora()->get();
                 
-                    $disciplinas = Disciplina::joinUserDisciplinas($alunoFilter)->get();
+                    $disciplinas = Disciplina::joinUserDisciplinas($aluno->cd_pessoa)->get();
                 }else{
                     $salas = Sala::exibicao()->orderBybloco()->orderByData()->orderByHora()->get();
                 }
@@ -400,7 +398,7 @@ class AgendaController extends Controller
             }else{
                 $salas = Sala::exibicao()->statusAtivo()->verificaPolo()->orderBybloco()->orderByData()->orderByHora()->get();
             
-                $disciplinas = Disciplina::joinUserDisciplinas(Auth::user()->id)->get();
+                $disciplinas = Disciplina::joinUserDisciplinas($user->cd_pessoa)->get();
             }
         }
 
@@ -504,7 +502,7 @@ class AgendaController extends Controller
         }
     }
 
-    public function getAluno($id){
-        return $id;
-    }
+    // public function getAluno($id){
+    //     return $id;
+    // }
 }

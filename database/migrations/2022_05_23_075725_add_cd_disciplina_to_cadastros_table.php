@@ -14,7 +14,7 @@ class AddIdDisciplinaToCadastrosTable extends Migration
     public function up()
     {
         Schema::table('cadastros', function (Blueprint $table) {
-            $table->bigInteger('id_disciplina');
+            $table->bigInteger('cd_disciplina');
         });
     }
 
@@ -26,7 +26,7 @@ class AddIdDisciplinaToCadastrosTable extends Migration
     public function down()
     {
         Schema::table('cadastros', function (Blueprint $table) {
-            $table->dropColumn('id_disciplina');
+            $table->dropColumn('cd_disciplina');
         });
     }
 }

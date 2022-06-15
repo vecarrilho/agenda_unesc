@@ -15,8 +15,8 @@ class CreateUserDisciplinasTable extends Migration
     {
         Schema::create('user_disciplinas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_user');
-            $table->foreignId('id_disciplina');
+            $table->foreignId('cd_user');
+            $table->foreignId('cd_disciplina');
             $table->year('ano');
             $table->integer('trimestre');
         });
