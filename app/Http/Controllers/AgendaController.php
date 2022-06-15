@@ -163,13 +163,6 @@ class AgendaController extends Controller
                     $sala->date_formated = $sala->data;
                     $sala->hour_formated = $sala->hora;
                     
-                    // $dataEmail = array('data'=>$sala->date_formated, 'hora'=>$sala->hour_formated, 'bloco'=>$sala->bloco);
-                    // Mail::send('emails.email', $dataEmail, function($message){
-                    //     //SUBSTITUIR PELO EMAIL DO ACADEMICO
-                    //     $message->to('vecarrilho@unesc.net', 'Artisan')
-                    //             ->subject('Agendamento de prova');
-                    //     $message->from('noreply.agendaprova@unesc.net');
-                    // });
                     dispatch(new FilaEmail(['bloco' => $sala->bloco, 'data' => $sala->date_formated, 'hora' => $sala->hour_formated, 'email' => $user->email]));
                 // }
             }else{
