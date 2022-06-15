@@ -54,9 +54,9 @@
                         <label>Aluno</label>
                         <input type="text" name="aluno" class="form-control" placeholder="Digite o código do aluno" value="{{ session('aluno') }}">
                         <br>
-                        <input type="text" class="form-control" value="{{ session('nome_aluno') }}" disabled>
+                        <input type="text" class="form-control" value="{{ session('nome_aluno') }}" placeholder="Nome: " disabled>
                         <br>
-                        <input type="text" class="form-control" value="{{ session('email_aluno') }}" disabled>
+                        <input type="text" class="form-control" value="{{ session('email_aluno') }}" placeholder="Email: " disabled>
                         {{-- <select name="aluno" id="aluno" onchange="getAluno()" class="form-select" data-live-search="true" required>
                             <option value="">Selecione um código de aluno</option>
                             @foreach($users as $user)
