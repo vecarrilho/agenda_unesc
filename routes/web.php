@@ -45,9 +45,5 @@ Route::get('/export', [AdminController::class, 'export'])
     ->middleware('auth')
     ->name('admin.export');
 
-Route::get('/agenda/getAluno', [AgendaController::class, 'getAluno'])
-    ->middleware('auth')
-    ->name('getAluno.get');
-
 //rota ao logar
 Route::middleware(['auth:sanctum', 'verified'])->get('/', [AgendaController::class, 'index']);
