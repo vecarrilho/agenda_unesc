@@ -51,10 +51,11 @@ class Sala extends Model
 
     public function scopeSalasExport($query, $data)
     {
-        return $query->select('name', 'bloco', 'hora')
+        return $query->select('cd_pessoa','name', 'nm_polo', 'bloco', 'hora')
                      ->join('cadastros', 'cadastros.id_sala', 'salas.id')
                      ->join('users', 'users.id', 'cadastros.id_usuario')
                      ->where('data', $data)
+                     ->orderBy('nm_polo', 'asc')
                      ->orderBy('name', 'asc')
                      ->orderBy('hora', 'asc');
     }

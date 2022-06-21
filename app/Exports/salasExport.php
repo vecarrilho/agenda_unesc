@@ -28,7 +28,9 @@ class salasExport implements FromCollection, WithHeadings, ShouldAutoSize, WithS
     public function headings(): array
     {
         return [
+            'Código',
             'Nome',
+            'Polo',
             'Bloco',
             'Hora',
         ];
