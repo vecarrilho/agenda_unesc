@@ -1,0 +1,20 @@
+
+    <script type="text/javascript">
+
+function pesquisar(){
+  let divs = $('div.border');
+  let pesquisa = $('#pesquisar').val();
+  console.log
+  divs.each(function(index){
+    if($(this).find("h3").text().toUpperCase().trim().includes(pesquisa.toUpperCase().trim())){
+      $(this).css('display','block')
+    }else{
+      $(this).css('display','none')
+    }
+  });
+  if(pesquisa == ''){
+    divs.css('display', 'block');
+  }
+}
+
+    </script>
